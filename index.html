@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Just Solo · 纯粹轻量的本地音乐播放器</title>
+    <!-- 字体与图标库 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #f8f9fc;
+            --bg-secondary: #ffffff;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f0f2f6;
+            --bg-glass: rgba(255, 255, 255, 0.7);
+            --text-primary: #1a1e2b;
+            --text-secondary: #4a4f5e;
+            --text-muted: #7a7f8e;
+            --border-color: #e6e9f0;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+            --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.10);
+            --accent: #6c5ce7;
+            --accent-light: #a29bfe;
+            --accent-gradient: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            --bar-just: #6c5ce7;
+            --bar-electron: #fd79a8;
+            --bar-other: #dfe6e9;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --radius: 20px;
+            --radius-sm: 12px;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-card: #1c2333;
+            --bg-card-hover: #252d3f;
+            --bg-glass: rgba(22, 27, 34, 0.8);
+            --text-primary: #f0f6fc;
+            --text-secondary: #b0b8c7;
+            --text-muted: #6e7681;
+            --border-color: #30363d;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.6);
+            --bar-just: #a29bfe;
+            --bar-electron: #fd79a8;
+            --bar-other: #2d333b;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background var(--transition), color var(--transition);
+            line-height: 1.6;
+            padding: 2rem 1.5rem;
+            min-height: 100vh;
+        }
+
+        /* 容器 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* 顶部导航 */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 60px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            margin-bottom: 3rem;
+            transition: background var(--transition), border var(--transition), box-shadow var(--transition);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 700;
+            font-size: 1.3rem;
+            letter-spacing: -0.5px;
+        }
+
+        .logo i {
+            color: var(--accent);
+            font-size: 1.6rem;
+        }
+
+        .logo span {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .theme-toggle {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 40px;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: all var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .theme-toggle:hover {
+            background: var(--bg-card-hover);
+            transform: scale(1.02);
+        }
+
+        .theme-toggle i {
+            font-size: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--accent-gradient);
+            border: none;
+            padding: 0.6rem 1.4rem;
+            border-radius: 40px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            text-decoration: none;
+            box-shadow: 0 4px 14px rgba(108, 92, 231, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(108, 92, 231, 0.4);
+        }
+
+        .btn-primary i {
+            font-size: 0.9rem;
+        }
+
+        /* 英雄区 */
+        .hero {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+            align-items: center;
+            margin-bottom: 4rem;
+            padding: 1rem 0;
+        }
+
+        .hero-content {
+            flex: 1 1 400px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 40px;
+            padding: 0.3rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.3px;
+            box-shadow: var(--shadow);
+        }
+
+        .hero-content h1 {
+            font-size: 3.2rem;
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -1.5px;
+            margin-bottom: 1.2rem;
+        }
+
+        .hero-content h1 .highlight {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-content p {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 480px;
+            margin-bottom: 2rem;
+        }
+
+        .hero-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 0.5rem;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .hero-visual {
+            flex: 1 1 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-visual .icon-ring {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: var(--accent-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            color: #fff;
+            box-shadow: 0 20px 60px rgba(108, 92, 231, 0.25);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-12px);
+            }
+        }
+
+        /* 卡片通用 */
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-sub {
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            font-size: 1.05rem;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.8rem;
+            margin-bottom: 3.5rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 1.8rem 1.5rem;
+            box-shadow: var(--shadow);
+            transition: all var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--accent-light);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .card .tag {
+            display: inline-block;
+            background: var(--bg-primary);
+            border-radius: 20px;
+            padding: 0.15rem 0.8rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-top: 0.8rem;
+            border: 1px solid var(--border-color);
+        }
+
+        /* 性能条形图 */
+        .benchmark-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 2.5rem 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 3.5rem;
+            transition: all var(--transition);
+        }
+
+        .benchmark-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 2.5rem;
+        }
+
+        .benchmark-header .left h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .benchmark-header .left p {
+            color: var(--text-secondary);
+        }
+
+        .benchmark-header .badge-light {
+            background: var(--bg-primary);
+            border-radius: 40px;
+            padding: 0.3rem 1.2rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+        }
+
+        .chart-group {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .chart-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .chart-label {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .chart-label .value {
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .bar-track {
+            width: 100%;
+            height: 28px;
+            background: var(--bg-primary);
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid var(--border-color);
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 40px;
+            width: 0%;
+            transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #fff;
+            background: var(--bar-just);
+            min-width: 40px;
+        }
+
+        .bar-fill.electron {
+            background: var(--bar-electron);
+        }
+
+        .bar-fill.other {
+            background: var(--bar-other);
+            color: var(--text-secondary);
+        }
+
+        .chart-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .legend-dot {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border-radius: 4px;
+            margin-right: 0.5rem;
+        }
+
+        .legend-dot.just {
+            background: var(--bar-just);
+        }
+        .legend-dot.electron {
+            background: var(--bar-electron);
+        }
+        .legend-dot.other {
+            background: var(--bar-other);
+        }
+
+        .legend-item {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+        }
+
+        /* 功能特性双列 */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2.5rem 0 3.5rem;
+        }
+
+        .feature-col {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: all var(--transition);
+        }
+
+        .feature-col:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-4px);
+        }
+
+        .feature-col h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .feature-col h3 i {
+            color: var(--accent);
+        }
+
+        .feature-col ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-col ul li {
+            padding: 0.4rem 0;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+        }
+
+        .feature-col ul li i {
+            color: var(--accent-light);
+            font-size: 0.8rem;
+            margin-top: 0.3rem;
+            width: 1rem;
+        }
+
+        /* footer */
+        .footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .footer a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .footer .socials {
+            display: flex;
+            gap: 1.2rem;
+        }
+
+        .footer .socials a {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            transition: color var(--transition);
+        }
+
+        .footer .socials a:hover {
+            color: var(--accent);
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0.8rem;
+            }
+            .navbar {
+                flex-wrap: wrap;
+                gap: 0.8rem;
+                padding: 0.75rem 1.2rem;
+                border-radius: 32px;
+            }
+            .hero-content h1 {
+                font-size: 2.4rem;
+            }
+            .hero-stats {
+                gap: 1.2rem;
+            }
+            .stat-number {
+                font-size: 1.4rem;
+            }
+            .benchmark-section {
+                padding: 1.5rem;
+            }
+            .section-title {
+                font-size: 1.6rem;
+            }
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            .btn-primary span {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            .hero-visual .icon-ring {
+                width: 140px;
+                height: 140px;
+                font-size: 3.6rem;
+            }
+            .benchmark-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.8rem;
+            }
+        }
+
+        /* 进入动画 */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.8s ease forwards;
+        }
+
+        .fade-up.delay-1 {
+            animation-delay: 0.1s;
+        }
+        .fade-up.delay-2 {
+            animation-delay: 0.2s;
+        }
+        .fade-up.delay-3 {
+            animation-delay: 0.3s;
+        }
+        .fade-up.delay-4 {
+            animation-delay: 0.4s;
+        }
+        .fade-up.delay-5 {
+            animation-delay: 0.5s;
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 滚动条美化 */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-light);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- 导航 -->
+        <nav class="navbar fade-up">
+            <div class="logo">
+                <i class="fas fa-headphones-simple"></i>
+                <span>Just Solo</span>
+            </div>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+                    <i class="fas fa-moon" id="themeIcon"></i>
+                    <span id="themeLabel">深色</span>
+                </button>
+                <a href="https://github.com/ZZJ-jack/Just-Solo/releases" target="_blank" class="btn-primary">
+                    <i class="fas fa-download"></i>
+                    <span>下载</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- 英雄区 -->
+        <section class="hero fade-up delay-1">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-bolt" style="margin-right:6px;color:var(--accent);"></i> 纯原生 · 无 Electron
+                </div>
+                <h1>
+                    纯粹轻量的<br />
+                    <span class="highlight">本地音乐播放器</span>
+                </h1>
+                <p>
+                    C++ 高性能核心 + QML 现代界面，内存占用低于 150MB，
+                    冷启动小于 0.5 秒。为 Windows 10/11 打造的极致体验。
+                </p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">&lt;150MB</span>
+                        <span class="stat-label">平均内存</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">&lt;0.5s</span>
+                        <span class="stat-label">冷启动</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">60fps</span>
+                        <span class="stat-label">UI 渲染</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="icon-ring">
+                    <i class="fas fa-music"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- 性能条形图 -->
+        <section class="benchmark-section fade-up delay-2">
+            <div class="benchmark-header">
+                <div class="left">
+                    <h2>⚡ 性能对比</h2>
+                    <p>Just Solo vs 主流播放器 · 数据基于实测</p>
+                </div>
+                <span class="badge-light"><i class="far fa-clock"></i> 实时数据</span>
+            </div>
+
+            <div class="chart-group">
+                <!-- 内存占用 -->
+                <div class="chart-item">
+                    <div class="chart-label">
+                        <span>内存占用 <span style="font-weight:400;color:var(--text-muted);font-size:0.85rem;">(越低越好)</span></span>
+                        <span class="value">Just Solo < 150MB</span>
+                    </div>
+                    <div class="bar-track">
+                        <div class="bar-fill" id="barMemory" style="width:18%;">18%</div>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-muted);padding:0 4px;">
+                        <span>Electron 类 ~500MB+</span>
+                        <span>其他 ~200MB</span>
+                    </div>
+                </div>
+
+                <!-- 冷启动 -->
+                <div class="chart-item">
+                    <div class="chart-label">
+                        <span>冷启动时间 <span style="font-weight:400;color:var(--text-muted);font-size:0.85rem;">(越快越好)</span></span>
+                        <span class="value">Just Solo < 0.5s</span>
+                    </div>
+                    <div class="bar-track">
+                        <div class="bar-fill" id="barStartup" style="width:12%;">12%</div>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-muted);padding:0 4px;">
+                        <span>Electron 类 ~3-5s</span>
+                        <span>其他 ~1.5s</span>
+                    </div>
+                </div>
+
+                <!-- 元数据解析 -->
+                <div class="chart-item">
+                    <div class="chart-label">
+                        <span>元数据解析 <span style="font-weight:400;color:var(--text-muted);font-size:0.85rem;">(越快越好)</span></span>
+                        <span class="value">Just Solo ~1ms/文件</span>
+                    </div>
+                    <div class="bar-track">
+                        <div class="bar-fill" id="barMetadata" style="width:8%;">8%</div>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-muted);padding:0 4px;">
+                        <span>Electron 类 ~15-30ms</span>
+                        <span>其他 ~5-10ms</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-legend">
+                <span class="legend-item"><span class="legend-dot just"></span> Just Solo</span>
+                <span class="legend-item"><span class="legend-dot electron"></span> Electron 类播放器</span>
+                <span class="legend-item"><span class="legend-dot other"></span> 其他原生播放器</span>
+            </div>
+        </section>
+
+        <!-- 核心特性卡片 -->
+        <h2 class="section-title fade-up delay-3">✨ 核心能力</h2>
+        <p class="section-sub fade-up delay-3">从音频引擎到系统集成，每一处都精心打磨</p>
+        <div class="card-grid fade-up delay-3">
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-microchip"></i></div>
+                <h3>高性能音频引擎</h3>
+                <p>基于 miniaudio 单头文件库，支持 MP3 / FLAC / WAV / OGG / AAC / M4A / WMA / Opus。</p>
+                <span class="tag">24-bit 直通</span>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-list-ul"></i></div>
+                <h3>智能音乐库管理</h3>
+                <p>自动去重、多歌手合并、全局搜索高亮、手动拖拽排序，五列自适应布局。</p>
+                <span class="tag">音质标签</span>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-align-left"></i></div>
+                <h3>高级歌词系统</h3>
+                <p>外部 .lrc / 嵌入式歌词，双语字幕，逐字三色高亮，预读偏移可调。</p>
+                <span class="tag">逐字高亮</span>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fab fa-windows"></i></div>
+                <h3>深度 Windows 集成</h3>
+                <p>SMTC 系统控件、NSD 灵动岛、LyricServer WebSocket 协议、系统托盘。</p>
+                <span class="tag">Win11 原生</span>
+            </div>
+        </div>
+
+        <!-- 功能详述双列 -->
+        <div class="feature-grid fade-up delay-4">
+            <div class="feature-col">
+                <h3><i class="fas fa-sliders-h"></i> 播放控制</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> 5 种播放模式（顺序 / 循环 / 单曲 / 随机 / 关闭）</li>
+                    <li><i class="fas fa-check-circle"></i> 全局快捷键（可自定义）</li>
+                    <li><i class="fas fa-check-circle"></i> 进度条点击 / 拖动 seek</li>
+                    <li><i class="fas fa-check-circle"></i> 热插拔恢复：设备拔出自动冻结</li>
+                </ul>
+            </div>
+            <div class="feature-col">
+                <h3><i class="fas fa-heart"></i> 收藏 &amp; 历史</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> 收藏 / 取消收藏，持久化存储</li>
+                    <li><i class="fas fa-check-circle"></i> 播放历史自动记录，上限 500 条</li>
+                    <li><i class="fas fa-check-circle"></i> 启动自动恢复上次播放列表</li>
+                    <li><i class="fas fa-check-circle"></i> 跨来源跟踪，智能去重</li>
+                </ul>
+            </div>
+            <div class="feature-col">
+                <h3><i class="fas fa-palette"></i> 界面 &amp; 体验</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> 毛玻璃播放详情页，圆形封面</li>
+                    <li><i class="fas fa-check-circle"></i> 深色 / 浅色主题原生适配</li>
+                    <li><i class="fas fa-check-circle"></i> 透明度可调，缩放动画</li>
+                    <li><i class="fas fa-check-circle"></i> 系统原生标题栏（Win11 三色定制）</li>
+                </ul>
+            </div>
+            <div class="feature-col">
+                <h3><i class="fas fa-code"></i> 技术栈</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> C++17 + Qt 6.8.3</li>
+                    <li><i class="fas fa-check-circle"></i> QML 现代界面，GPU 渲染</li>
+                    <li><i class="fas fa-check-circle"></i> CMake 构建，MSVC 编译</li>
+                    <li><i class="fas fa-check-circle"></i> HarmonyOS Sans SC 字体</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 页脚 -->
+        <footer class="footer fade-up delay-5">
+            <div>
+                <strong>Just Solo</strong> · 纯粹轻量的本地音乐播放器
+                <span style="margin:0 0.8rem;">·</span>
+                <a href="https://github.com/ZZJ-jack/Just-Solo" target="_blank">GitHub</a>
+                <span style="margin:0 0.4rem;">·</span>
+                <a href="https://github.com/ZZJ-jack/Just-Solo/blob/main/LICENSE" target="_blank">MIT</a>
+            </div>
+            <div class="socials">
+                <a href="https://github.com/ZZJ-jack/Just-Solo" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                <a href="https://gitcode.com/ZZJ-JACK/Just-Solo" target="_blank" aria-label="GitCode"><i class="fas fa-code"></i></a>
+                <a href="https://gitee.com/zzj-jack/just-solo" target="_blank" aria-label="Gitee"><i class="fas fa-code-branch"></i></a>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // ----- 主题切换 -----
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = document.getElementById('themeIcon');
+            const themeLabel = document.getElementById('themeLabel');
+            const html = document.documentElement;
+
+            // 读取存储的主题
+            let currentTheme = localStorage.getItem('justsolo-theme') || 'light';
+            if (currentTheme === 'dark') {
+                html.setAttribute('data-theme', 'dark');
+                themeIcon.className = 'fas fa-sun';
+                themeLabel.textContent = '浅色';
+            } else {
+                html.removeAttribute('data-theme');
+                themeIcon.className = 'fas fa-moon';
+                themeLabel.textContent = '深色';
+            }
+
+            themeToggle.addEventListener('click', function() {
+                const isDark = html.getAttribute('data-theme') === 'dark';
+                if (isDark) {
+                    html.removeAttribute('data-theme');
+                    localStorage.setItem('justsolo-theme', 'light');
+                    themeIcon.className = 'fas fa-moon';
+                    themeLabel.textContent = '深色';
+                } else {
+                    html.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('justsolo-theme', 'dark');
+                    themeIcon.className = 'fas fa-sun';
+                    themeLabel.textContent = '浅色';
+                }
+            });
+
+            // ----- 条形图动画 (进入视口触发) -----
+            const bars = [
+                document.getElementById('barMemory'),
+                document.getElementById('barStartup'),
+                document.getElementById('barMetadata')
+            ];
+
+            // 目标宽度 (百分比)
+            const targetWidths = [18, 12, 8]; // 对应上面设置的初始宽度
+
+            // 重置宽度为 0，然后触发动画
+            function resetBars() {
+                bars.forEach((bar, idx) => {
+                    if (bar) {
+                        bar.style.width = '0%';
+                        bar.textContent = '0%';
+                    }
+                });
+            }
+
+            function animateBars() {
+                bars.forEach((bar, idx) => {
+                    if (bar) {
+                        const target = targetWidths[idx] || 0;
+                        // 先短暂重置再设置目标，触发 transition
+                        bar.style.transition = 'none';
+                        bar.style.width = '0%';
+                        bar.textContent = '0%';
+                        // 强制回流
+                        void bar.offsetHeight;
+                        bar.style.transition = 'width 1.2s cubic-bezier(0.22, 1, 0.36, 1)';
+                        bar.style.width = target + '%';
+                        bar.textContent = target + '%';
+                    }
+                });
+            }
+
+            // Intersection Observer 触发动画
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateBars();
+                        // 触发后不再重复观察（可改为一次性）
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            const benchmarkSection = document.querySelector('.benchmark-section');
+            if (benchmarkSection) {
+                // 先重置为 0
+                resetBars();
+                observer.observe(benchmarkSection);
+            }
+
+            // 如果页面加载时已经可见（比如短页面），手动触发一次
+            if (benchmarkSection) {
+                const rect = benchmarkSection.getBoundingClientRect();
+                const winHeight = window.innerHeight || document.documentElement.clientHeight;
+                if (rect.top < winHeight * 0.7) {
+                    // 延迟一点点让其他动画先走
+                    setTimeout(() => {
+                        animateBars();
+                        observer.unobserve(benchmarkSection);
+                    }, 400);
+                }
+            }
+
+            // 窗口 resize 不做额外处理，保持已触发的状态
+
+        })();
+    </script>
+
+</body>
+</html>
