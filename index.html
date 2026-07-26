@@ -70,14 +70,13 @@
             min-height: 100vh;
         }
 
-        /* 容器 */
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 1rem;
         }
 
-        /* 顶部导航 */
+        /* 导航 */
         .navbar {
             display: flex;
             justify-content: space-between;
@@ -101,12 +100,11 @@
             font-size: 1.3rem;
             letter-spacing: -0.5px;
         }
-
-        .logo i {
-            color: var(--accent);
-            font-size: 1.6rem;
+        .logo img {
+            height: 32px;
+            width: auto;
+            display: block;
         }
-
         .logo span {
             background: var(--accent-gradient);
             -webkit-background-clip: text;
@@ -135,12 +133,10 @@
             transition: all var(--transition);
             box-shadow: var(--shadow);
         }
-
         .theme-toggle:hover {
             background: var(--bg-card-hover);
             transform: scale(1.02);
         }
-
         .theme-toggle i {
             font-size: 1rem;
             transition: transform 0.3s ease;
@@ -162,14 +158,9 @@
             text-decoration: none;
             box-shadow: 0 4px 14px rgba(108, 92, 231, 0.3);
         }
-
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 24px rgba(108, 92, 231, 0.4);
-        }
-
-        .btn-primary i {
-            font-size: 0.9rem;
         }
 
         /* 英雄区 */
@@ -181,11 +172,9 @@
             margin-bottom: 4rem;
             padding: 1rem 0;
         }
-
         .hero-content {
             flex: 1 1 400px;
         }
-
         .hero-badge {
             display: inline-block;
             background: var(--bg-card);
@@ -199,7 +188,6 @@
             letter-spacing: 0.3px;
             box-shadow: var(--shadow);
         }
-
         .hero-content h1 {
             font-size: 3.2rem;
             font-weight: 700;
@@ -207,40 +195,34 @@
             letter-spacing: -1.5px;
             margin-bottom: 1.2rem;
         }
-
         .hero-content h1 .highlight {
             background: var(--accent-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-
         .hero-content p {
             font-size: 1.15rem;
             color: var(--text-secondary);
             max-width: 480px;
             margin-bottom: 2rem;
         }
-
         .hero-stats {
             display: flex;
             flex-wrap: wrap;
             gap: 2rem;
             margin-top: 0.5rem;
         }
-
         .stat-item {
             display: flex;
             flex-direction: column;
         }
-
         .stat-number {
             font-size: 1.8rem;
             font-weight: 700;
             color: var(--text-primary);
             letter-spacing: -0.5px;
         }
-
         .stat-label {
             font-size: 0.85rem;
             color: var(--text-muted);
@@ -253,7 +235,6 @@
             justify-content: center;
             align-items: center;
         }
-
         .hero-visual .icon-ring {
             width: 200px;
             height: 200px;
@@ -267,15 +248,9 @@
             box-shadow: 0 20px 60px rgba(108, 92, 231, 0.25);
             animation: float 4s ease-in-out infinite;
         }
-
         @keyframes float {
-            0%,
-            100% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(-12px);
-            }
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
         }
 
         /* 卡片通用 */
@@ -285,7 +260,6 @@
             letter-spacing: -0.5px;
             margin-bottom: 0.5rem;
         }
-
         .section-sub {
             color: var(--text-secondary);
             margin-bottom: 2.5rem;
@@ -298,7 +272,6 @@
             gap: 1.8rem;
             margin-bottom: 3.5rem;
         }
-
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -307,30 +280,25 @@
             box-shadow: var(--shadow);
             transition: all var(--transition);
         }
-
         .card:hover {
             transform: translateY(-6px);
             box-shadow: var(--shadow-hover);
             border-color: var(--accent-light);
         }
-
         .card-icon {
             font-size: 2rem;
             color: var(--accent);
             margin-bottom: 1rem;
         }
-
         .card h3 {
             font-size: 1.2rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
         }
-
         .card p {
             color: var(--text-secondary);
             font-size: 0.95rem;
         }
-
         .card .tag {
             display: inline-block;
             background: var(--bg-primary);
@@ -361,17 +329,14 @@
             align-items: flex-end;
             margin-bottom: 2.5rem;
         }
-
         .benchmark-header .left h2 {
             font-size: 1.8rem;
             font-weight: 700;
             letter-spacing: -0.5px;
         }
-
         .benchmark-header .left p {
             color: var(--text-secondary);
         }
-
         .benchmark-header .badge-light {
             background: var(--bg-primary);
             border-radius: 40px;
@@ -400,7 +365,6 @@
             font-weight: 500;
             font-size: 0.95rem;
         }
-
         .chart-label .value {
             color: var(--text-secondary);
             font-weight: 600;
@@ -432,14 +396,31 @@
             min-width: 40px;
         }
 
-        .bar-fill.electron {
-            background: var(--bar-electron);
-        }
-
-        .bar-fill.other {
-            background: var(--bar-other);
+        .compare-values {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 500;
             color: var(--text-secondary);
+            padding: 0 4px;
+            margin-top: 2px;
         }
+        .compare-values .cmp-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .compare-values .cmp-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+        }
+        .cmp-dot.just { background: var(--bar-just); }
+        .cmp-dot.electron { background: var(--bar-electron); }
+        .cmp-dot.other { background: var(--bar-other); border: 1px solid var(--border-color); }
 
         .chart-legend {
             display: flex;
@@ -449,7 +430,6 @@
             padding-top: 1.5rem;
             border-top: 1px solid var(--border-color);
         }
-
         .legend-dot {
             display: inline-block;
             width: 14px;
@@ -457,17 +437,9 @@
             border-radius: 4px;
             margin-right: 0.5rem;
         }
-
-        .legend-dot.just {
-            background: var(--bar-just);
-        }
-        .legend-dot.electron {
-            background: var(--bar-electron);
-        }
-        .legend-dot.other {
-            background: var(--bar-other);
-        }
-
+        .legend-dot.just { background: var(--bar-just); }
+        .legend-dot.electron { background: var(--bar-electron); }
+        .legend-dot.other { background: var(--bar-other); }
         .legend-item {
             font-size: 0.9rem;
             font-weight: 500;
@@ -476,14 +448,22 @@
             align-items: center;
         }
 
-        /* 功能特性双列 */
+        .benchmark-footnote {
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-align: right;
+            border-top: 1px dashed var(--border-color);
+            padding-top: 1rem;
+        }
+
+        /* 功能双列 */
         .feature-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
             margin: 2.5rem 0 3.5rem;
         }
-
         .feature-col {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -492,12 +472,10 @@
             box-shadow: var(--shadow);
             transition: all var(--transition);
         }
-
         .feature-col:hover {
             box-shadow: var(--shadow-hover);
             transform: translateY(-4px);
         }
-
         .feature-col h3 {
             font-size: 1.2rem;
             font-weight: 600;
@@ -506,16 +484,13 @@
             align-items: center;
             gap: 0.6rem;
         }
-
         .feature-col h3 i {
             color: var(--accent);
         }
-
         .feature-col ul {
             list-style: none;
             padding: 0;
         }
-
         .feature-col ul li {
             padding: 0.4rem 0;
             color: var(--text-secondary);
@@ -524,7 +499,6 @@
             align-items: flex-start;
             gap: 0.6rem;
         }
-
         .feature-col ul li i {
             color: var(--accent-light);
             font-size: 0.8rem;
@@ -544,73 +518,47 @@
             color: var(--text-muted);
             font-size: 0.9rem;
         }
-
         .footer a {
             color: var(--accent);
             text-decoration: none;
             font-weight: 500;
         }
-
-        .footer a:hover {
-            text-decoration: underline;
-        }
-
+        .footer a:hover { text-decoration: underline; }
         .footer .socials {
             display: flex;
             gap: 1.2rem;
         }
-
         .footer .socials a {
             color: var(--text-muted);
             font-size: 1.2rem;
             transition: color var(--transition);
         }
-
         .footer .socials a:hover {
             color: var(--accent);
         }
 
         /* 响应式 */
         @media (max-width: 768px) {
-            body {
-                padding: 1rem 0.8rem;
-            }
+            body { padding: 1rem 0.8rem; }
             .navbar {
                 flex-wrap: wrap;
                 gap: 0.8rem;
                 padding: 0.75rem 1.2rem;
                 border-radius: 32px;
             }
-            .hero-content h1 {
-                font-size: 2.4rem;
-            }
-            .hero-stats {
-                gap: 1.2rem;
-            }
-            .stat-number {
-                font-size: 1.4rem;
-            }
-            .benchmark-section {
-                padding: 1.5rem;
-            }
-            .section-title {
-                font-size: 1.6rem;
-            }
-            .card-grid {
-                grid-template-columns: 1fr;
-            }
-            .feature-grid {
-                grid-template-columns: 1fr;
-            }
-            .btn-primary span {
-                display: none;
-            }
+            .hero-content h1 { font-size: 2.4rem; }
+            .hero-stats { gap: 1.2rem; }
+            .stat-number { font-size: 1.4rem; }
+            .benchmark-section { padding: 1.5rem; }
+            .section-title { font-size: 1.6rem; }
+            .card-grid { grid-template-columns: 1fr; }
+            .feature-grid { grid-template-columns: 1fr; }
+            .btn-primary span { display: none; }
+            .compare-values { font-size: 0.7rem; }
         }
 
         @media (max-width: 480px) {
-            .hero-content h1 {
-                font-size: 2rem;
-            }
+            .hero-content h1 { font-size: 2rem; }
             .hero-visual .icon-ring {
                 width: 140px;
                 height: 140px;
@@ -623,37 +571,21 @@
             }
         }
 
-        /* 进入动画 */
+        /* 动画 */
         .fade-up {
             opacity: 0;
             transform: translateY(30px);
             animation: fadeUp 0.8s ease forwards;
         }
-
-        .fade-up.delay-1 {
-            animation-delay: 0.1s;
-        }
-        .fade-up.delay-2 {
-            animation-delay: 0.2s;
-        }
-        .fade-up.delay-3 {
-            animation-delay: 0.3s;
-        }
-        .fade-up.delay-4 {
-            animation-delay: 0.4s;
-        }
-        .fade-up.delay-5 {
-            animation-delay: 0.5s;
-        }
-
+        .fade-up.delay-1 { animation-delay: 0.1s; }
+        .fade-up.delay-2 { animation-delay: 0.2s; }
+        .fade-up.delay-3 { animation-delay: 0.3s; }
+        .fade-up.delay-4 { animation-delay: 0.4s; }
+        .fade-up.delay-5 { animation-delay: 0.5s; }
         @keyframes fadeUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* 滚动条美化 */
         ::-webkit-scrollbar {
             width: 6px;
         }
@@ -673,7 +605,7 @@
         <!-- 导航 -->
         <nav class="navbar fade-up">
             <div class="logo">
-                <i class="fas fa-headphones-simple"></i>
+                <img src="./logo.ico" alt="Just Solo Logo" />
                 <span>Just Solo</span>
             </div>
             <div class="nav-actions">
@@ -729,9 +661,9 @@
             <div class="benchmark-header">
                 <div class="left">
                     <h2>⚡ 性能对比</h2>
-                    <p>Just Solo vs 主流播放器 · 数据基于实测</p>
+                    <p>Just Solo vs 主流播放器 · 基于实测数据</p>
                 </div>
-                <span class="badge-light"><i class="far fa-clock"></i> 实时数据</span>
+                <span class="badge-light"><i class="fas fa-chart-simple"></i> 性能对比</span>
             </div>
 
             <div class="chart-group">
@@ -744,9 +676,10 @@
                     <div class="bar-track">
                         <div class="bar-fill" id="barMemory" style="width:18%;">18%</div>
                     </div>
-                    <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-muted);padding:0 4px;">
-                        <span>Electron 类 ~500MB+</span>
-                        <span>其他 ~200MB</span>
+                    <div class="compare-values">
+                        <span class="cmp-item"><span class="cmp-dot just"></span> Just Solo &lt;150MB</span>
+                        <span class="cmp-item"><span class="cmp-dot electron"></span> Electron ~500MB+</span>
+                        <span class="cmp-item"><span class="cmp-dot other"></span> 其他 ~200MB</span>
                     </div>
                 </div>
 
@@ -759,9 +692,10 @@
                     <div class="bar-track">
                         <div class="bar-fill" id="barStartup" style="width:12%;">12%</div>
                     </div>
-                    <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-muted);padding:0 4px;">
-                        <span>Electron 类 ~3-5s</span>
-                        <span>其他 ~1.5s</span>
+                    <div class="compare-values">
+                        <span class="cmp-item"><span class="cmp-dot just"></span> Just Solo &lt;0.5s</span>
+                        <span class="cmp-item"><span class="cmp-dot electron"></span> Electron ~3-5s</span>
+                        <span class="cmp-item"><span class="cmp-dot other"></span> 其他 ~1.5s</span>
                     </div>
                 </div>
 
@@ -774,9 +708,10 @@
                     <div class="bar-track">
                         <div class="bar-fill" id="barMetadata" style="width:8%;">8%</div>
                     </div>
-                    <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-muted);padding:0 4px;">
-                        <span>Electron 类 ~15-30ms</span>
-                        <span>其他 ~5-10ms</span>
+                    <div class="compare-values">
+                        <span class="cmp-item"><span class="cmp-dot just"></span> Just Solo ~1ms</span>
+                        <span class="cmp-item"><span class="cmp-dot electron"></span> Electron ~15-30ms</span>
+                        <span class="cmp-item"><span class="cmp-dot other"></span> 其他 ~5-10ms</span>
                     </div>
                 </div>
             </div>
@@ -785,6 +720,10 @@
                 <span class="legend-item"><span class="legend-dot just"></span> Just Solo</span>
                 <span class="legend-item"><span class="legend-dot electron"></span> Electron 类播放器</span>
                 <span class="legend-item"><span class="legend-dot other"></span> 其他原生播放器</span>
+            </div>
+
+            <div class="benchmark-footnote">
+                <i class="fas fa-flask"></i> 数据基于开发者实测环境，为静态对比示例，仅供参考
             </div>
         </section>
 
@@ -886,7 +825,6 @@
             const themeLabel = document.getElementById('themeLabel');
             const html = document.documentElement;
 
-            // 读取存储的主题
             let currentTheme = localStorage.getItem('justsolo-theme') || 'light';
             if (currentTheme === 'dark') {
                 html.setAttribute('data-theme', 'dark');
@@ -919,13 +857,10 @@
                 document.getElementById('barStartup'),
                 document.getElementById('barMetadata')
             ];
+            const targetWidths = [18, 12, 8];
 
-            // 目标宽度 (百分比)
-            const targetWidths = [18, 12, 8]; // 对应上面设置的初始宽度
-
-            // 重置宽度为 0，然后触发动画
             function resetBars() {
-                bars.forEach((bar, idx) => {
+                bars.forEach((bar) => {
                     if (bar) {
                         bar.style.width = '0%';
                         bar.textContent = '0%';
@@ -937,11 +872,9 @@
                 bars.forEach((bar, idx) => {
                     if (bar) {
                         const target = targetWidths[idx] || 0;
-                        // 先短暂重置再设置目标，触发 transition
                         bar.style.transition = 'none';
                         bar.style.width = '0%';
                         bar.textContent = '0%';
-                        // 强制回流
                         void bar.offsetHeight;
                         bar.style.transition = 'width 1.2s cubic-bezier(0.22, 1, 0.36, 1)';
                         bar.style.width = target + '%';
@@ -950,12 +883,10 @@
                 });
             }
 
-            // Intersection Observer 触发动画
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         animateBars();
-                        // 触发后不再重复观察（可改为一次性）
                         observer.unobserve(entry.target);
                     }
                 });
@@ -963,25 +894,18 @@
 
             const benchmarkSection = document.querySelector('.benchmark-section');
             if (benchmarkSection) {
-                // 先重置为 0
                 resetBars();
                 observer.observe(benchmarkSection);
-            }
-
-            // 如果页面加载时已经可见（比如短页面），手动触发一次
-            if (benchmarkSection) {
+                // 如果已可见，手动触发
                 const rect = benchmarkSection.getBoundingClientRect();
                 const winHeight = window.innerHeight || document.documentElement.clientHeight;
                 if (rect.top < winHeight * 0.7) {
-                    // 延迟一点点让其他动画先走
                     setTimeout(() => {
                         animateBars();
                         observer.unobserve(benchmarkSection);
                     }, 400);
                 }
             }
-
-            // 窗口 resize 不做额外处理，保持已触发的状态
 
         })();
     </script>
