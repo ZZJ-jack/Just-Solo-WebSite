@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Just Solo · 纯粹轻量的本地音乐播放器</title>
-    <!-- 字体与图标库 -->
+    <link rel="icon" href="./logo.ico" type="image/x-icon" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
@@ -81,7 +81,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.75rem 1.5rem;
+            padding: 0.6rem 1.5rem;
             background: var(--bg-glass);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
@@ -90,6 +90,8 @@
             box-shadow: var(--shadow);
             margin-bottom: 3rem;
             transition: background var(--transition), border var(--transition), box-shadow var(--transition);
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }
 
         .logo {
@@ -115,19 +117,20 @@
         .nav-actions {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.6rem;
+            flex-wrap: wrap;
         }
 
         .theme-toggle {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
             border-radius: 40px;
-            padding: 0.5rem 1rem;
+            padding: 0.4rem 0.9rem;
             display: flex;
             align-items: center;
-            gap: 0.6rem;
+            gap: 0.4rem;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 500;
             color: var(--text-secondary);
             transition: all var(--transition);
@@ -138,21 +141,46 @@
             transform: scale(1.02);
         }
         .theme-toggle i {
-            font-size: 1rem;
-            transition: transform 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .nav-link {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 40px;
+            padding: 0.4rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all var(--transition);
+            box-shadow: var(--shadow);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .nav-link:hover {
+            background: var(--bg-card-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+        .nav-link img {
+            height: 20px;
+            width: auto;
+            display: inline-block;
         }
 
         .btn-primary {
             background: var(--accent-gradient);
             border: none;
-            padding: 0.6rem 1.4rem;
+            padding: 0.4rem 1.2rem;
             border-radius: 40px;
             color: #fff;
             font-weight: 600;
-            font-size: 0.9rem;
-            display: flex;
+            font-size: 0.85rem;
+            display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.4rem;
             cursor: pointer;
             transition: all var(--transition);
             text-decoration: none;
@@ -161,6 +189,16 @@
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 24px rgba(108, 92, 231, 0.4);
+        }
+        .btn-primary.outline {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            box-shadow: none;
+        }
+        .btn-primary.outline:hover {
+            background: var(--bg-card-hover);
+            transform: translateY(-2px);
         }
 
         /* 英雄区 */
@@ -239,14 +277,22 @@
             width: 200px;
             height: 200px;
             border-radius: 50%;
-            background: var(--accent-gradient);
+            background: transparent;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 5rem;
-            color: #fff;
             box-shadow: 0 20px 60px rgba(108, 92, 231, 0.25);
             animation: float 4s ease-in-out infinite;
+            overflow: hidden;
+            border: 2px solid var(--border-color);
+            transition: border-color var(--transition);
+        }
+        .hero-visual .icon-ring img {
+            width: 70%;
+            height: 70%;
+            object-fit: contain;
+            border-radius: 50%;
+            display: block;
         }
         @keyframes float {
             0%, 100% { transform: translateY(0px); }
@@ -517,6 +563,24 @@
             align-items: center;
             color: var(--text-muted);
             font-size: 0.9rem;
+            gap: 1rem;
+        }
+        .footer .download-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        .footer .download-links a {
+            color: var(--accent);
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.9rem;
+        }
+        .footer .download-links a:hover {
+            text-decoration: underline;
         }
         .footer a {
             color: var(--accent);
@@ -541,10 +605,21 @@
         @media (max-width: 768px) {
             body { padding: 1rem 0.8rem; }
             .navbar {
-                flex-wrap: wrap;
-                gap: 0.8rem;
-                padding: 0.75rem 1.2rem;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.6rem;
+                padding: 0.8rem 1.2rem;
                 border-radius: 32px;
+            }
+            .logo { justify-content: center; }
+            .nav-actions {
+                justify-content: center;
+                gap: 0.4rem;
+                flex-wrap: wrap;
+            }
+            .btn-primary, .nav-link, .theme-toggle {
+                font-size: 0.75rem;
+                padding: 0.3rem 0.8rem;
             }
             .hero-content h1 { font-size: 2.4rem; }
             .hero-stats { gap: 1.2rem; }
@@ -553,21 +628,35 @@
             .section-title { font-size: 1.6rem; }
             .card-grid { grid-template-columns: 1fr; }
             .feature-grid { grid-template-columns: 1fr; }
-            .btn-primary span { display: none; }
             .compare-values { font-size: 0.7rem; }
+            .hero-visual .icon-ring {
+                width: 150px;
+                height: 150px;
+            }
+            .footer {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.8rem;
+            }
+            .footer .download-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
         }
 
         @media (max-width: 480px) {
             .hero-content h1 { font-size: 2rem; }
             .hero-visual .icon-ring {
-                width: 140px;
-                height: 140px;
-                font-size: 3.6rem;
+                width: 120px;
+                height: 120px;
             }
             .benchmark-header {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 0.8rem;
+            }
+            .nav-actions .btn-primary span {
+                display: none;
             }
         }
 
@@ -613,9 +702,17 @@
                     <i class="fas fa-moon" id="themeIcon"></i>
                     <span id="themeLabel">深色</span>
                 </button>
-                <a href="https://github.com/ZZJ-jack/Just-Solo/releases" target="_blank" class="btn-primary">
-                    <i class="fas fa-download"></i>
-                    <span>下载</span>
+                <a href="https://gitcode.com/ZZJ-JACK/Just-Solo" target="_blank" class="nav-link" title="GitCode 仓库">
+                    <img src="./gitcode.jpeg" alt="GitCode" /> GitCode
+                </a>
+                <a href="https://github.com/ZZJ-jack/Just-Solo" target="_blank" class="nav-link" title="GitHub 仓库">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+                <a href="https://gitcode.com/ZZJ-JACK/Just-Solo/releases" target="_blank" class="btn-primary" title="国内下载">
+                    <i class="fas fa-download"></i> <span>国内下载</span>
+                </a>
+                <a href="https://github.com/ZZJ-jack/Just-Solo/releases" target="_blank" class="btn-primary outline" title="国际下载">
+                    <i class="fas fa-globe"></i> <span>国际下载</span>
                 </a>
             </div>
         </nav>
@@ -651,7 +748,7 @@
             </div>
             <div class="hero-visual">
                 <div class="icon-ring">
-                    <i class="fas fa-music"></i>
+                    <img src="./logo.ico" alt="Just Solo Logo" />
                 </div>
             </div>
         </section>
@@ -801,10 +898,20 @@
         <footer class="footer fade-up delay-5">
             <div>
                 <strong>Just Solo</strong> · 纯粹轻量的本地音乐播放器
-                <span style="margin:0 0.8rem;">·</span>
+                <span style="margin:0 0.6rem;">·</span>
                 <a href="https://github.com/ZZJ-jack/Just-Solo" target="_blank">GitHub</a>
                 <span style="margin:0 0.4rem;">·</span>
+                <a href="https://gitcode.com/ZZJ-JACK/Just-Solo" target="_blank">GitCode</a>
+                <span style="margin:0 0.4rem;">·</span>
                 <a href="https://github.com/ZZJ-jack/Just-Solo/blob/main/LICENSE" target="_blank">MIT</a>
+            </div>
+            <div class="download-links">
+                <a href="https://gitcode.com/ZZJ-JACK/Just-Solo/releases" target="_blank">
+                    <i class="fas fa-download"></i> 国内下载
+                </a>
+                <a href="https://github.com/ZZJ-jack/Just-Solo/releases" target="_blank">
+                    <i class="fas fa-globe"></i> 国际下载
+                </a>
             </div>
             <div class="socials">
                 <a href="https://github.com/ZZJ-jack/Just-Solo" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
@@ -819,39 +926,54 @@
         (function() {
             'use strict';
 
-            // ----- 主题切换 -----
+            const html = document.documentElement;
             const themeToggle = document.getElementById('themeToggle');
             const themeIcon = document.getElementById('themeIcon');
             const themeLabel = document.getElementById('themeLabel');
-            const html = document.documentElement;
 
-            let currentTheme = localStorage.getItem('justsolo-theme') || 'light';
-            if (currentTheme === 'dark') {
-                html.setAttribute('data-theme', 'dark');
-                themeIcon.className = 'fas fa-sun';
-                themeLabel.textContent = '浅色';
-            } else {
-                html.removeAttribute('data-theme');
-                themeIcon.className = 'fas fa-moon';
-                themeLabel.textContent = '深色';
-            }
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+            let hasManualOverride = false;
 
-            themeToggle.addEventListener('click', function() {
-                const isDark = html.getAttribute('data-theme') === 'dark';
-                if (isDark) {
-                    html.removeAttribute('data-theme');
-                    localStorage.setItem('justsolo-theme', 'light');
-                    themeIcon.className = 'fas fa-moon';
-                    themeLabel.textContent = '深色';
-                } else {
+            function applyTheme(theme) {
+                if (theme === 'dark') {
                     html.setAttribute('data-theme', 'dark');
-                    localStorage.setItem('justsolo-theme', 'dark');
                     themeIcon.className = 'fas fa-sun';
                     themeLabel.textContent = '浅色';
+                } else {
+                    html.removeAttribute('data-theme');
+                    themeIcon.className = 'fas fa-moon';
+                    themeLabel.textContent = '深色';
+                }
+            }
+
+            function getInitialTheme() {
+                const stored = localStorage.getItem('justsolo-theme');
+                if (stored) {
+                    hasManualOverride = true;
+                    return stored;
+                }
+                return systemPrefersDark.matches ? 'dark' : 'light';
+            }
+
+            const initialTheme = getInitialTheme();
+            applyTheme(initialTheme);
+
+            systemPrefersDark.addEventListener('change', (e) => {
+                if (!hasManualOverride) {
+                    const newTheme = e.matches ? 'dark' : 'light';
+                    applyTheme(newTheme);
                 }
             });
 
-            // ----- 条形图动画 (进入视口触发) -----
+            themeToggle.addEventListener('click', function() {
+                const isDark = html.getAttribute('data-theme') === 'dark';
+                const newTheme = isDark ? 'light' : 'dark';
+                applyTheme(newTheme);
+                localStorage.setItem('justsolo-theme', newTheme);
+                hasManualOverride = true;
+            });
+
+            // ----- 条形图动画 -----
             const bars = [
                 document.getElementById('barMemory'),
                 document.getElementById('barStartup'),
@@ -896,7 +1018,6 @@
             if (benchmarkSection) {
                 resetBars();
                 observer.observe(benchmarkSection);
-                // 如果已可见，手动触发
                 const rect = benchmarkSection.getBoundingClientRect();
                 const winHeight = window.innerHeight || document.documentElement.clientHeight;
                 if (rect.top < winHeight * 0.7) {
