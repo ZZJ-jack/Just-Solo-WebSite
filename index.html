@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Just Solo · 纯粹轻量的本地音乐播放器</title>
-    <!-- 新增：Meta Description -->
     <meta name="description" content="Just Solo 是一款纯粹轻量的本地音乐播放器，基于 C++ 与 QML 打造。内存占用低于 150MB，冷启动小于 0.5 秒，支持 MP3/FLAC/WAV 等主流格式，为 Windows 10/11 提供极致听觉体验。">
-    <!-- 新增：robots 和 keywords（可选，但建议保留） -->
     <meta name="robots" content="index, follow">
     <meta name="keywords" content="音乐播放器, 本地播放器, 轻量播放器, Windows播放器, C++播放器, QML播放器, 无损音乐, 高性能播放器">
     <link rel="icon" href="./logo.ico" type="image/x-icon" />
@@ -781,6 +779,214 @@
             padding-top: 1rem;
         }
 
+        /* ===== 新增：下载栏目 ===== */
+        .download-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 2.5rem 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 3.5rem;
+            transition: all var(--transition);
+            scroll-margin-top: 80px;
+        }
+        .download-section:hover {
+            border-color: var(--accent-light);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .download-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.8rem;
+        }
+        .download-header .left h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .download-header .left h2 i {
+            color: var(--accent);
+        }
+        .download-header .left p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+        .download-header .version-badge {
+            background: var(--accent-gradient);
+            color: #fff;
+            border-radius: 40px;
+            padding: 0.3rem 1.2rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            white-space: nowrap;
+            box-shadow: 0 4px 14px rgba(108, 92, 231, 0.25);
+        }
+        .download-header .version-badge i {
+            font-size: 0.7rem;
+        }
+
+        .download-body {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        .download-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            padding: 0.8rem 1.2rem;
+            background: var(--bg-primary);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+        }
+        .download-meta .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .download-meta .meta-item i {
+            color: var(--accent-light);
+            width: 1.1rem;
+        }
+        .download-meta .meta-item strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .download-changelog {
+            background: var(--bg-primary);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            padding: 1.2rem 1.5rem;
+            max-height: 260px;
+            overflow-y: auto;
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        .download-changelog h4 {
+            color: var(--text-primary);
+            font-size: 1rem;
+            margin: 0.6rem 0 0.3rem 0;
+        }
+        .download-changelog h4:first-child {
+            margin-top: 0;
+        }
+        .download-changelog ul {
+            padding-left: 1.2rem;
+            margin: 0.2rem 0 0.6rem 0;
+        }
+        .download-changelog ul li {
+            list-style: disc;
+            color: var(--text-secondary);
+        }
+        .download-changelog strong {
+            color: var(--text-primary);
+        }
+        .download-changelog p {
+            margin: 0.2rem 0;
+        }
+        .download-changelog::-webkit-scrollbar {
+            width: 4px;
+        }
+        .download-changelog::-webkit-scrollbar-thumb {
+            background: var(--accent-light);
+            border-radius: 10px;
+        }
+        .download-changelog::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        .download-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding-top: 0.5rem;
+            align-items: center;
+        }
+        .download-actions .btn-dl {
+            padding: 0.6rem 1.6rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all var(--transition);
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            box-shadow: var(--shadow);
+        }
+        .download-actions .btn-dl:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--accent-light);
+        }
+        .download-actions .btn-dl.primary {
+            background: var(--accent-gradient);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 4px 16px rgba(108, 92, 231, 0.3);
+        }
+        .download-actions .btn-dl.primary:hover {
+            box-shadow: 0 8px 28px rgba(108, 92, 231, 0.4);
+            border-color: transparent;
+        }
+        .download-actions .btn-dl i {
+            font-size: 1rem;
+        }
+        .download-actions .btn-dl .badge-small {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 0.05rem 0.6rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.85);
+        }
+        .download-actions .btn-dl .badge-small.dark {
+            background: var(--bg-primary);
+            color: var(--text-muted);
+        }
+        .download-actions .btn-dl .badge-small.dark {
+            background: var(--bg-primary);
+            color: var(--text-muted);
+        }
+
+        .download-loading {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--text-muted);
+        }
+        .download-loading i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+            color: var(--accent-light);
+        }
+        .download-error {
+            text-align: center;
+            padding: 1.5rem 0;
+            color: #ef4444;
+        }
+        .download-error i {
+            font-size: 1.5rem;
+            margin-right: 0.5rem;
+        }
+
         /* 功能双列 */
         .feature-grid {
             display: grid;
@@ -837,28 +1043,12 @@
             border-top: 1px solid var(--border-color);
             display: flex;
             flex-wrap: wrap;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             color: var(--text-muted);
             font-size: 0.9rem;
-            gap: 1rem;
-        }
-        .footer .download-links {
-            display: flex;
-            gap: 1.5rem;
-            align-items: center;
-        }
-        .footer .download-links a {
-            color: var(--accent);
-            font-weight: 500;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-            font-size: 0.9rem;
-        }
-        .footer .download-links a:hover {
-            text-decoration: underline;
+            gap: 0.5rem 1.2rem;
+            text-align: center;
         }
         .footer a {
             color: var(--accent);
@@ -868,17 +1058,8 @@
         .footer a:hover {
             text-decoration: underline;
         }
-        .footer .socials {
-            display: flex;
-            gap: 1.2rem;
-        }
-        .footer .socials a {
-            color: var(--text-muted);
-            font-size: 1.2rem;
-            transition: color var(--transition);
-        }
-        .footer .socials a:hover {
-            color: var(--accent);
+        .footer .sep {
+            color: var(--border-color);
         }
 
         /* 响应式 */
@@ -922,6 +1103,9 @@
             .download-stats-section {
                 padding: 1.5rem;
             }
+            .download-section {
+                padding: 1.5rem;
+            }
             .section-title {
                 font-size: 1.6rem;
             }
@@ -941,11 +1125,7 @@
             .footer {
                 flex-direction: column;
                 text-align: center;
-                gap: 0.8rem;
-            }
-            .footer .download-links {
-                flex-wrap: wrap;
-                justify-content: center;
+                gap: 0.4rem;
             }
             .stats-grid {
                 grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -968,6 +1148,22 @@
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 0.6rem;
+            }
+            .download-header {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+            .download-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+            .download-actions .btn-dl {
+                width: 100%;
+                justify-content: center;
+            }
+            .download-meta {
+                flex-direction: column;
+                gap: 0.4rem;
             }
         }
 
@@ -1004,6 +1200,11 @@
                 width: 34px;
                 height: 34px;
                 font-size: 0.9rem;
+            }
+            .download-changelog {
+                max-height: 180px;
+                padding: 0.8rem 1rem;
+                font-size: 0.85rem;
             }
         }
 
@@ -1071,11 +1272,9 @@
                 <a href="https://github.com/ZZJ-jack/Just-Solo" target="_blank" class="nav-link" title="GitHub 仓库">
                     <i class="fab fa-github"></i> GitHub
                 </a>
-                <a href="https://gitcode.com/ZZJ-JACK/Just-Solo/releases" target="_blank" class="btn-primary" title="国内下载">
-                    <i class="fas fa-download"></i> <span>国内下载</span>
-                </a>
-                <a href="https://github.com/ZZJ-jack/Just-Solo/releases" target="_blank" class="btn-primary outline" title="国际下载">
-                    <i class="fas fa-globe"></i> <span>国际下载</span>
+                <!-- 新增：下载按钮，锚点到下载栏目 -->
+                <a href="#download" class="btn-primary" title="下载 Just Solo">
+                    <i class="fas fa-download"></i> 下载
                 </a>
             </div>
         </nav>
@@ -1244,6 +1443,27 @@
             </div>
         </section>
 
+        <!-- ===== 新增：下载栏目 ===== -->
+        <section class="download-section fade-up delay-3" id="download">
+            <div class="download-header">
+                <div class="left">
+                    <h2><i class="fas fa-download"></i> 下载 Just Solo</h2>
+                    <p>获取最新版本，体验纯粹的音乐之旅</p>
+                </div>
+                <div class="version-badge" id="dlVersionBadge">
+                    <i class="fas fa-tag"></i> <span id="dlVersionText">加载中...</span>
+                </div>
+            </div>
+
+            <div class="download-body" id="downloadBody">
+                <!-- 由 JS 动态渲染 -->
+                <div class="download-loading" id="dlLoading">
+                    <i class="fas fa-circle-notch fa-spin"></i>
+                    正在获取最新版本信息...
+                </div>
+            </div>
+        </section>
+
         <!-- 核心特性卡片 -->
         <h2 class="section-title fade-up delay-4">✨ 核心能力</h2>
         <p class="section-sub fade-up delay-4">从音频引擎到系统集成，每一处都精心打磨</p>
@@ -1316,28 +1536,15 @@
 
         <!-- 页脚 -->
         <footer class="footer fade-up delay-5">
-            <div>
+            <span>
                 <strong>Just Solo</strong> · 纯粹轻量的本地音乐播放器
-                <span style="margin:0 0.6rem;">·</span>
+                <span class="sep">·</span>
                 <a href="https://github.com/ZZJ-jack/Just-Solo" target="_blank">GitHub</a>
-                <span style="margin:0 0.4rem;">·</span>
+                <span class="sep">·</span>
                 <a href="https://gitcode.com/ZZJ-JACK/Just-Solo" target="_blank">GitCode</a>
-                <span style="margin:0 0.4rem;">·</span>
+                <span class="sep">·</span>
                 <a href="https://github.com/ZZJ-jack/Just-Solo/blob/main/LICENSE" target="_blank">MIT</a>
-            </div>
-            <div class="download-links">
-                <a href="https://gitcode.com/ZZJ-JACK/Just-Solo/releases" target="_blank">
-                    <i class="fas fa-download"></i> 国内下载
-                </a>
-                <a href="https://github.com/ZZJ-jack/Just-Solo/releases" target="_blank">
-                    <i class="fas fa-globe"></i> 国际下载
-                </a>
-            </div>
-            <div class="socials">
-                <a href="https://github.com/ZZJ-jack/Just-Solo" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
-                <a href="https://gitcode.com/ZZJ-JACK/Just-Solo" target="_blank" aria-label="GitCode"><i class="fas fa-code"></i></a>
-                <a href="https://gitee.com/zzj-jack/just-solo" target="_blank" aria-label="Gitee"><i class="fas fa-code-branch"></i></a>
-            </div>
+            </span>
         </footer>
 
     </div>
@@ -1449,8 +1656,8 @@
                 }
             }
 
-            // ===== 下载统计 =====
-            const API_URL = 'https://justsologithubdownloadcounter.zzjjack.us.kg/';
+            // ===== 下载统计 (原有) =====
+            const API_URL_STATS = 'https://justsologithubdownloadcounter.zzjjack.us.kg/';
 
             const githubClonesEl = document.getElementById('githubClones');
             const githubReleasesEl = document.getElementById('githubReleases');
@@ -1458,27 +1665,12 @@
             const totalDownloadsEl = document.getElementById('totalDownloads');
             const statsUpdateTimeEl = document.getElementById('statsUpdateTime');
             const statsErrorEl = document.getElementById('statsError');
-            const refreshBtn = document.getElementById('refreshStatsBtn');
 
-            // 加载占位动画
-            function setLoadingState() {
-                [githubClonesEl, githubReleasesEl, gitcodeDownloadsEl, totalDownloadsEl].forEach(el => {
-                    if (el) {
-                        el.className = 'dl-number loading';
-                        el.innerHTML = '<span class="num-loading-dot">·</span><span class="num-loading-dot">·</span><span class="num-loading-dot">·</span>';
-                    }
-                });
-                if (statsUpdateTimeEl) statsUpdateTimeEl.textContent = '加载中...';
-                if (statsErrorEl) statsErrorEl.classList.remove('show');
-            }
-
-            // 格式化数字（带千位分隔符）
             function formatNumber(num) {
                 if (num === undefined || num === null || isNaN(num)) return '--';
                 return Number(num).toLocaleString('zh-CN');
             }
 
-            // 格式化时间
             function formatTime(isoStr) {
                 if (!isoStr) return '未知';
                 try {
@@ -1498,120 +1690,264 @@
                 }
             }
 
-            // 从API获取数据
-            async function fetchDownloadStats() {
-                // 显示加载状态
-                setLoadingState();
-                if (refreshBtn) {
-                    refreshBtn.classList.add('spin');
-                    refreshBtn.disabled = true;
-                }
+            function setLoadingState() {
+                [githubClonesEl, githubReleasesEl, gitcodeDownloadsEl, totalDownloadsEl].forEach(el => {
+                    if (el) {
+                        el.className = 'dl-number loading';
+                        el.innerHTML =
+                            '<span class="num-loading-dot">·</span><span class="num-loading-dot">·</span><span class="num-loading-dot">·</span>';
+                    }
+                });
+                if (statsUpdateTimeEl) statsUpdateTimeEl.textContent = '加载中...';
+                if (statsErrorEl) statsErrorEl.classList.remove('show');
+            }
 
+            async function fetchDownloadStats() {
+                setLoadingState();
                 try {
-                    const response = await fetch(API_URL, {
+                    const response = await fetch(API_URL_STATS, {
                         signal: AbortSignal.timeout(8000)
                     });
-
-                    if (!response.ok) {
-                        throw new Error(`HTTP ${response.status}`);
-                    }
-
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
                     const data = await response.json();
+                    if (!data || typeof data !== 'object') throw new Error('无效的数据格式');
 
-                    // 验证数据结构
-                    if (!data || typeof data !== 'object') {
-                        throw new Error('无效的数据格式');
-                    }
-
-                    // 提取数据
                     const githubClones = data.github?.clones_total ?? '--';
                     const githubReleases = data.github?.releases_total ?? '--';
                     const gitcodeTotal = data.gitcode?.total_downloads ?? data.gitcode?.latest?.total_dl_cnt ?? '--';
                     const overallTotal = data.total_overall ?? '--';
-
-                    // 更新时间
                     const fetchedAt = data.fetched_at || data.github?.last_update_date || null;
 
-                    // 更新DOM
-                    if (githubClonesEl) {
-                        githubClonesEl.className = 'dl-number';
-                        githubClonesEl.textContent = formatNumber(githubClones);
-                    }
-                    if (githubReleasesEl) {
-                        githubReleasesEl.className = 'dl-number';
-                        githubReleasesEl.textContent = formatNumber(githubReleases);
-                    }
-                    if (gitcodeDownloadsEl) {
-                        gitcodeDownloadsEl.className = 'dl-number';
-                        gitcodeDownloadsEl.textContent = formatNumber(gitcodeTotal);
-                    }
-                    if (totalDownloadsEl) {
-                        totalDownloadsEl.className = 'dl-number';
-                        totalDownloadsEl.textContent = formatNumber(overallTotal);
-                    }
+                    if (githubClonesEl) { githubClonesEl.className = 'dl-number';
+                        githubClonesEl.textContent = formatNumber(githubClones); }
+                    if (githubReleasesEl) { githubReleasesEl.className = 'dl-number';
+                        githubReleasesEl.textContent = formatNumber(githubReleases); }
+                    if (gitcodeDownloadsEl) { gitcodeDownloadsEl.className = 'dl-number';
+                        gitcodeDownloadsEl.textContent = formatNumber(gitcodeTotal); }
+                    if (totalDownloadsEl) { totalDownloadsEl.className = 'dl-number';
+                        totalDownloadsEl.textContent = formatNumber(overallTotal); }
 
                     if (statsUpdateTimeEl) {
-                        if (fetchedAt) {
-                            statsUpdateTimeEl.textContent = '更新于 ' + formatTime(fetchedAt);
-                        } else {
-                            statsUpdateTimeEl.textContent = '更新于 ' + new Date().toLocaleString('zh-CN');
-                        }
+                        statsUpdateTimeEl.textContent = fetchedAt ? '更新于 ' + formatTime(fetchedAt) : '更新于 ' + new Date()
+                            .toLocaleString('zh-CN');
                     }
-
                     if (statsErrorEl) statsErrorEl.classList.remove('show');
-
                 } catch (err) {
                     console.warn('下载统计加载失败:', err.message);
-
-                    // 显示错误状态（保留之前的数据，只显示错误提示）
                     if (statsErrorEl) statsErrorEl.classList.add('show');
-
-                    // 如果所有数据都是占位符，则显示 '--'
                     [githubClonesEl, githubReleasesEl, gitcodeDownloadsEl, totalDownloadsEl].forEach(el => {
                         if (el && el.classList.contains('loading')) {
                             el.className = 'dl-number';
                             el.textContent = '--';
                         }
                     });
-
-                    if (statsUpdateTimeEl) {
-                        statsUpdateTimeEl.textContent = '加载失败，请点击刷新重试';
-                    }
-                } finally {
-                    if (refreshBtn) {
-                        refreshBtn.classList.remove('spin');
-                        refreshBtn.disabled = false;
-                    }
+                    if (statsUpdateTimeEl) statsUpdateTimeEl.textContent = '加载失败，请刷新重试';
                 }
             }
 
-            // 初始加载
             fetchDownloadStats();
 
-            // 刷新按钮事件
-            if (refreshBtn) {
-                refreshBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    fetchDownloadStats();
-                });
+            // ===== 新增：下载栏目 =====
+            const DL_API = 'https://getjustsolosetup.zzjjack.us.kg/';
+
+            const dlBody = document.getElementById('downloadBody');
+            const dlVersionText = document.getElementById('dlVersionText');
+            const dlVersionBadge = document.getElementById('dlVersionBadge');
+
+            // 简单的 Markdown -> HTML 转换
+            function markdownToHtml(md) {
+                if (!md) return '';
+                // 转义 HTML 特殊字符
+                let html = md.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                // 标题 ###
+                html = html.replace(/^### (.*$)/gm, '<h4>$1</h4>');
+                // 粗体 **
+                html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                // 斜体 *
+                html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
+                // 列表项 - 或 *
+                let lines = html.split('\n');
+                let inList = false;
+                let result = [];
+                for (let line of lines) {
+                    const trimmed = line.trim();
+                    if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
+                        if (!inList) {
+                            result.push('<ul>');
+                            inList = true;
+                        }
+                        const content = trimmed.substring(2);
+                        result.push('<li>' + content + '</li>');
+                    } else {
+                        if (inList) {
+                            result.push('</ul>');
+                            inList = false;
+                        }
+                        if (trimmed === '') {
+                            result.push('');
+                        } else {
+                            result.push(line);
+                        }
+                    }
+                }
+                if (inList) {
+                    result.push('</ul>');
+                }
+                html = result.join('\n');
+                // 换行转 <br>（但保留段落间距）
+                html = html.replace(/\n/g, '<br>');
+                // 清理多余的 <br><br> 保留为 <br>
+                html = html.replace(/(<br>){3,}/g, '<br><br>');
+                return html;
             }
 
-            // 当页面可见时自动刷新（可选）
+            function renderDownloadSection(data) {
+                if (!data || typeof data !== 'object') {
+                    dlBody.innerHTML = `
+                        <div class="download-error">
+                            <i class="fas fa-exclamation-triangle"></i> 获取版本信息失败，请稍后重试
+                        </div>
+                    `;
+                    return;
+                }
+
+                const tag = data.tag_name || 'v?.?.?';
+                const name = data.name || tag;
+                const created = data.created_at || '';
+                const body = data.body || '暂无更新日志';
+                const assets = data.assets || [];
+
+                // 提取 exe 下载链接
+                let exeUrl = null;
+                let exeName = null;
+                for (const asset of assets) {
+                    if (asset.type === 'attach' && asset.name && asset.name.toLowerCase().endsWith('.exe')) {
+                        exeUrl = asset.browser_download_url;
+                        exeName = asset.name;
+                        break;
+                    }
+                }
+
+                // 如果没有 exe，尝试找任何 attach 类型
+                if (!exeUrl) {
+                    for (const asset of assets) {
+                        if (asset.type === 'attach') {
+                            exeUrl = asset.browser_download_url;
+                            exeName = asset.name;
+                            break;
+                        }
+                    }
+                }
+
+                // 格式化日期
+                let dateStr = '未知';
+                if (created) {
+                    try {
+                        const d = new Date(created);
+                        if (!isNaN(d.getTime())) {
+                            dateStr = d.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
+                        }
+                    } catch (_) {}
+                }
+
+                // 更新版本徽章
+                if (dlVersionText) dlVersionText.textContent = tag;
+
+                // 构建更新日志 HTML
+                const changelogHtml = markdownToHtml(body);
+
+                // 构建下载按钮
+                const domesticUrl = 'https://gitcode.com/ZZJ-JACK/Just-Solo/releases';
+                const internationalUrl = 'https://github.com/ZZJ-jack/Just-Solo/releases';
+
+                let directBtn = '';
+                if (exeUrl) {
+                    directBtn = `
+                        <a href="${exeUrl}" target="_blank" class="btn-dl primary" title="直接下载 EXE 安装包">
+                            <i class="fas fa-file-download"></i> 直接下载 .exe
+                            <span class="badge-small">${exeName || 'EXE'}</span>
+                        </a>
+                    `;
+                } else {
+                    directBtn = `
+                        <span class="btn-dl" style="opacity:0.5;cursor:default;pointer-events:none;">
+                            <i class="fas fa-file-download"></i> 暂无可执行文件
+                        </span>
+                    `;
+                }
+
+                dlBody.innerHTML = `
+                    <div class="download-meta">
+                        <span class="meta-item"><i class="fas fa-tag"></i> 版本 <strong>${tag}</strong></span>
+                        <span class="meta-item"><i class="far fa-calendar-alt"></i> 发布于 <strong>${dateStr}</strong></span>
+                        <span class="meta-item"><i class="fas fa-archive"></i> 名称 <strong>${name}</strong></span>
+                    </div>
+
+                    <div class="download-changelog">
+                        ${changelogHtml}
+                    </div>
+
+                    <div class="download-actions">
+                        <a href="${domesticUrl}" target="_blank" class="btn-dl" title="国内下载 (GitCode)">
+                            <i class="fas fa-code"></i> 国内下载
+                            <span class="badge-small dark">GitCode</span>
+                        </a>
+                        <a href="${internationalUrl}" target="_blank" class="btn-dl" title="国外下载 (GitHub)">
+                            <i class="fab fa-github"></i> 国外下载
+                            <span class="badge-small dark">GitHub</span>
+                        </a>
+                        ${directBtn}
+                    </div>
+                `;
+            }
+
+            async function fetchDownloadData() {
+                // 显示加载状态
+                dlBody.innerHTML = `
+                    <div class="download-loading" id="dlLoading">
+                        <i class="fas fa-circle-notch fa-spin"></i>
+                        正在获取最新版本信息...
+                    </div>
+                `;
+                if (dlVersionText) dlVersionText.textContent = '加载中...';
+
+                try {
+                    const response = await fetch(DL_API, {
+                        signal: AbortSignal.timeout(8000)
+                    });
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    const data = await response.json();
+                    if (!data || typeof data !== 'object') throw new Error('无效的数据格式');
+                    renderDownloadSection(data);
+                } catch (err) {
+                    console.warn('下载栏目加载失败:', err.message);
+                    dlBody.innerHTML = `
+                        <div class="download-error">
+                            <i class="fas fa-exclamation-triangle"></i> 获取版本信息失败，请稍后重试
+                            <br><span style="font-size:0.8rem;color:var(--text-muted);">${err.message}</span>
+                        </div>
+                    `;
+                    if (dlVersionText) dlVersionText.textContent = '加载失败';
+                }
+            }
+
+            // 初始加载下载栏目
+            fetchDownloadData();
+
+            // 每 10 分钟刷新一次下载栏目数据
+            setInterval(fetchDownloadData, 10 * 60 * 1000);
+
+            // 页面可见时刷新（防抖）
+            let dlRefreshTimer = null;
             document.addEventListener('visibilitychange', function() {
                 if (!document.hidden) {
-                    // 从后台切回时，如果数据较旧可刷新，这里简单处理：只刷新一次
-                    // 但为了避免频繁请求，加个简单防抖
-                    if (!window._statsRefreshedOnVisible) {
-                        window._statsRefreshedOnVisible = true;
-                        setTimeout(fetchDownloadStats, 1000);
-                    }
+                    clearTimeout(dlRefreshTimer);
+                    dlRefreshTimer = setTimeout(fetchDownloadData, 1500);
                 }
             });
 
-            // 每 5 分钟自动刷新一次
-            setInterval(() => {
-                fetchDownloadStats();
-            }, 5 * 60 * 1000);
+            // 暴露刷新函数到全局（方便调试）
+            window.refreshDownload = fetchDownloadData;
 
         })();
     </script>
