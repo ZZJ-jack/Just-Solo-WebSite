@@ -1162,7 +1162,7 @@
                     <span class="highlight">本地音乐播放器</span>
                 </h1>
                 <p>
-                    C++ 高性能核心 + QML 现代界面，内存占用低于 150MB，
+                    C++ 高性能核心 + QML 现代界面，平均内存占用低于 150MB，
                     冷启动小于 0.5 秒。为 Windows 10/11 打造的极致体验。
                 </p>
                 <div class="hero-stats">
@@ -1201,7 +1201,7 @@
                 <div class="stat-card-dl">
                     <div class="dl-icon github"><i class="fab fa-github"></i></div>
                     <div class="dl-info">
-                        <span class="dl-label">GitHub 克隆</span>
+                        <span class="dl-label">GitHub Clone</span>
                         <span class="dl-number" id="githubClones">--</span>
                     </div>
                 </div>
@@ -1215,7 +1215,7 @@
                 <div class="stat-card-dl">
                     <div class="dl-icon gitcode"><i class="fas fa-code"></i></div>
                     <div class="dl-info">
-                        <span class="dl-label">GitCode 下载</span>
+                        <span class="dl-label">GitCode Clone & Realese</span>
                         <span class="dl-number" id="gitcodeDownloads">--</span>
                     </div>
                 </div>
@@ -1278,28 +1278,14 @@
                         <span class="cmp-item"><span class="cmp-dot other"></span> 其他 ~1.5s</span>
                     </div>
                 </div>
-                <div class="chart-item">
-                    <div class="chart-label">
-                        <span>元数据解析 <span style="font-weight:400;color:var(--text-muted);font-size:0.85rem;">(越快越好)</span></span>
-                        <span class="value">Just Solo ~1ms/文件</span>
-                    </div>
-                    <div class="bar-track">
-                        <div class="bar-fill" id="barMetadata" style="width:8%;">8%</div>
-                    </div>
-                    <div class="compare-values">
-                        <span class="cmp-item"><span class="cmp-dot just"></span> Just Solo ~1ms</span>
-                        <span class="cmp-item"><span class="cmp-dot electron"></span> Electron ~15-30ms</span>
-                        <span class="cmp-item"><span class="cmp-dot other"></span> 其他 ~5-10ms</span>
-                    </div>
-                </div>
             </div>
             <div class="chart-legend">
                 <span class="legend-item"><span class="legend-dot just"></span> Just Solo</span>
                 <span class="legend-item"><span class="legend-dot electron"></span> Electron 类播放器</span>
-                <span class="legend-item"><span class="legend-dot other"></span> 其他原生播放器</span>
+                <span class="legend-item"><span class="legend-dot other"></span> 其他播放器</span>
             </div>
             <div class="benchmark-footnote">
-                <i class="fas fa-flask"></i> 数据基于开发者实测环境，为静态对比示例，仅供参考
+                <i class="fas fa-flask"></i> 本数据基于开发者固定环境实测，为静态对比示例，仅供参考
             </div>
         </section>
 
@@ -1349,14 +1335,14 @@
             </div>
             <div class="card">
                 <div class="card-icon"><i class="fas fa-align-left"></i></div>
-                <h3>高级歌词系统</h3>
-                <p>外部 .lrc / 嵌入式歌词，双语字幕，逐字三色高亮，预读偏移可调。</p>
-                <span class="tag">逐字高亮</span>
+                <h3>完善的歌词系统</h3>
+                <p>外部 .lrc / 嵌入式歌词，双语字幕，逐行高亮，预读偏移可调。</p>
+                <span class="tag">逐行高亮</span>
             </div>
             <div class="card">
                 <div class="card-icon"><i class="fab fa-windows"></i></div>
                 <h3>深度 Windows 集成</h3>
-                <p>SMTC 系统控件、NSD 灵动岛、LyricServer WebSocket 协议、系统托盘。</p>
+                <p>SMTC 系统控件、NSD 灵动岛、Just Solo LyricServer 协议、系统托盘。</p>
                 <span class="tag">Win11 原生</span>
             </div>
         </div>
@@ -1369,7 +1355,7 @@
                     <li><i class="fas fa-check-circle"></i> 5 种播放模式（顺序 / 循环 / 单曲 / 随机 / 关闭）</li>
                     <li><i class="fas fa-check-circle"></i> 全局快捷键（可自定义）</li>
                     <li><i class="fas fa-check-circle"></i> 进度条点击 / 拖动 seek</li>
-                    <li><i class="fas fa-check-circle"></i> 热插拔恢复：设备拔出自动冻结</li>
+                    <li><i class="fas fa-check-circle"></i> 支持热插拔：热插拔不影响音乐播放</li>
                 </ul>
             </div>
             <div class="feature-col">
@@ -1387,7 +1373,7 @@
                     <li><i class="fas fa-check-circle"></i> 毛玻璃播放详情页，圆形封面</li>
                     <li><i class="fas fa-check-circle"></i> 深色 / 浅色主题原生适配</li>
                     <li><i class="fas fa-check-circle"></i> 透明度可调，缩放动画</li>
-                    <li><i class="fas fa-check-circle"></i> 系统原生标题栏（Win11 三色定制）</li>
+                    <li><i class="fas fa-check-circle"></i> 系统原生标题栏（Win11 三色定制/Win10强制深色主题）</li>
                 </ul>
             </div>
             <div class="feature-col">
