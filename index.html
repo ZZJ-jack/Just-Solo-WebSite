@@ -1673,8 +1673,9 @@
                 // 国外下载链接：构造 GitHub 直链
                 let internationalUrl = null;
                 if (tag && exeName) {
-                    // 注意：GitHub 下载链接格式：https://github.com/ZZJ-jack/Just-Solo/releases/download/{tag}/{filename}
-                    internationalUrl = `https://github.com/ZZJ-jack/Just-Solo/releases/download/${tag}/${encodeURIComponent(exeName)}`;
+                    // https://github.com/ZZJ-jack/Just-Solo/releases/download/{tag}/Just.Solo.V{version}.exe
+                    let exeNameForUrl = exeName.replace(/ /g, '.');
+                    internationalUrl = `https://github.com/ZZJ-jack/Just-Solo/releases/download/${tag}/${encodeURIComponent(exeNameForUrl)}`;
                 } else {
                     // 如果无法构造，则降级到 Releases 页面
                     internationalUrl = 'https://github.com/ZZJ-jack/Just-Solo/releases';
