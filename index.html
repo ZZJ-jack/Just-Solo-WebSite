@@ -1934,8 +1934,8 @@
             // 初始加载下载栏目
             fetchDownloadData();
 
-            // 每 10 分钟刷新一次下载栏目数据
-            setInterval(fetchDownloadData, 10 * 60 * 1000);
+            // 每 60 分钟刷新一次下载栏目数据
+            setInterval(fetchDownloadData, 60 * 60 * 1000);
 
             // 页面可见时刷新（防抖）
             let dlRefreshTimer = null;
