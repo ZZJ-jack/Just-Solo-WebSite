@@ -13,6 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
+        /* ========== 完整样式（与之前一致，无改动） ========== */
         * {
             margin: 0;
             padding: 0;
@@ -85,7 +86,6 @@
             padding: 0 1rem;
         }
 
-        /* 导航 */
         .navbar {
             display: flex;
             justify-content: space-between;
@@ -210,7 +210,6 @@
             transform: translateY(-2px);
         }
 
-        /* 英雄区 */
         .hero {
             display: flex;
             flex-wrap: wrap;
@@ -313,7 +312,6 @@
             }
         }
 
-        /* 卡片通用 */
         .section-title {
             font-size: 2rem;
             font-weight: 700;
@@ -371,7 +369,6 @@
             border: 1px solid var(--border-color);
         }
 
-        /* ===== 下载统计区域 ===== */
         .download-stats-section {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -575,39 +572,6 @@
         .stats-footer .update-time i {
             font-size: 0.75rem;
         }
-        .stats-footer .refresh-btn {
-            background: transparent;
-            border: 1px solid var(--border-color);
-            border-radius: 40px;
-            padding: 0.25rem 1rem;
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: all var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-        .stats-footer .refresh-btn:hover {
-            background: var(--bg-card-hover);
-            border-color: var(--accent-light);
-            color: var(--accent);
-        }
-        .stats-footer .refresh-btn:active {
-            transform: scale(0.95);
-        }
-        .stats-footer .refresh-btn i {
-            font-size: 0.7rem;
-        }
-        .stats-footer .refresh-btn.spin i {
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
 
         .stats-error {
             color: #ef4444;
@@ -620,7 +584,6 @@
             display: inline-flex;
         }
 
-        /* ===== 性能条形图 ===== */
         .benchmark-section {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -779,7 +742,7 @@
             padding-top: 1rem;
         }
 
-        /* ===== 新增：下载栏目 ===== */
+        /* ===== 下载栏目 ===== */
         .download-section {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -961,10 +924,6 @@
             background: var(--bg-primary);
             color: var(--text-muted);
         }
-        .download-actions .btn-dl .badge-small.dark {
-            background: var(--bg-primary);
-            color: var(--text-muted);
-        }
 
         .download-loading {
             text-align: center;
@@ -1062,193 +1021,104 @@
             color: var(--border-color);
         }
 
+        /* ===== 刷新按钮通用样式 ===== */
+        .refresh-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 40px;
+            padding: 0.25rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .refresh-btn:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--accent-light);
+            color: var(--accent);
+        }
+        .refresh-btn:active {
+            transform: scale(0.95);
+        }
+        .refresh-btn.spin i {
+            animation: spin 1s linear infinite;
+        }
+        .refresh-btn i {
+            font-size: 0.7rem;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
         /* 响应式 */
         @media (max-width: 768px) {
-            body {
-                padding: 1rem 0.8rem;
-            }
-            .navbar {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 0.6rem;
-                padding: 0.8rem 1.2rem;
-                border-radius: 32px;
-            }
-            .logo {
-                justify-content: center;
-            }
-            .nav-actions {
-                justify-content: center;
-                gap: 0.4rem;
-                flex-wrap: wrap;
-            }
-            .btn-primary,
-            .nav-link,
-            .theme-toggle {
-                font-size: 0.75rem;
-                padding: 0.3rem 0.8rem;
-            }
-            .hero-content h1 {
-                font-size: 2.4rem;
-            }
-            .hero-stats {
-                gap: 1.2rem;
-            }
-            .stat-number {
-                font-size: 1.4rem;
-            }
-            .benchmark-section {
-                padding: 1.5rem;
-            }
-            .download-stats-section {
-                padding: 1.5rem;
-            }
-            .download-section {
-                padding: 1.5rem;
-            }
-            .section-title {
-                font-size: 1.6rem;
-            }
-            .card-grid {
-                grid-template-columns: 1fr;
-            }
-            .feature-grid {
-                grid-template-columns: 1fr;
-            }
-            .compare-values {
-                font-size: 0.7rem;
-            }
-            .hero-visual .icon-ring {
-                width: 150px;
-                height: 150px;
-            }
-            .footer {
-                flex-direction: column;
-                text-align: center;
-                gap: 0.4rem;
-            }
-            .stats-grid {
-                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-                gap: 1rem;
-            }
-            .stat-card-dl {
-                padding: 1rem 0.8rem;
-                flex-direction: column;
-                text-align: center;
-            }
-            .stat-card-dl .dl-icon {
-                width: 40px;
-                height: 40px;
-                font-size: 1.1rem;
-            }
-            .stat-card-dl .dl-info .dl-number {
-                font-size: 1.4rem;
-            }
-            .stats-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.6rem;
-            }
-            .download-header {
-                flex-direction: column;
-                gap: 0.8rem;
-            }
-            .download-actions {
-                flex-direction: column;
-                width: 100%;
-            }
-            .download-actions .btn-dl {
-                width: 100%;
-                justify-content: center;
-            }
-            .download-meta {
-                flex-direction: column;
-                gap: 0.4rem;
-            }
+            body { padding: 1rem 0.8rem; }
+            .navbar { flex-direction: column; align-items: stretch; gap: 0.6rem; padding: 0.8rem 1.2rem; border-radius: 32px; }
+            .logo { justify-content: center; }
+            .nav-actions { justify-content: center; gap: 0.4rem; flex-wrap: wrap; }
+            .btn-primary, .nav-link, .theme-toggle { font-size: 0.75rem; padding: 0.3rem 0.8rem; }
+            .hero-content h1 { font-size: 2.4rem; }
+            .hero-stats { gap: 1.2rem; }
+            .stat-number { font-size: 1.4rem; }
+            .benchmark-section { padding: 1.5rem; }
+            .download-stats-section { padding: 1.5rem; }
+            .download-section { padding: 1.5rem; }
+            .section-title { font-size: 1.6rem; }
+            .card-grid { grid-template-columns: 1fr; }
+            .feature-grid { grid-template-columns: 1fr; }
+            .compare-values { font-size: 0.7rem; }
+            .hero-visual .icon-ring { width: 150px; height: 150px; }
+            .footer { flex-direction: column; text-align: center; gap: 0.4rem; }
+            .stats-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
+            .stat-card-dl { padding: 1rem 0.8rem; flex-direction: column; text-align: center; }
+            .stat-card-dl .dl-icon { width: 40px; height: 40px; font-size: 1.1rem; }
+            .stat-card-dl .dl-info .dl-number { font-size: 1.4rem; }
+            .stats-header { flex-direction: column; align-items: flex-start; gap: 0.6rem; }
+            .download-header { flex-direction: column; gap: 0.8rem; }
+            .download-actions { flex-direction: column; width: 100%; }
+            .download-actions .btn-dl { width: 100%; justify-content: center; }
+            .download-meta { flex-direction: column; gap: 0.4rem; }
+            .stats-footer { flex-direction: column; align-items: stretch; gap: 0.5rem; }
+            .refresh-btn { align-self: flex-start; }
         }
 
         @media (max-width: 480px) {
-            .hero-content h1 {
-                font-size: 2rem;
-            }
-            .hero-visual .icon-ring {
-                width: 120px;
-                height: 120px;
-            }
-            .benchmark-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.8rem;
-            }
-            .nav-actions .btn-primary span {
-                display: none;
-            }
-            .stats-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 0.8rem;
-            }
-            .stat-card-dl {
-                padding: 0.8rem 0.6rem;
-            }
-            .stat-card-dl .dl-info .dl-number {
-                font-size: 1.2rem;
-            }
-            .stat-card-dl .dl-info .dl-label {
-                font-size: 0.7rem;
-            }
-            .stat-card-dl .dl-icon {
-                width: 34px;
-                height: 34px;
-                font-size: 0.9rem;
-            }
-            .download-changelog {
-                max-height: 180px;
-                padding: 0.8rem 1rem;
-                font-size: 0.85rem;
-            }
+            .hero-content h1 { font-size: 2rem; }
+            .hero-visual .icon-ring { width: 120px; height: 120px; }
+            .benchmark-header { flex-direction: column; align-items: flex-start; gap: 0.8rem; }
+            .nav-actions .btn-primary span { display: none; }
+            .stats-grid { grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+            .stat-card-dl { padding: 0.8rem 0.6rem; }
+            .stat-card-dl .dl-info .dl-number { font-size: 1.2rem; }
+            .stat-card-dl .dl-info .dl-label { font-size: 0.7rem; }
+            .stat-card-dl .dl-icon { width: 34px; height: 34px; font-size: 0.9rem; }
+            .download-changelog { max-height: 180px; padding: 0.8rem 1rem; font-size: 0.85rem; }
         }
 
-        /* 动画 */
         .fade-up {
             opacity: 0;
             transform: translateY(30px);
             animation: fadeUp 0.8s ease forwards;
         }
-        .fade-up.delay-1 {
-            animation-delay: 0.1s;
-        }
-        .fade-up.delay-2 {
-            animation-delay: 0.2s;
-        }
-        .fade-up.delay-3 {
-            animation-delay: 0.3s;
-        }
-        .fade-up.delay-4 {
-            animation-delay: 0.4s;
-        }
-        .fade-up.delay-5 {
-            animation-delay: 0.5s;
-        }
-        .fade-up.delay-6 {
-            animation-delay: 0.6s;
-        }
+        .fade-up.delay-1 { animation-delay: 0.1s; }
+        .fade-up.delay-2 { animation-delay: 0.2s; }
+        .fade-up.delay-3 { animation-delay: 0.3s; }
+        .fade-up.delay-4 { animation-delay: 0.4s; }
+        .fade-up.delay-5 { animation-delay: 0.5s; }
+        .fade-up.delay-6 { animation-delay: 0.6s; }
         @keyframes fadeUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--bg-primary);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--accent-light);
-            border-radius: 10px;
-        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: var(--accent-light); border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -1272,7 +1142,6 @@
                 <a href="https://github.com/ZZJ-jack/Just-Solo" target="_blank" class="nav-link" title="GitHub 仓库">
                     <i class="fab fa-github"></i> GitHub
                 </a>
-                <!-- 新增：下载按钮，锚点到下载栏目 -->
                 <a href="#download" class="btn-primary" title="下载 Just Solo">
                     <i class="fas fa-download"></i> 下载
                 </a>
@@ -1326,7 +1195,6 @@
             </div>
 
             <div class="stats-grid">
-                <!-- GitHub 克隆 -->
                 <div class="stat-card-dl">
                     <div class="dl-icon github"><i class="fab fa-github"></i></div>
                     <div class="dl-info">
@@ -1334,8 +1202,6 @@
                         <span class="dl-number" id="githubClones">--</span>
                     </div>
                 </div>
-
-                <!-- GitHub Release -->
                 <div class="stat-card-dl">
                     <div class="dl-icon release"><i class="fas fa-tag"></i></div>
                     <div class="dl-info">
@@ -1343,8 +1209,6 @@
                         <span class="dl-number" id="githubReleases">--</span>
                     </div>
                 </div>
-
-                <!-- GitCode 下载 -->
                 <div class="stat-card-dl">
                     <div class="dl-icon gitcode"><i class="fas fa-code"></i></div>
                     <div class="dl-info">
@@ -1352,8 +1216,6 @@
                         <span class="dl-number" id="gitcodeDownloads">--</span>
                     </div>
                 </div>
-
-                <!-- 全平台总下载（高亮） -->
                 <div class="stat-card-dl highlight-card">
                     <div class="dl-icon total"><i class="fas fa-download"></i></div>
                     <div class="dl-info">
@@ -1367,8 +1229,11 @@
                 <div class="update-time">
                     <i class="far fa-clock"></i>
                     <span id="statsUpdateTime">加载中...</span>
-                    <span class="stats-error" id="statsError"><i class="fas fa-exclamation-circle"></i> 加载失败，请刷新网页重试</span>
+                    <span class="stats-error" id="statsError"><i class="fas fa-exclamation-circle"></i> 加载失败，请刷新重试</span>
                 </div>
+                <button class="refresh-btn" id="refreshStatsBtn" title="手动刷新统计数据">
+                    <i class="fas fa-sync-alt"></i> 刷新数据
+                </button>
             </div>
         </section>
 
@@ -1381,9 +1246,7 @@
                 </div>
                 <span class="badge-light"><i class="fas fa-chart-simple"></i> 性能对比</span>
             </div>
-
             <div class="chart-group">
-                <!-- 内存占用 -->
                 <div class="chart-item">
                     <div class="chart-label">
                         <span>内存占用 <span style="font-weight:400;color:var(--text-muted);font-size:0.85rem;">(越低越好)</span></span>
@@ -1398,8 +1261,6 @@
                         <span class="cmp-item"><span class="cmp-dot other"></span> 其他 ~200MB</span>
                     </div>
                 </div>
-
-                <!-- 冷启动 -->
                 <div class="chart-item">
                     <div class="chart-label">
                         <span>冷启动时间 <span style="font-weight:400;color:var(--text-muted);font-size:0.85rem;">(越快越好)</span></span>
@@ -1414,8 +1275,6 @@
                         <span class="cmp-item"><span class="cmp-dot other"></span> 其他 ~1.5s</span>
                     </div>
                 </div>
-
-                <!-- 元数据解析 -->
                 <div class="chart-item">
                     <div class="chart-label">
                         <span>元数据解析 <span style="font-weight:400;color:var(--text-muted);font-size:0.85rem;">(越快越好)</span></span>
@@ -1431,19 +1290,17 @@
                     </div>
                 </div>
             </div>
-
             <div class="chart-legend">
                 <span class="legend-item"><span class="legend-dot just"></span> Just Solo</span>
                 <span class="legend-item"><span class="legend-dot electron"></span> Electron 类播放器</span>
                 <span class="legend-item"><span class="legend-dot other"></span> 其他原生播放器</span>
             </div>
-
             <div class="benchmark-footnote">
                 <i class="fas fa-flask"></i> 数据基于开发者实测环境，为静态对比示例，仅供参考
             </div>
         </section>
 
-        <!-- ===== 新增：下载栏目 ===== -->
+        <!-- ===== 下载栏目（仅保留两个按钮） ===== -->
         <section class="download-section fade-up delay-3" id="download">
             <div class="download-header">
                 <div class="left">
@@ -1462,9 +1319,16 @@
                     正在获取最新版本信息...
                 </div>
             </div>
+
+            <!-- 手动刷新按钮 -->
+            <div style="display: flex; justify-content: flex-end; margin-top: 1rem;">
+                <button class="refresh-btn" id="refreshDlBtn" title="手动刷新版本信息">
+                    <i class="fas fa-sync-alt"></i> 刷新版本
+                </button>
+            </div>
         </section>
 
-        <!-- 核心特性卡片 -->
+        <!-- 核心特性 -->
         <h2 class="section-title fade-up delay-4">✨ 核心能力</h2>
         <p class="section-sub fade-up delay-4">从音频引擎到系统集成，每一处都精心打磨</p>
         <div class="card-grid fade-up delay-4">
@@ -1494,7 +1358,7 @@
             </div>
         </div>
 
-        <!-- 功能详述双列 -->
+        <!-- 功能详述 -->
         <div class="feature-grid fade-up delay-5">
             <div class="feature-col">
                 <h3><i class="fas fa-sliders-h"></i> 播放控制</h3>
@@ -1553,12 +1417,11 @@
         (function() {
             'use strict';
 
-            // ===== 主题切换 =====
+            // ===================== 主题切换 =====================
             const html = document.documentElement;
             const themeToggle = document.getElementById('themeToggle');
             const themeIcon = document.getElementById('themeIcon');
             const themeLabel = document.getElementById('themeLabel');
-
             const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
             let hasManualOverride = false;
 
@@ -1573,26 +1436,12 @@
                     themeLabel.textContent = '深色';
                 }
             }
-
-            function getInitialTheme() {
-                const stored = localStorage.getItem('justsolo-theme');
-                if (stored) {
-                    hasManualOverride = true;
-                    return stored;
-                }
-                return systemPrefersDark.matches ? 'dark' : 'light';
-            }
-
-            const initialTheme = getInitialTheme();
-            applyTheme(initialTheme);
-
+            const storedTheme = localStorage.getItem('justsolo-theme');
+            if (storedTheme) { hasManualOverride = true;
+                applyTheme(storedTheme); } else { applyTheme(systemPrefersDark.matches ? 'dark' : 'light'); }
             systemPrefersDark.addEventListener('change', (e) => {
-                if (!hasManualOverride) {
-                    const newTheme = e.matches ? 'dark' : 'light';
-                    applyTheme(newTheme);
-                }
+                if (!hasManualOverride) applyTheme(e.matches ? 'dark' : 'light');
             });
-
             themeToggle.addEventListener('click', function() {
                 const isDark = html.getAttribute('data-theme') === 'dark';
                 const newTheme = isDark ? 'light' : 'dark';
@@ -1601,7 +1450,7 @@
                 hasManualOverride = true;
             });
 
-            // ===== 条形图动画 =====
+            // ===================== 条形图动画 =====================
             const bars = [
                 document.getElementById('barMemory'),
                 document.getElementById('barStartup'),
@@ -1610,12 +1459,8 @@
             const targetWidths = [18, 12, 8];
 
             function resetBars() {
-                bars.forEach((bar) => {
-                    if (bar) {
-                        bar.style.width = '0%';
-                        bar.textContent = '0%';
-                    }
-                });
+                bars.forEach((bar) => { if (bar) { bar.style.width = '0%';
+                        bar.textContent = '0%'; } });
             }
 
             function animateBars() {
@@ -1632,39 +1477,31 @@
                     }
                 });
             }
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        animateBars();
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.3 });
-
             const benchmarkSection = document.querySelector('.benchmark-section');
             if (benchmarkSection) {
                 resetBars();
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) { animateBars();
+                            observer.unobserve(entry.target); }
+                    });
+                }, { threshold: 0.3 });
                 observer.observe(benchmarkSection);
-                const rect = benchmarkSection.getBoundingClientRect();
-                const winHeight = window.innerHeight || document.documentElement.clientHeight;
-                if (rect.top < winHeight * 0.7) {
-                    setTimeout(() => {
-                        animateBars();
-                        observer.unobserve(benchmarkSection);
-                    }, 400);
+                if (benchmarkSection.getBoundingClientRect().top < window.innerHeight * 0.7) {
+                    setTimeout(() => { animateBars();
+                        observer.unobserve(benchmarkSection); }, 400);
                 }
             }
 
-            // ===== 下载统计 (原有) =====
-            const API_URL_STATS = 'https://justsologithubdownloadcounter.zzjjack.us.kg/';
-
+            // ===================== 下载统计 =====================
+            const STATS_API = 'https://justsologithubdownloadcounter.zzjjack.us.kg/';
             const githubClonesEl = document.getElementById('githubClones');
             const githubReleasesEl = document.getElementById('githubReleases');
             const gitcodeDownloadsEl = document.getElementById('gitcodeDownloads');
             const totalDownloadsEl = document.getElementById('totalDownloads');
             const statsUpdateTimeEl = document.getElementById('statsUpdateTime');
             const statsErrorEl = document.getElementById('statsError');
+            const refreshStatsBtn = document.getElementById('refreshStatsBtn');
 
             function formatNumber(num) {
                 if (num === undefined || num === null || isNaN(num)) return '--';
@@ -1676,21 +1513,12 @@
                 try {
                     const d = new Date(isoStr);
                     if (isNaN(d.getTime())) return isoStr;
-                    return d.toLocaleString('zh-CN', {
-                        year: 'numeric',
-                        month: '2-digit',
-                        day: '2-digit',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        second: '2-digit',
-                        hour12: false
-                    });
-                } catch (_) {
-                    return isoStr;
-                }
+                    return d.toLocaleString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit',
+                        hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+                } catch (_) { return isoStr; }
             }
 
-            function setLoadingState() {
+            function setStatsLoading() {
                 [githubClonesEl, githubReleasesEl, gitcodeDownloadsEl, totalDownloadsEl].forEach(el => {
                     if (el) {
                         el.className = 'dl-number loading';
@@ -1702,101 +1530,95 @@
                 if (statsErrorEl) statsErrorEl.classList.remove('show');
             }
 
-            async function fetchDownloadStats() {
-                setLoadingState();
+            async function fetchStats() {
+                setStatsLoading();
+                if (refreshStatsBtn) { refreshStatsBtn.classList.add('spin');
+                    refreshStatsBtn.disabled = true; }
                 try {
-                    const response = await fetch(API_URL_STATS, {
-                        signal: AbortSignal.timeout(8000)
+                    const response = await fetch(STATS_API, {
+                        signal: AbortSignal.timeout(8000),
+                        headers: { 'Accept': 'application/json' }
                     });
                     if (!response.ok) throw new Error(`HTTP ${response.status}`);
                     const data = await response.json();
-                    if (!data || typeof data !== 'object') throw new Error('无效的数据格式');
+                    if (!data || typeof data !== 'object') throw new Error('无效数据');
 
-                    const githubClones = data.github?.clones_total ?? '--';
-                    const githubReleases = data.github?.releases_total ?? '--';
-                    const gitcodeTotal = data.gitcode?.total_downloads ?? data.gitcode?.latest?.total_dl_cnt ?? '--';
-                    const overallTotal = data.total_overall ?? '--';
-                    const fetchedAt = data.fetched_at || data.github?.last_update_date || null;
+                    const clones = data.github?.clones_total ?? '--';
+                    const releases = data.github?.releases_total ?? '--';
+                    const gitcode = data.gitcode?.total_downloads ?? data.gitcode?.latest?.total_dl_cnt ?? '--';
+                    const total = data.total_overall ?? '--';
+                    const fetched = data.fetched_at || data.github?.last_update_date || null;
 
                     if (githubClonesEl) { githubClonesEl.className = 'dl-number';
-                        githubClonesEl.textContent = formatNumber(githubClones); }
+                        githubClonesEl.textContent = formatNumber(clones); }
                     if (githubReleasesEl) { githubReleasesEl.className = 'dl-number';
-                        githubReleasesEl.textContent = formatNumber(githubReleases); }
+                        githubReleasesEl.textContent = formatNumber(releases); }
                     if (gitcodeDownloadsEl) { gitcodeDownloadsEl.className = 'dl-number';
-                        gitcodeDownloadsEl.textContent = formatNumber(gitcodeTotal); }
+                        gitcodeDownloadsEl.textContent = formatNumber(gitcode); }
                     if (totalDownloadsEl) { totalDownloadsEl.className = 'dl-number';
-                        totalDownloadsEl.textContent = formatNumber(overallTotal); }
+                        totalDownloadsEl.textContent = formatNumber(total); }
 
-                    if (statsUpdateTimeEl) {
-                        statsUpdateTimeEl.textContent = fetchedAt ? '更新于 ' + formatTime(fetchedAt) : '更新于 ' + new Date()
-                            .toLocaleString('zh-CN');
-                    }
-                    if (statsErrorEl) statsErrorEl.classList.remove('show');
+                    statsUpdateTimeEl.textContent = fetched ? '更新于 ' + formatTime(fetched) : '更新于 ' + new Date()
+                        .toLocaleString('zh-CN');
+                    statsErrorEl.classList.remove('show');
                 } catch (err) {
-                    console.warn('下载统计加载失败:', err.message);
-                    if (statsErrorEl) statsErrorEl.classList.add('show');
+                    console.warn('统计加载失败:', err.message);
+                    statsErrorEl.classList.add('show');
                     [githubClonesEl, githubReleasesEl, gitcodeDownloadsEl, totalDownloadsEl].forEach(el => {
                         if (el && el.classList.contains('loading')) {
                             el.className = 'dl-number';
                             el.textContent = '--';
                         }
                     });
-                    if (statsUpdateTimeEl) statsUpdateTimeEl.textContent = '加载失败，请刷新重试';
+                    statsUpdateTimeEl.textContent = '加载失败，点击“刷新数据”重试';
+                } finally {
+                    if (refreshStatsBtn) { refreshStatsBtn.classList.remove('spin');
+                        refreshStatsBtn.disabled = false; }
                 }
             }
 
-            fetchDownloadStats();
+            // 首次加载 & 60分钟定时
+            fetchStats();
+            setInterval(fetchStats, 60 * 60 * 1000);
 
-            // ===== 新增：下载栏目 =====
+            if (refreshStatsBtn) {
+                refreshStatsBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    fetchStats();
+                });
+            }
+
+            // ===================== 下载栏目（仅两个按钮） =====================
             const DL_API = 'https://getjustsolosetup.zzjjack.us.kg/';
-
             const dlBody = document.getElementById('downloadBody');
             const dlVersionText = document.getElementById('dlVersionText');
-            const dlVersionBadge = document.getElementById('dlVersionBadge');
+            const refreshDlBtn = document.getElementById('refreshDlBtn');
 
-            // 简单的 Markdown -> HTML 转换
             function markdownToHtml(md) {
                 if (!md) return '';
-                // 转义 HTML 特殊字符
                 let html = md.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                // 标题 ###
                 html = html.replace(/^### (.*$)/gm, '<h4>$1</h4>');
-                // 粗体 **
                 html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-                // 斜体 *
                 html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
-                // 列表项 - 或 *
                 let lines = html.split('\n');
-                let inList = false;
-                let result = [];
+                let inList = false,
+                    result = [];
                 for (let line of lines) {
                     const trimmed = line.trim();
                     if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
-                        if (!inList) {
-                            result.push('<ul>');
-                            inList = true;
-                        }
-                        const content = trimmed.substring(2);
-                        result.push('<li>' + content + '</li>');
+                        if (!inList) { result.push('<ul>');
+                            inList = true; }
+                        result.push('<li>' + trimmed.substring(2) + '</li>');
                     } else {
-                        if (inList) {
-                            result.push('</ul>');
-                            inList = false;
-                        }
-                        if (trimmed === '') {
-                            result.push('');
-                        } else {
-                            result.push(line);
-                        }
+                        if (inList) { result.push('</ul>');
+                            inList = false; }
+                        if (trimmed === '') result.push('');
+                        else result.push(line);
                     }
                 }
-                if (inList) {
-                    result.push('</ul>');
-                }
+                if (inList) result.push('</ul>');
                 html = result.join('\n');
-                // 换行转 <br>（但保留段落间距）
                 html = html.replace(/\n/g, '<br>');
-                // 清理多余的 <br><br> 保留为 <br>
                 html = html.replace(/(<br>){3,}/g, '<br><br>');
                 return html;
             }
@@ -1806,8 +1628,10 @@
                     dlBody.innerHTML = `
                         <div class="download-error">
                             <i class="fas fa-exclamation-triangle"></i> 获取版本信息失败，请稍后重试
+                            <br><span style="font-size:0.8rem;color:var(--text-muted);">可能因跨域限制，请尝试刷新或使用无痕模式</span>
                         </div>
                     `;
+                    if (dlVersionText) dlVersionText.textContent = '加载失败';
                     return;
                 }
 
@@ -1815,66 +1639,18 @@
                 const name = data.name || tag;
                 const created = data.created_at || '';
                 const body = data.body || '暂无更新日志';
-                const assets = data.assets || [];
 
-                // 提取 exe 下载链接
-                let exeUrl = null;
-                let exeName = null;
-                for (const asset of assets) {
-                    if (asset.type === 'attach' && asset.name && asset.name.toLowerCase().endsWith('.exe')) {
-                        exeUrl = asset.browser_download_url;
-                        exeName = asset.name;
-                        break;
-                    }
-                }
-
-                // 如果没有 exe，尝试找任何 attach 类型
-                if (!exeUrl) {
-                    for (const asset of assets) {
-                        if (asset.type === 'attach') {
-                            exeUrl = asset.browser_download_url;
-                            exeName = asset.name;
-                            break;
-                        }
-                    }
-                }
-
-                // 格式化日期
                 let dateStr = '未知';
                 if (created) {
-                    try {
-                        const d = new Date(created);
-                        if (!isNaN(d.getTime())) {
-                            dateStr = d.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
-                        }
-                    } catch (_) {}
+                    try { const d = new Date(created); if (!isNaN(d.getTime())) dateStr = d.toLocaleDateString(
+                        'zh-CN', { year: 'numeric', month: 'long', day: 'numeric' }); } catch (_) {}
                 }
 
-                // 更新版本徽章
                 if (dlVersionText) dlVersionText.textContent = tag;
 
-                // 构建更新日志 HTML
                 const changelogHtml = markdownToHtml(body);
-
-                // 构建下载按钮
                 const domesticUrl = 'https://gitcode.com/ZZJ-JACK/Just-Solo/releases';
                 const internationalUrl = 'https://github.com/ZZJ-jack/Just-Solo/releases';
-
-                let directBtn = '';
-                if (exeUrl) {
-                    directBtn = `
-                        <a href="${exeUrl}" target="_blank" class="btn-dl primary" title="直接下载 EXE 安装包">
-                            <i class="fas fa-file-download"></i> 直接下载 .exe
-                            <span class="badge-small">${exeName || 'EXE'}</span>
-                        </a>
-                    `;
-                } else {
-                    directBtn = `
-                        <span class="btn-dl" style="opacity:0.5;cursor:default;pointer-events:none;">
-                            <i class="fas fa-file-download"></i> 暂无可执行文件
-                        </span>
-                    `;
-                }
 
                 dlBody.innerHTML = `
                     <div class="download-meta">
@@ -1882,72 +1658,78 @@
                         <span class="meta-item"><i class="far fa-calendar-alt"></i> 发布于 <strong>${dateStr}</strong></span>
                         <span class="meta-item"><i class="fas fa-archive"></i> 名称 <strong>${name}</strong></span>
                     </div>
-
-                    <div class="download-changelog">
-                        ${changelogHtml}
-                    </div>
-
+                    <div class="download-changelog">${changelogHtml}</div>
                     <div class="download-actions">
-                        <a href="${domesticUrl}" target="_blank" class="btn-dl" title="国内下载 (GitCode)">
+                        <a href="${domesticUrl}" target="_blank" class="btn-dl primary" title="国内下载 (GitCode)">
                             <i class="fas fa-code"></i> 国内下载
-                            <span class="badge-small dark">GitCode</span>
+                            <span class="badge-small">GitCode</span>
                         </a>
                         <a href="${internationalUrl}" target="_blank" class="btn-dl" title="国外下载 (GitHub)">
                             <i class="fab fa-github"></i> 国外下载
                             <span class="badge-small dark">GitHub</span>
                         </a>
-                        ${directBtn}
                     </div>
                 `;
             }
 
             async function fetchDownloadData() {
-                // 显示加载状态
                 dlBody.innerHTML = `
-                    <div class="download-loading" id="dlLoading">
+                    <div class="download-loading">
                         <i class="fas fa-circle-notch fa-spin"></i>
                         正在获取最新版本信息...
                     </div>
                 `;
                 if (dlVersionText) dlVersionText.textContent = '加载中...';
+                if (refreshDlBtn) { refreshDlBtn.classList.add('spin');
+                    refreshDlBtn.disabled = true; }
 
                 try {
                     const response = await fetch(DL_API, {
-                        signal: AbortSignal.timeout(8000)
+                        signal: AbortSignal.timeout(8000),
+                        headers: { 'Accept': 'application/json' }
                     });
                     if (!response.ok) throw new Error(`HTTP ${response.status}`);
                     const data = await response.json();
-                    if (!data || typeof data !== 'object') throw new Error('无效的数据格式');
+                    if (!data || typeof data !== 'object') throw new Error('无效数据');
                     renderDownloadSection(data);
                 } catch (err) {
                     console.warn('下载栏目加载失败:', err.message);
                     dlBody.innerHTML = `
                         <div class="download-error">
                             <i class="fas fa-exclamation-triangle"></i> 获取版本信息失败，请稍后重试
-                            <br><span style="font-size:0.8rem;color:var(--text-muted);">${err.message}</span>
+                            <br><span style="font-size:0.8rem;color:var(--text-muted);">错误：${err.message}</span>
+                            <br><span style="font-size:0.8rem;color:var(--text-muted);">若持续失败，可能是跨域限制，请尝试刷新页面或使用浏览器无痕模式</span>
                         </div>
                     `;
                     if (dlVersionText) dlVersionText.textContent = '加载失败';
+                } finally {
+                    if (refreshDlBtn) { refreshDlBtn.classList.remove('spin');
+                        refreshDlBtn.disabled = false; }
                 }
             }
 
-            // 初始加载下载栏目
+            // 首次加载 & 60分钟定时
             fetchDownloadData();
-
-            // 每 60 分钟刷新一次下载栏目数据
             setInterval(fetchDownloadData, 60 * 60 * 1000);
 
+            if (refreshDlBtn) {
+                refreshDlBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    fetchDownloadData();
+                });
+            }
+
             // 页面可见时刷新（防抖）
-            let dlRefreshTimer = null;
+            let visibleTimer = null;
             document.addEventListener('visibilitychange', function() {
                 if (!document.hidden) {
-                    clearTimeout(dlRefreshTimer);
-                    dlRefreshTimer = setTimeout(fetchDownloadData, 1500);
+                    clearTimeout(visibleTimer);
+                    visibleTimer = setTimeout(() => {
+                        fetchStats();
+                        fetchDownloadData();
+                    }, 1000);
                 }
             });
-
-            // 暴露刷新函数到全局（方便调试）
-            window.refreshDownload = fetchDownloadData;
 
         })();
     </script>
