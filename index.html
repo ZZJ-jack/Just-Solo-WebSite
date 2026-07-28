@@ -1966,13 +1966,9 @@
             async function fetchStats() {
                 setStatsLoading();
                 try {
-                    var response = await fetch(STATS_API, {
+                    var response = await fetch(STATS_API + '?t=' + Date.now(), {
                         cache: 'no-store',
-                        headers: {
-                            'Accept': 'application/json',
-                            'Cache-Control': 'no-cache, no-store, must-revalidate',
-                            'Pragma': 'no-cache'
-                        },
+                        headers: { 'Accept': 'application/json' },
                         signal: AbortSignal.timeout(8000)
                     });
                     if (!response.ok) throw new Error('HTTP ' + response.status);
@@ -2122,13 +2118,9 @@
                 if (dlVersionText) dlVersionText.textContent = '加载中...';
 
                 try {
-                    var response = await fetch(DL_API, {
+                    var response = await fetch(DL_API + '?t=' + Date.now(), {
                         cache: 'no-store',
-                        headers: {
-                            'Accept': 'application/json',
-                            'Cache-Control': 'no-cache, no-store, must-revalidate',
-                            'Pragma': 'no-cache'
-                        },
+                        headers: { 'Accept': 'application/json' },
                         signal: AbortSignal.timeout(8000)
                     });
                     if (!response.ok) throw new Error('HTTP ' + response.status);
