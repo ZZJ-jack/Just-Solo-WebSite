@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Just Solo · 纯粹轻量的本地音乐播放器</title>
-    <meta name="description" content="Just Solo 是一款纯粹轻量的本地音乐播放器，基于 C++ 与 QML 打造。内存占用低于 150MB，冷启动小于 0.5 秒，支持 MP3/FLAC/WAV 等主流格式，为 Windows 10/11 提供极致听觉体验。">
-    <meta name="robots" content="index, follow">
-    <meta name="keywords" content="音乐播放器, 本地播放器, 轻量播放器, Windows播放器, C++播放器, QML播放器, 无损音乐, 高性能播放器">
+    <meta name="description" content="Just Solo 是一款纯粹轻量的本地音乐播放器，基于 C++ 与 QML 打造。内存占用低于 150MB，冷启动小于 0.5 秒，支持 MP3/FLAC/WAV 等主流格式，为 Windows 10/11 提供极致听觉体验。" />
+    <meta name="robots" content="index, follow" />
+    <meta name="keywords" content="音乐播放器, 本地播放器, 轻量播放器, Windows播放器, C++播放器, QML播放器, 无损音乐, 高性能播放器" />
     <link rel="icon" href="./logo.ico" type="image/x-icon" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <!-- ====== 引入 marked 解析库（现成的 Markdown 解析器） ====== -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js">
+    </script>
+
     <style>
-        /* ========== 完整样式（与之前一致，仅修改了 .download-changelog 的 max-height） ========== */
+        /* ========== 完整样式（与之前一致，仅修改了 .download-changelog 的 max-height，并新增对 marked 生成标签的样式） ========== */
         * {
             margin: 0;
             padding: 0;
@@ -44,6 +49,8 @@
             --stat-bg-github: #f0f6ff;
             --stat-bg-gitcode: #f0faf0;
             --stat-bg-total: #f5f0ff;
+            --code-bg: rgba(108, 92, 231, 0.08);
+            --blockquote-border: #6c5ce7;
         }
 
         [data-theme="dark"] {
@@ -64,6 +71,8 @@
             --stat-bg-github: #1a2332;
             --stat-bg-gitcode: #1a2a1a;
             --stat-bg-total: #231a33;
+            --code-bg: rgba(162, 155, 254, 0.12);
+            --blockquote-border: #a29bfe;
         }
 
         html {
@@ -828,40 +837,189 @@
             font-weight: 600;
         }
 
-        /* ===== 修改：更新日志框高度增加一半（260px → 390px） ===== */
+        /* ===== 更新日志框：高度增加至 390px ===== */
         .download-changelog {
             background: var(--bg-primary);
             border-radius: var(--radius-sm);
             border: 1px solid var(--border-color);
             padding: 1.2rem 1.5rem;
-            max-height: 390px;       /* 原 260px，增加一半 */
+            max-height: 390px;
             overflow-y: auto;
             font-size: 0.92rem;
             color: var(--text-secondary);
             line-height: 1.7;
         }
-        .download-changelog h4 {
+
+        /* ===== 针对 marked 生成的各种 Markdown 标签的样式 ===== */
+        .download-changelog h1,
+        .download-changelog h2,
+        .download-changelog h3,
+        .download-changelog h4,
+        .download-changelog h5,
+        .download-changelog h6 {
             color: var(--text-primary);
-            font-size: 1rem;
-            margin: 0.6rem 0 0.3rem 0;
+            font-weight: 600;
+            margin: 1.2rem 0 0.4rem 0;
+            line-height: 1.4;
         }
-        .download-changelog h4:first-child {
+        .download-changelog h1 {
+            font-size: 1.5rem;
+        }
+        .download-changelog h2 {
+            font-size: 1.3rem;
+        }
+        .download-changelog h3 {
+            font-size: 1.15rem;
+        }
+        .download-changelog h4 {
+            font-size: 1rem;
+        }
+        .download-changelog h5 {
+            font-size: 0.95rem;
+        }
+        .download-changelog h6 {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        .download-changelog h1:first-child,
+        .download-changelog h2:first-child,
+        .download-changelog h3:first-child,
+        .download-changelog h4:first-child,
+        .download-changelog h5:first-child,
+        .download-changelog h6:first-child {
             margin-top: 0;
         }
-        .download-changelog ul {
-            padding-left: 1.2rem;
-            margin: 0.2rem 0 0.6rem 0;
+
+        .download-changelog p {
+            margin: 0.4rem 0;
+        }
+
+        .download-changelog a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px solid transparent;
+            transition: border-color var(--transition);
+        }
+        .download-changelog a:hover {
+            border-bottom-color: var(--accent);
+        }
+
+        .download-changelog ul,
+        .download-changelog ol {
+            padding-left: 1.5rem;
+            margin: 0.3rem 0 0.7rem 0;
         }
         .download-changelog ul li {
             list-style: disc;
             color: var(--text-secondary);
+            margin: 0.1rem 0;
         }
-        .download-changelog strong {
-            color: var(--text-primary);
+        .download-changelog ol li {
+            list-style: decimal;
+            color: var(--text-secondary);
+            margin: 0.1rem 0;
         }
-        .download-changelog p {
+        .download-changelog ul ul,
+        .download-changelog ol ol,
+        .download-changelog ul ol,
+        .download-changelog ol ul {
+            margin: 0.1rem 0 0.3rem 0;
+        }
+        .download-changelog ul ul li {
+            list-style: circle;
+        }
+        .download-changelog ul ul ul li {
+            list-style: square;
+        }
+
+        .download-changelog blockquote {
+            margin: 0.6rem 0;
+            padding: 0.4rem 1rem 0.4rem 1.2rem;
+            border-left: 4px solid var(--blockquote-border);
+            background: var(--code-bg);
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        .download-changelog blockquote p {
             margin: 0.2rem 0;
         }
+
+        .download-changelog code {
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            background: var(--code-bg);
+            padding: 0.1rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.85em;
+            color: var(--accent);
+            border: 1px solid var(--border-color);
+        }
+
+        .download-changelog pre {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 0.8rem 1rem;
+            overflow-x: auto;
+            margin: 0.5rem 0;
+            font-size: 0.85rem;
+        }
+        .download-changelog pre code {
+            background: transparent;
+            border: none;
+            padding: 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            border: none;
+        }
+
+        .download-changelog hr {
+            border: none;
+            border-top: 1px solid var(--border-color);
+            margin: 1rem 0;
+        }
+
+        .download-changelog table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 0.6rem 0;
+            font-size: 0.9rem;
+        }
+        .download-changelog table th,
+        .download-changelog table td {
+            border: 1px solid var(--border-color);
+            padding: 0.3rem 0.8rem;
+            text-align: left;
+        }
+        .download-changelog table th {
+            background: var(--bg-card);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .download-changelog table tr:nth-child(even) {
+            background: var(--bg-primary);
+        }
+
+        .download-changelog img {
+            max-width: 100%;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            margin: 0.4rem 0;
+        }
+
+        .download-changelog strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        .download-changelog em {
+            font-style: italic;
+        }
+        .download-changelog del {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
         .download-changelog::-webkit-scrollbar {
             width: 4px;
         }
@@ -1022,7 +1180,6 @@
             color: var(--border-color);
         }
 
-        /* ===== 刷新按钮通用样式 ===== */
         .refresh-btn {
             background: transparent;
             border: 1px solid var(--border-color);
@@ -1059,49 +1216,159 @@
 
         /* 响应式 */
         @media (max-width: 768px) {
-            body { padding: 1rem 0.8rem; }
-            .navbar { flex-direction: column; align-items: stretch; gap: 0.6rem; padding: 0.8rem 1.2rem; border-radius: 32px; }
-            .logo { justify-content: center; }
-            .nav-actions { justify-content: center; gap: 0.4rem; flex-wrap: wrap; }
-            .btn-primary, .nav-link, .theme-toggle { font-size: 0.75rem; padding: 0.3rem 0.8rem; }
-            .hero-content h1 { font-size: 2.4rem; }
-            .hero-stats { gap: 1.2rem; }
-            .stat-number { font-size: 1.4rem; }
-            .benchmark-section { padding: 1.5rem; }
-            .download-stats-section { padding: 1.5rem; }
-            .download-section { padding: 1.5rem; }
-            .section-title { font-size: 1.6rem; }
-            .card-grid { grid-template-columns: 1fr; }
-            .feature-grid { grid-template-columns: 1fr; }
-            .compare-values { font-size: 0.7rem; }
-            .hero-visual .icon-ring { width: 150px; height: 150px; }
-            .footer { flex-direction: column; text-align: center; gap: 0.4rem; }
-            .stats-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
-            .stat-card-dl { padding: 1rem 0.8rem; flex-direction: column; text-align: center; }
-            .stat-card-dl .dl-icon { width: 40px; height: 40px; font-size: 1.1rem; }
-            .stat-card-dl .dl-info .dl-number { font-size: 1.4rem; }
-            .stats-header { flex-direction: column; align-items: flex-start; gap: 0.6rem; }
-            .download-header { flex-direction: column; gap: 0.8rem; }
-            .download-actions { flex-direction: column; width: 100%; }
-            .download-actions .btn-dl { width: 100%; justify-content: center; }
-            .download-meta { flex-direction: column; gap: 0.4rem; }
-            .stats-footer { flex-direction: column; align-items: stretch; gap: 0.5rem; }
-            .refresh-btn { align-self: flex-start; }
-            /* 移动端可适当降低高度 */
-            .download-changelog { max-height: 280px; }
+            body {
+                padding: 1rem 0.8rem;
+            }
+            .navbar {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.6rem;
+                padding: 0.8rem 1.2rem;
+                border-radius: 32px;
+            }
+            .logo {
+                justify-content: center;
+            }
+            .nav-actions {
+                justify-content: center;
+                gap: 0.4rem;
+                flex-wrap: wrap;
+            }
+            .btn-primary,
+            .nav-link,
+            .theme-toggle {
+                font-size: 0.75rem;
+                padding: 0.3rem 0.8rem;
+            }
+            .hero-content h1 {
+                font-size: 2.4rem;
+            }
+            .hero-stats {
+                gap: 1.2rem;
+            }
+            .stat-number {
+                font-size: 1.4rem;
+            }
+            .benchmark-section {
+                padding: 1.5rem;
+            }
+            .download-stats-section {
+                padding: 1.5rem;
+            }
+            .download-section {
+                padding: 1.5rem;
+            }
+            .section-title {
+                font-size: 1.6rem;
+            }
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            .compare-values {
+                font-size: 0.7rem;
+            }
+            .hero-visual .icon-ring {
+                width: 150px;
+                height: 150px;
+            }
+            .footer {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.4rem;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                gap: 1rem;
+            }
+            .stat-card-dl {
+                padding: 1rem 0.8rem;
+                flex-direction: column;
+                text-align: center;
+            }
+            .stat-card-dl .dl-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1.1rem;
+            }
+            .stat-card-dl .dl-info .dl-number {
+                font-size: 1.4rem;
+            }
+            .stats-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.6rem;
+            }
+            .download-header {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+            .download-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+            .download-actions .btn-dl {
+                width: 100%;
+                justify-content: center;
+            }
+            .download-meta {
+                flex-direction: column;
+                gap: 0.4rem;
+            }
+            .stats-footer {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.5rem;
+            }
+            .refresh-btn {
+                align-self: flex-start;
+            }
+            .download-changelog {
+                max-height: 280px;
+            }
         }
 
         @media (max-width: 480px) {
-            .hero-content h1 { font-size: 2rem; }
-            .hero-visual .icon-ring { width: 120px; height: 120px; }
-            .benchmark-header { flex-direction: column; align-items: flex-start; gap: 0.8rem; }
-            .nav-actions .btn-primary span { display: none; }
-            .stats-grid { grid-template-columns: 1fr 1fr; gap: 0.8rem; }
-            .stat-card-dl { padding: 0.8rem 0.6rem; }
-            .stat-card-dl .dl-info .dl-number { font-size: 1.2rem; }
-            .stat-card-dl .dl-info .dl-label { font-size: 0.7rem; }
-            .stat-card-dl .dl-icon { width: 34px; height: 34px; font-size: 0.9rem; }
-            .download-changelog { max-height: 200px; padding: 0.8rem 1rem; font-size: 0.85rem; }
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            .hero-visual .icon-ring {
+                width: 120px;
+                height: 120px;
+            }
+            .benchmark-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.8rem;
+            }
+            .nav-actions .btn-primary span {
+                display: none;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.8rem;
+            }
+            .stat-card-dl {
+                padding: 0.8rem 0.6rem;
+            }
+            .stat-card-dl .dl-info .dl-number {
+                font-size: 1.2rem;
+            }
+            .stat-card-dl .dl-info .dl-label {
+                font-size: 0.7rem;
+            }
+            .stat-card-dl .dl-icon {
+                width: 34px;
+                height: 34px;
+                font-size: 0.9rem;
+            }
+            .download-changelog {
+                max-height: 200px;
+                padding: 0.8rem 1rem;
+                font-size: 0.85rem;
+            }
         }
 
         .fade-up {
@@ -1109,19 +1376,41 @@
             transform: translateY(30px);
             animation: fadeUp 0.8s ease forwards;
         }
-        .fade-up.delay-1 { animation-delay: 0.1s; }
-        .fade-up.delay-2 { animation-delay: 0.2s; }
-        .fade-up.delay-3 { animation-delay: 0.3s; }
-        .fade-up.delay-4 { animation-delay: 0.4s; }
-        .fade-up.delay-5 { animation-delay: 0.5s; }
-        .fade-up.delay-6 { animation-delay: 0.6s; }
+        .fade-up.delay-1 {
+            animation-delay: 0.1s;
+        }
+        .fade-up.delay-2 {
+            animation-delay: 0.2s;
+        }
+        .fade-up.delay-3 {
+            animation-delay: 0.3s;
+        }
+        .fade-up.delay-4 {
+            animation-delay: 0.4s;
+        }
+        .fade-up.delay-5 {
+            animation-delay: 0.5s;
+        }
+        .fade-up.delay-6 {
+            animation-delay: 0.6s;
+        }
         @keyframes fadeUp {
-            to { opacity: 1; transform: translateY(0); }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg-primary); }
-        ::-webkit-scrollbar-thumb { background: var(--accent-light); border-radius: 10px; }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-light);
+            border-radius: 10px;
+        }
     </style>
 </head>
 <body>
@@ -1215,7 +1504,7 @@
                 <div class="stat-card-dl">
                     <div class="dl-icon gitcode"><i class="fas fa-code"></i></div>
                     <div class="dl-info">
-                        <span class="dl-label">GitCode Clone & Realese</span>
+                        <span class="dl-label">GitCode Clone &amp; Release</span>
                         <span class="dl-number" id="gitcodeDownloads">--</span>
                     </div>
                 </div>
@@ -1253,7 +1542,7 @@
                 <div class="chart-item">
                     <div class="chart-label">
                         <span>内存占用 <span style="font-weight:400;color:var(--text-muted);font-size:0.85rem;">(越低越好)</span></span>
-                        <span class="value">Just Solo < 150MB</span>
+                        <span class="value">Just Solo &lt; 150MB</span>
                     </div>
                     <div class="bar-track">
                         <div class="bar-fill" id="barMemory" style="width:18%;">18%</div>
@@ -1267,7 +1556,7 @@
                 <div class="chart-item">
                     <div class="chart-label">
                         <span>冷启动时间 <span style="font-weight:400;color:var(--text-muted);font-size:0.85rem;">(越快越好)</span></span>
-                        <span class="value">Just Solo < 0.5s</span>
+                        <span class="value">Just Solo &lt; 0.5s</span>
                     </div>
                     <div class="bar-track">
                         <div class="bar-fill" id="barStartup" style="width:12%;">12%</div>
@@ -1289,7 +1578,7 @@
             </div>
         </section>
 
-        <!-- ===== 下载栏目（仅两个直接下载 .exe 的按钮） ===== -->
+        <!-- ===== 下载栏目（两个直接下载 .exe 的按钮） ===== -->
         <section class="download-section fade-up delay-3" id="download">
             <div class="download-header">
                 <div class="left">
@@ -1309,7 +1598,6 @@
                 </div>
             </div>
 
-            <!-- 手动刷新按钮 -->
             <div style="display: flex; justify-content: flex-end; margin-top: 1rem;">
                 <button class="refresh-btn" id="refreshDlBtn" title="手动刷新版本信息">
                     <i class="fas fa-sync-alt"></i> 刷新版本
@@ -1442,10 +1730,9 @@
             // ===================== 条形图动画 =====================
             const bars = [
                 document.getElementById('barMemory'),
-                document.getElementById('barStartup'),
-                document.getElementById('barMetadata')
+                document.getElementById('barStartup')
             ];
-            const targetWidths = [18, 12, 8];
+            const targetWidths = [18, 12];
 
             function resetBars() {
                 bars.forEach((bar) => { if (bar) { bar.style.width = '0%';
@@ -1566,7 +1853,6 @@
                 }
             }
 
-            // 首次加载 & 60分钟定时
             fetchStats();
             setInterval(fetchStats, 60 * 60 * 1000);
 
@@ -1577,39 +1863,39 @@
                 });
             }
 
-            // ===================== 下载栏目（两个直接下载 .exe 的按钮） =====================
+            // ===================== 下载栏目（使用 marked 解析更新日志） =====================
             const DL_API = 'https://getjustsolosetup.zzjjack.us.kg/';
             const dlBody = document.getElementById('downloadBody');
             const dlVersionText = document.getElementById('dlVersionText');
             const refreshDlBtn = document.getElementById('refreshDlBtn');
 
-            function markdownToHtml(md) {
-                if (!md) return '';
-                let html = md.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                html = html.replace(/^### (.*$)/gm, '<h4>$1</h4>');
-                html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-                html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
-                let lines = html.split('\n');
-                let inList = false,
-                    result = [];
-                for (let line of lines) {
-                    const trimmed = line.trim();
-                    if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
-                        if (!inList) { result.push('<ul>');
-                            inList = true; }
-                        result.push('<li>' + trimmed.substring(2) + '</li>');
-                    } else {
-                        if (inList) { result.push('</ul>');
-                            inList = false; }
-                        if (trimmed === '') result.push('');
-                        else result.push(line);
+            // 检查 marked 是否可用
+            const hasMarked = typeof marked !== 'undefined' && typeof marked.parse === 'function';
+
+            // 安全解析：如果 marked 不可用，降级为纯文本显示
+            function renderMarkdown(text) {
+                if (!text) return '';
+                if (hasMarked) {
+                    try {
+                        // 配置 marked：启用 GFM 换行支持
+                        marked.setOptions({ breaks: true, gfm: true });
+                        return marked.parse(text);
+                    } catch (e) {
+                        console.warn('marked 解析失败，降级为纯文本:', e);
+                        return '<pre style="white-space:pre-wrap;word-break:break-word;margin:0;">' +
+                            escapeHtml(text) + '</pre>';
                     }
+                } else {
+                    // 降级：纯文本 + 简单换行
+                    return '<pre style="white-space:pre-wrap;word-break:break-word;margin:0;">' +
+                        escapeHtml(text) + '</pre>';
                 }
-                if (inList) result.push('</ul>');
-                html = result.join('\n');
-                html = html.replace(/\n/g, '<br>');
-                html = html.replace(/(<br>){3,}/g, '<br><br>');
-                return html;
+            }
+
+            function escapeHtml(text) {
+                if (!text) return '';
+                return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
             }
 
             function renderDownloadSection(data) {
@@ -1630,7 +1916,7 @@
                 const body = data.body || '暂无更新日志';
                 const assets = data.assets || [];
 
-                // 从 assets 中寻找 .exe 文件（优先 type 为 attach 且以 .exe 结尾）
+                // 找 .exe 资源
                 let exeAsset = null;
                 for (const asset of assets) {
                     if (asset.type === 'attach' && asset.name && asset.name.toLowerCase().endsWith('.exe')) {
@@ -1638,7 +1924,6 @@
                         break;
                     }
                 }
-                // 如果没有 attach 的 exe，则尝试找任意 .exe（可能类型为其他）
                 if (!exeAsset) {
                     for (const asset of assets) {
                         if (asset.name && asset.name.toLowerCase().endsWith('.exe')) {
@@ -1648,7 +1933,6 @@
                     }
                 }
 
-                // 国内下载链接：优先使用 exe 的 browser_download_url
                 let domesticUrl = null;
                 let exeName = null;
                 if (exeAsset) {
@@ -1656,18 +1940,15 @@
                     exeName = exeAsset.name;
                 }
 
-                // 国外下载链接：构造 GitHub 直链
                 let internationalUrl = null;
                 if (tag && exeName) {
-                    // https://github.com/ZZJ-jack/Just-Solo/releases/download/{tag}/Just.Solo.V{version}.exe
                     let exeNameForUrl = exeName.replace(/ /g, '.');
-                    internationalUrl = `https://github.com/ZZJ-jack/Just-Solo/releases/download/${tag}/${encodeURIComponent(exeNameForUrl)}`;
+                    internationalUrl =
+                        `https://github.com/ZZJ-jack/Just-Solo/releases/download/${tag}/${encodeURIComponent(exeNameForUrl)}`;
                 } else {
-                    // 如果无法构造，则降级到 Releases 页面
                     internationalUrl = 'https://github.com/ZZJ-jack/Just-Solo/releases';
                 }
 
-                // 如果国内无 exe，降级到 GitCode Releases 页面
                 if (!domesticUrl) {
                     domesticUrl = 'https://gitcode.com/ZZJ-JACK/Just-Solo/releases';
                 }
@@ -1675,18 +1956,20 @@
                 let dateStr = '未知';
                 if (created) {
                     try { const d = new Date(created); if (!isNaN(d.getTime())) dateStr = d.toLocaleDateString(
-                        'zh-CN', { year: 'numeric', month: 'long', day: 'numeric' }); } catch (_) {}
+                            'zh-CN', { year: 'numeric', month: 'long', day: 'numeric' }); } catch (_) {}
                 }
 
                 if (dlVersionText) dlVersionText.textContent = tag;
 
-                const changelogHtml = markdownToHtml(body);
+                // ===== 使用 marked 解析更新日志 =====
+                const changelogHtml = renderMarkdown(body);
 
                 dlBody.innerHTML = `
                     <div class="download-meta">
                         <span class="meta-item"><i class="fas fa-tag"></i> 版本 <strong>${tag}</strong></span>
                         <span class="meta-item"><i class="far fa-calendar-alt"></i> 发布于 <strong>${dateStr}</strong></span>
-                        <span class="meta-item"><i class="fas fa-archive"></i> 名称 <strong>${name}</strong></span>
+                        <span class="meta-item"><i class="fas fa-archive"></i> 名称 <strong>${escapeHtml(name)}</strong></span>
+                        ${!hasMarked ? `<span class="meta-item" style="color:#f59e0b;"><i class="fas fa-exclamation-triangle"></i> Markdown 解析器未加载，显示纯文本</span>` : ''}
                     </div>
                     <div class="download-changelog">${changelogHtml}</div>
                     <div class="download-actions">
@@ -1727,7 +2010,7 @@
                     dlBody.innerHTML = `
                         <div class="download-error">
                             <i class="fas fa-exclamation-triangle"></i> 获取版本信息失败，请稍后重试
-                            <br><span style="font-size:0.8rem;color:var(--text-muted);">错误：${err.message}</span>
+                            <br><span style="font-size:0.8rem;color:var(--text-muted);">错误：${escapeHtml(err.message)}</span>
                             <br><span style="font-size:0.8rem;color:var(--text-muted);">若持续失败，可能是跨域限制，请尝试刷新页面或使用浏览器无痕模式</span>
                         </div>
                     `;
@@ -1738,7 +2021,6 @@
                 }
             }
 
-            // 首次加载 & 60分钟定时
             fetchDownloadData();
             setInterval(fetchDownloadData, 60 * 60 * 1000);
 
@@ -1749,7 +2031,6 @@
                 });
             }
 
-            // 页面可见时刷新（防抖）
             let visibleTimer = null;
             document.addEventListener('visibilitychange', function() {
                 if (!document.hidden) {
