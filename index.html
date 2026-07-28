@@ -18,7 +18,7 @@
     </script>
 
     <style>
-        /* ========== 完整样式（与之前一致，仅修改了 .download-changelog 的 max-height，并新增对 marked 生成标签的样式） ========== */
+        /* ========== 完整样式（与之前一致） ========== */
         * {
             margin: 0;
             padding: 0;
@@ -837,7 +837,6 @@
             font-weight: 600;
         }
 
-        /* ===== 更新日志框：高度增加至 390px ===== */
         .download-changelog {
             background: var(--bg-primary);
             border-radius: var(--radius-sm);
@@ -1578,7 +1577,7 @@
             </div>
         </section>
 
-        <!-- ===== 下载栏目（两个直接下载 .exe 的按钮） ===== -->
+        <!-- ===== 下载栏目（适配新 API） ===== -->
         <section class="download-section fade-up delay-3" id="download">
             <div class="download-header">
                 <div class="left">
@@ -1863,21 +1862,18 @@
                 });
             }
 
-            // ===================== 下载栏目（使用 marked 解析更新日志） =====================
+            // ===================== 下载栏目（适配新 API） =====================
             const DL_API = 'https://getjustsolosetup.zzjjack.us.kg/';
             const dlBody = document.getElementById('downloadBody');
             const dlVersionText = document.getElementById('dlVersionText');
             const refreshDlBtn = document.getElementById('refreshDlBtn');
 
-            // 检查 marked 是否可用
             const hasMarked = typeof marked !== 'undefined' && typeof marked.parse === 'function';
 
-            // 安全解析：如果 marked 不可用，降级为纯文本显示
             function renderMarkdown(text) {
                 if (!text) return '';
                 if (hasMarked) {
                     try {
-                        // 配置 marked：启用 GFM 换行支持
                         marked.setOptions({ breaks: true, gfm: true });
                         return marked.parse(text);
                     } catch (e) {
@@ -1886,7 +1882,6 @@
                             escapeHtml(text) + '</pre>';
                     }
                 } else {
-                    // 降级：纯文本 + 简单换行
                     return '<pre style="white-space:pre-wrap;word-break:break-word;margin:0;">' +
                         escapeHtml(text) + '</pre>';
                 }
@@ -1898,6 +1893,7 @@
                     .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
             }
 
+            // ===== 核心：适配新 API 的渲染函数 =====
             function renderDownloadSection(data) {
                 if (!data || typeof data !== 'object') {
                     dlBody.innerHTML = `
@@ -1910,74 +1906,53 @@
                     return;
                 }
 
-                const tag = data.tag_name || 'v?.?.?';
-                const name = data.name || tag;
-                const created = data.created_at || '';
-                const body = data.body || '暂无更新日志';
-                const assets = data.assets || [];
+                // ---- 从新 API 中取值 ----
+                const version = data.version || 'v?.?.?';
+                const updatedAt = data.updated_at || '';
+                const changelog = data.changelog || '暂无更新日志';
+                const githubExe = data.github_exe || '';
+                const gitcodeExe = data.gitcode_exe || '';
 
-                // 找 .exe 资源
-                let exeAsset = null;
-                for (const asset of assets) {
-                    if (asset.type === 'attach' && asset.name && asset.name.toLowerCase().endsWith('.exe')) {
-                        exeAsset = asset;
-                        break;
-                    }
-                }
-                if (!exeAsset) {
-                    for (const asset of assets) {
-                        if (asset.name && asset.name.toLowerCase().endsWith('.exe')) {
-                            exeAsset = asset;
-                            break;
-                        }
-                    }
-                }
+                // 更新版本徽标
+                if (dlVersionText) dlVersionText.textContent = version;
 
-                let domesticUrl = null;
-                let exeName = null;
-                if (exeAsset) {
-                    domesticUrl = exeAsset.browser_download_url;
-                    exeName = exeAsset.name;
-                }
-
-                let internationalUrl = null;
-                if (tag && exeName) {
-                    let exeNameForUrl = exeName.replace(/ /g, '.');
-                    internationalUrl =
-                        `https://github.com/ZZJ-jack/Just-Solo/releases/download/${tag}/${encodeURIComponent(exeNameForUrl)}`;
-                } else {
-                    internationalUrl = 'https://github.com/ZZJ-jack/Just-Solo/releases';
-                }
-
-                if (!domesticUrl) {
-                    domesticUrl = 'https://gitcode.com/ZZJ-JACK/Just-Solo/releases';
-                }
-
+                // 格式化日期
                 let dateStr = '未知';
-                if (created) {
-                    try { const d = new Date(created); if (!isNaN(d.getTime())) dateStr = d.toLocaleDateString(
-                            'zh-CN', { year: 'numeric', month: 'long', day: 'numeric' }); } catch (_) {}
+                if (updatedAt) {
+                    try {
+                        const d = new Date(updatedAt);
+                        if (!isNaN(d.getTime())) {
+                            dateStr = d.toLocaleDateString('zh-CN', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                            });
+                        }
+                    } catch (_) {}
                 }
 
-                if (dlVersionText) dlVersionText.textContent = tag;
+                // 如果 API 没有提供下载链接，使用默认 fallback
+                const finalGithubUrl = githubExe || 'https://github.com/ZZJ-jack/Just-Solo/releases';
+                const finalGitcodeUrl = gitcodeExe || 'https://gitcode.com/ZZJ-JACK/Just-Solo/releases';
 
-                // ===== 使用 marked 解析更新日志 =====
-                const changelogHtml = renderMarkdown(body);
+                // 解析 Markdown 更新日志
+                const changelogHtml = renderMarkdown(changelog);
 
+                // ---- 渲染 DOM ----
                 dlBody.innerHTML = `
                     <div class="download-meta">
-                        <span class="meta-item"><i class="fas fa-tag"></i> 版本 <strong>${tag}</strong></span>
-                        <span class="meta-item"><i class="far fa-calendar-alt"></i> 发布于 <strong>${dateStr}</strong></span>
-                        <span class="meta-item"><i class="fas fa-archive"></i> 名称 <strong>${escapeHtml(name)}</strong></span>
+                        <span class="meta-item"><i class="fas fa-tag"></i> 版本 <strong>${escapeHtml(version)}</strong></span>
+                        <span class="meta-item"><i class="far fa-calendar-alt"></i> 发布于 <strong>${escapeHtml(dateStr)}</strong></span>
+                        <span class="meta-item"><i class="fas fa-cube"></i> 软件 <strong>Just Solo</strong></span>
                         ${!hasMarked ? `<span class="meta-item" style="color:#f59e0b;"><i class="fas fa-exclamation-triangle"></i> Markdown 解析器未加载，显示纯文本</span>` : ''}
                     </div>
                     <div class="download-changelog">${changelogHtml}</div>
                     <div class="download-actions">
-                        <a href="${domesticUrl}" target="_blank" class="btn-dl primary" title="国内直接下载 .exe 安装包">
+                        <a href="${finalGitcodeUrl}" target="_blank" class="btn-dl primary" title="国内直接下载 .exe 安装包">
                             <i class="fas fa-download"></i> 国内下载
                             <span class="badge-small">.exe</span>
                         </a>
-                        <a href="${internationalUrl}" target="_blank" class="btn-dl" title="国外直接下载 .exe 安装包">
+                        <a href="${finalGithubUrl}" target="_blank" class="btn-dl" title="国外直接下载 .exe 安装包">
                             <i class="fab fa-github"></i> 国外下载
                             <span class="badge-small dark">.exe</span>
                         </a>
