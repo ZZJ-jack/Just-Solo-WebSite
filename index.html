@@ -13,7 +13,7 @@
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
 
-    <!-- ===== JSON-LD 结构化数据（帮助搜索引擎理解页面） ===== -->
+    <!-- ===== JSON-LD 结构化数据 ===== -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -32,17 +32,16 @@
     </script>
 
     <link rel="icon" href="./logo.ico" type="image/x-icon" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
-    <!-- ====== 引入 marked 解析库 ====== -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js">
-    </script>
+    <!-- ===== 字体：使用系统字体堆栈（移除 Google Fonts） ===== -->
+    <!-- ===== 图标库：使用国内 BootCDN 镜像 ===== -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <!-- ===== marked.js 延迟加载（非阻塞） ===== -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/marked/9.1.6/marked.min.js" defer></script>
 
     <style>
-        /* ========== 完整样式 ========== */
+        /* ========== 完整样式（与原版保持一致，仅调整字体栈） ========== */
         * {
             margin: 0;
             padding: 0;
@@ -108,7 +107,8 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            /* 使用系统字体堆栈，彻底移除 Google Fonts 请求 */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             transition: background var(--transition), color var(--transition);
@@ -719,7 +719,7 @@
         .stats-error {
             color: #ef4444;
             font-size: 0.9rem;
-            display: none; /* 默认隐藏，防止爬虫看到错误信息 */
+            display: none;
             align-items: center;
             gap: 0.4rem;
         }
@@ -1575,7 +1575,7 @@
                     <span id="themeLabel">深色</span>
                 </button>
                 <a href="https://gitcode.com/ZZJ-JACK/Just-Solo" target="_blank" class="nav-link" title="GitCode 仓库">
-                    <img src="./gitcode.jpeg" alt="GitCode" /> GitCode
+                    <img src="./gitcode.jpeg" alt="GitCode" loading="lazy" /> GitCode
                 </a>
                 <a href="https://github.com/ZZJ-jack/Just-Solo" target="_blank" class="nav-link" title="GitHub 仓库">
                     <i class="fab fa-github"></i> GitHub
@@ -1622,7 +1622,7 @@
             </div>
         </section>
 
-        <!-- ===== 下载统计区域（修改：静态数字 + 隐藏错误信息） ===== -->
+        <!-- ===== 下载统计区域 ===== -->
         <section class="download-stats-section fade-up delay-2" id="downloadStats">
             <div class="stats-header">
                 <div class="left">
@@ -1637,29 +1637,28 @@
                     <div class="dl-icon github"><i class="fab fa-github"></i></div>
                     <div class="dl-info">
                         <span class="dl-label">GitHub Clone</span>
-                        <!-- 静态数值，爬虫可见 -->
-                        <span class="dl-number" id="githubClones">1,280</span>
+                        <span class="dl-number" id="githubClones">368</span>
                     </div>
                 </div>
                 <div class="stat-card-dl">
                     <div class="dl-icon release"><i class="fas fa-tag"></i></div>
                     <div class="dl-info">
                         <span class="dl-label">GitHub Release</span>
-                        <span class="dl-number" id="githubReleases">856</span>
+                        <span class="dl-number" id="githubReleases">30</span>
                     </div>
                 </div>
                 <div class="stat-card-dl">
                     <div class="dl-icon gitcode"><i class="fas fa-code"></i></div>
                     <div class="dl-info">
                         <span class="dl-label">GitCode Clone &amp; Release</span>
-                        <span class="dl-number" id="gitcodeDownloads">320</span>
+                        <span class="dl-number" id="gitcodeDownloads">1364</span>
                     </div>
                 </div>
                 <div class="stat-card-dl highlight-card">
                     <div class="dl-icon total"><i class="fas fa-download"></i></div>
                     <div class="dl-info">
                         <span class="dl-label">全平台总下载</span>
-                        <span class="dl-number" id="totalDownloads">2,456</span>
+                        <span class="dl-number" id="totalDownloads">1,588</span>
                     </div>
                 </div>
             </div>
@@ -1668,7 +1667,6 @@
                 <div class="update-time">
                     <i class="far fa-clock"></i>
                     <span id="statsUpdateTime">更新于 2026年7月20日</span>
-                    <!-- 错误信息默认隐藏，不再显示 -->
                     <span class="stats-error" id="statsError"><i class="fas fa-exclamation-circle"></i> 加载失败，请刷新重试</span>
                 </div>
                 <button class="refresh-btn" id="refreshStatsBtn" title="点击获取刷新提示">
@@ -1727,7 +1725,7 @@
             </div>
         </section>
 
-        <!-- ===== 下载栏目（修改：静态内容 + 增量更新） ===== -->
+        <!-- ===== 下载栏目 ===== -->
         <section class="download-section fade-up delay-3" id="download">
             <div class="download-header">
                 <div class="left">
@@ -1739,7 +1737,6 @@
                 </div>
             </div>
 
-            <!-- 静态内容，搜索引擎可见 -->
             <div class="download-body" id="downloadBody">
                 <div id="staticDlContent">
                     <div class="download-meta">
@@ -1748,11 +1745,10 @@
                         <span class="meta-item"><i class="fas fa-cube"></i> 软件 <strong>Just Solo</strong></span>
                     </div>
                     <div class="download-changelog" id="staticChangelog">
-                        <h2>v1.5.0 更新内容</h2>
+                        <h2>v1.0.0 更新内容</h2>
                         <ul>
                             <li>新增智能播放列表功能，支持按专辑/年份筛选</li>
-                            <li>优化音频引擎内存占用，平均降低至 120MB</li>
-                            <li>修复了 Windows 11 24H2 下系统托盘偶发崩溃的问题</li>
+                            <li>优化音频引擎内存占用，平均降低至 130MB</li>
                             <li>歌词搜索支持近似匹配，容错率更高</li>
                         </ul>
                         <p><em>完整更新记录请查看 GitHub Release</em></p>
@@ -1964,7 +1960,7 @@
                 }
             }
 
-            // ===================== 下载统计（静默更新，保留静态数据） =====================
+            // ===================== 下载统计（静默更新） =====================
             var STATS_API = 'https://justsologithubdownloadcounter.zzjjack.us.kg/';
             var githubClonesEl = document.getElementById('githubClones');
             var githubReleasesEl = document.getElementById('githubReleases');
@@ -1989,7 +1985,6 @@
                 } catch (_) { return isoStr; }
             }
 
-            // 不再使用加载动画，直接使用静态数值，成功时更新
             async function fetchStats() {
                 try {
                     var response = await fetch(STATS_API + '?t=' + Date.now(), {
@@ -2023,35 +2018,17 @@
                         statsUpdateTimeEl.textContent = fetched ? '更新于 ' + formatTime(fetched) : '更新于 ' + new Date()
                             .toLocaleString('zh-CN');
                     }
-                    // 成功时隐藏错误（若有）
                     if (statsErrorEl) statsErrorEl.classList.remove('show');
                 } catch (err) {
-                    // 静默失败，保留静态内容，控制台输出警告
                     console.warn('统计 API 加载失败，保留静态备用数据:', err.message);
-                    // 可考虑更新时间为“更新失败”，但保留静态数据，不显示错误图标
                     if (statsUpdateTimeEl) {
                         statsUpdateTimeEl.textContent = '更新失败，显示缓存数据';
                     }
-                    // 不显示错误图标
                 }
             }
 
-            // 页面加载时尝试更新
-            fetchStats();
-
-            // 统计刷新按钮 → 显示 Toast 提示，并主动调用一次 fetchStats 尝试更新
-            if (refreshStatsBtn) {
-                refreshStatsBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    showToast(); // 提示用户刷新
-                    // 同时后台尝试拉取一次（用户点击后可见更新）
-                    fetchStats();
-                });
-            }
-
-            // ===================== 下载栏目（静默更新，保留静态内容） =====================
+            // ===================== 下载栏目（静默更新） =====================
             var DL_API = 'https://getjustsolosetup.zzjjack.us.kg/';
-            var dlBody = document.getElementById('downloadBody');
             var dlVersionText = document.getElementById('dlVersionText');
             var refreshDlBtn = document.getElementById('refreshDlBtn');
 
@@ -2063,9 +2040,7 @@
                     .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
             }
 
-            // 更新静态内容（不替换整个DOM）
             async function fetchDownloadData() {
-                // 获取静态元素
                 const staticVersion = document.getElementById('staticVersion');
                 const staticDate = document.getElementById('staticDate');
                 const staticChangelog = document.getElementById('staticChangelog');
@@ -2082,12 +2057,10 @@
                     const data = await response.json();
                     if (!data || typeof data !== 'object') throw new Error('无效数据');
 
-                    // 更新版本
                     if (staticVersion && data.version) {
                         staticVersion.textContent = data.version;
                         if (dlVersionText) dlVersionText.textContent = data.version;
                     }
-                    // 更新日期
                     if (staticDate && data.updated_at) {
                         try {
                             const d = new Date(data.updated_at);
@@ -2097,7 +2070,6 @@
                             }
                         } catch (_) {}
                     }
-                    // 更新更新日志
                     if (staticChangelog && data.changelog) {
                         if (hasMarked) {
                             staticChangelog.innerHTML = marked.parse(data.changelog);
@@ -2106,7 +2078,6 @@
                                 `<pre style="white-space:pre-wrap;word-break:break-word;margin:0;">${escapeHtml(data.changelog)}</pre>`;
                         }
                     }
-                    // 更新下载链接
                     if (data.gitcode_exe && staticGitcodeLink) {
                         staticGitcodeLink.href = data.gitcode_exe;
                     }
@@ -2114,28 +2085,37 @@
                         staticGithubLink.href = data.github_exe;
                     }
                 } catch (err) {
-                    // 静默失败，保留静态内容
                     console.warn('下载 API 加载失败，保留静态备用内容:', err.message);
-                    // 如果版本徽章显示“加载中”，回退到静态版本
                     if (dlVersionText && staticVersion) {
                         dlVersionText.textContent = staticVersion.textContent;
                     }
                 }
             }
 
-            // 页面加载时尝试更新
-            fetchDownloadData();
+            // ===================== 所有 API 请求移至 window.onload =====================
+            window.addEventListener('load', function() {
+                fetchStats();
+                fetchDownloadData();
+            });
 
-            // 下载刷新按钮 → 显示 Toast 并尝试更新
+            // ===================== 刷新按钮事件 =====================
+            if (refreshStatsBtn) {
+                refreshStatsBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showToast();
+                    fetchStats();
+                });
+            }
+
             if (refreshDlBtn) {
                 refreshDlBtn.addEventListener('click', function(e) {
                     e.preventDefault();
                     showToast();
-                    fetchDownloadData(); // 后台尝试更新
+                    fetchDownloadData();
                 });
             }
 
-            console.log('🔒 缓存已禁用 · 静态内容对搜索引擎友好 · 动态数据静默更新');
+            console.log('🔒 缓存已禁用 · 静态内容对搜索引擎友好 · 动态数据在页面加载后更新');
         })();
     </script>
 
