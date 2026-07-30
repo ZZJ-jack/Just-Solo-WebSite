@@ -15,20 +15,20 @@
 
     <!-- ===== JSON-LD 结构化数据 ===== -->
     <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "Just Solo",
-        "applicationCategory": "Multimedia",
-        "operatingSystem": "Windows 10/11",
-        "description": "纯粹轻量的本地音乐播放器，基于 C++ 与 QML 打造，内存占用低于 150MB",
-        "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "CNY"
-        },
-        "downloadUrl": "https://gitcode.com/ZZJ-JACK/Just-Solo/releases"
-    }
+        {
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "Just Solo",
+            "applicationCategory": "Multimedia",
+            "operatingSystem": "Windows 10/11",
+            "description": "纯粹轻量的本地音乐播放器，基于 C++ 与 QML 打造，内存占用低于 150MB",
+            "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "CNY"
+            },
+            "downloadUrl": "https://gitcode.com/ZZJ-JACK/Just-Solo/releases"
+        }
     </script>
 
     <link rel="icon" href="./logo.ico" type="image/x-icon" />
@@ -37,8 +37,13 @@
     <!-- ===== 图标库：使用国内 BootCDN 镜像 ===== -->
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
-    <!-- ===== marked.js 延迟加载（非阻塞） ===== -->
-    <script src="https://cdn.bootcdn.net/ajax/libs/marked/9.1.6/marked.min.js" defer></script>
+    <!-- ============================================================= -->
+    <!-- ===== ★ 修复：marked.js 使用更可靠的加载方式 ===== -->
+    <!-- ============================================================= -->
+    <!-- 主 CDN：BootCDN（国内快），备选 CDN：Cloudflare（全球稳定） -->
+    <script id="marked-script-main" src="https://cdn.bootcdn.net/ajax/libs/marked/9.1.6/marked.min.js" defer>
+    </script>
+    <!-- 如果主 CDN 加载失败，动态加载备选 CDN（见下方 JS 逻辑） -->
 
     <style>
         /* ========== 完整样式（与原版保持一致，仅调整字体栈） ========== */
@@ -107,7 +112,6 @@
         }
 
         body {
-            /* 使用系统字体堆栈，彻底移除 Google Fonts 请求 */
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
@@ -1313,7 +1317,7 @@
             color: var(--border-color);
         }
 
-        /* ===== 刷新按钮（修改为提示风格） ===== */
+        /* ===== 刷新按钮 ===== */
         .refresh-btn {
             background: transparent;
             border: 1px solid var(--border-color);
@@ -1547,6 +1551,27 @@
             background: var(--accent-light);
             border-radius: 10px;
         }
+
+        /* ===== ★ 新增：Markdown 加载中的占位样式 ===== */
+        .changelog-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            padding: 1.2rem 0;
+            color: var(--text-muted);
+            font-size: 0.92rem;
+        }
+        .changelog-placeholder i {
+            font-size: 1.2rem;
+            color: var(--accent-light);
+            animation: spin 1.2s linear infinite;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 </head>
 <body>
@@ -1744,14 +1769,11 @@
                         <span class="meta-item"><i class="far fa-calendar-alt"></i> 发布于 <strong id="staticDate">2026年7月20日</strong></span>
                         <span class="meta-item"><i class="fas fa-cube"></i> 软件 <strong>Just Solo</strong></span>
                     </div>
+                    <!-- ===== ★ 修复：changelog 容器增加占位提示 ===== -->
                     <div class="download-changelog" id="staticChangelog">
-                        <h2>v1.0.0 更新内容</h2>
-                        <ul>
-                            <li>新增智能播放列表功能，支持按专辑/年份筛选</li>
-                            <li>优化音频引擎内存占用，平均降低至 130MB</li>
-                            <li>歌词搜索支持近似匹配，容错率更高</li>
-                        </ul>
-                        <p><em>完整更新记录请查看 GitHub Release</em></p>
+                        <div class="changelog-placeholder" id="changelogPlaceholder">
+                            <i class="fas fa-spinner"></i> 正在加载更新日志…
+                        </div>
                     </div>
                     <div class="download-actions">
                         <a href="https://gitcode.com/ZZJ-JACK/Just-Solo/releases" target="_blank" class="btn-dl primary" id="staticGitcodeLink">
@@ -1857,6 +1879,9 @@
 
     </div>
 
+    <!-- ============================================================= -->
+    <!-- ===== ★ 修复：核心 JavaScript 逻辑（marked 加载与解析） ===== -->
+    <!-- ============================================================= -->
     <script>
         (function() {
             'use strict';
@@ -2027,76 +2052,317 @@
                 }
             }
 
-            // ===================== 下载栏目（静默更新） =====================
+            // =============================================================
+            // ===== ★ 修复：marked 加载与解析（带备选 CDN + 降级方案） =====
+            // =============================================================
+
             var DL_API = 'https://getjustsolosetup.zzjjack.us.kg/';
             var dlVersionText = document.getElementById('dlVersionText');
             var refreshDlBtn = document.getElementById('refreshDlBtn');
 
-            var hasMarked = typeof marked !== 'undefined' && typeof marked.parse === 'function';
+            // DOM 元素引用
+            var staticVersion = document.getElementById('staticVersion');
+            var staticDate = document.getElementById('staticDate');
+            var staticChangelog = document.getElementById('staticChangelog');
+            var staticGitcodeLink = document.getElementById('staticGitcodeLink');
+            var staticGithubLink = document.getElementById('staticGithubLink');
+            var placeholderEl = document.getElementById('changelogPlaceholder');
 
-            function escapeHtml(text) {
-                if (!text) return '';
-                return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-                    .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+            /**
+             * 内置简易 Markdown 解析器（作为 marked 加载失败的降级方案）
+             * 支持：标题、列表、链接、粗体、斜体、代码、换行
+             */
+            function simpleMarkdownParse(text) {
+                if (!text) return '<p>（无更新日志）</p>';
+                // 转义 HTML 特殊字符
+                var esc = function(s) {
+                    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                        .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+                };
+                var lines = text.split('\n');
+                var result = [];
+                var inList = false;
+                var listType = null; // 'ul' or 'ol'
+
+                for (var i = 0; i < lines.length; i++) {
+                    var line = lines[i];
+                    var trimmed = line.trim();
+
+                    // 空行
+                    if (!trimmed) {
+                        if (inList) {
+                            result.push('</' + listType + '>');
+                            inList = false;
+                            listType = null;
+                        }
+                        result.push('<br />');
+                        continue;
+                    }
+
+                    // 标题 (h1 - h6)
+                    var headingMatch = trimmed.match(/^(#{1,6})\s+(.+)$/);
+                    if (headingMatch) {
+                        if (inList) {
+                            result.push('</' + listType + '>');
+                            inList = false;
+                            listType = null;
+                        }
+                        var level = headingMatch[1].length;
+                        var content = esc(headingMatch[2]);
+                        // 行内格式处理
+                        content = inlineFormat(content);
+                        result.push('<h' + level + '>' + content + '</h' + level + '>');
+                        continue;
+                    }
+
+                    // 无序列表
+                    var ulMatch = trimmed.match(/^[-*+]\s+(.+)$/);
+                    if (ulMatch) {
+                        var ulContent = esc(ulMatch[1]);
+                        ulContent = inlineFormat(ulContent);
+                        if (!inList || listType !== 'ul') {
+                            if (inList) result.push('</' + listType + '>');
+                            result.push('<ul>');
+                            inList = true;
+                            listType = 'ul';
+                        }
+                        result.push('<li>' + ulContent + '</li>');
+                        continue;
+                    }
+
+                    // 有序列表
+                    var olMatch = trimmed.match(/^\d+\.\s+(.+)$/);
+                    if (olMatch) {
+                        var olContent = esc(olMatch[1]);
+                        olContent = inlineFormat(olContent);
+                        if (!inList || listType !== 'ol') {
+                            if (inList) result.push('</' + listType + '>');
+                            result.push('<ol>');
+                            inList = true;
+                            listType = 'ol';
+                        }
+                        result.push('<li>' + olContent + '</li>');
+                        continue;
+                    }
+
+                    // 如果不是列表项，但当前在列表中，关闭列表
+                    if (inList) {
+                        result.push('</' + listType + '>');
+                        inList = false;
+                        listType = null;
+                    }
+
+                    // 普通段落
+                    var para = esc(trimmed);
+                    para = inlineFormat(para);
+                    result.push('<p>' + para + '</p>');
+                }
+
+                // 关闭未结束的列表
+                if (inList) {
+                    result.push('</' + listType + '>');
+                }
+
+                return result.join('\n');
             }
 
+            /**
+             * 行内格式：粗体、斜体、链接、代码
+             */
+            function inlineFormat(text) {
+                // 粗体 **text** 或 __text__
+                text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+                text = text.replace(/__(.+?)__/g, '<strong>$1</strong>');
+                // 斜体 *text* 或 _text_
+                text = text.replace(/\*(.+?)\*/g, '<em>$1</em>');
+                text = text.replace(/_(.+?)_/g, '<em>$1</em>');
+                // 行内代码 `code`
+                text = text.replace(/`(.+?)`/g, '<code>$1</code>');
+                // 链接 [text](url)
+                text = text.replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank">$1</a>');
+                return text;
+            }
+
+            /**
+             * 尝试获取 marked 对象（支持主 CDN 和备选 CDN）
+             * 返回 Promise
+             */
+            function getMarked() {
+                return new Promise(function(resolve, reject) {
+                    // 如果已经存在且可用，直接 resolve
+                    if (window.marked && typeof window.marked.parse === 'function') {
+                        resolve(window.marked);
+                        return;
+                    }
+
+                    // 检查主脚本是否加载完成
+                    var mainScript = document.getElementById('marked-script-main');
+                    if (mainScript && mainScript.readyState === 'complete') {
+                        if (window.marked && typeof window.marked.parse === 'function') {
+                            resolve(window.marked);
+                            return;
+                        }
+                    }
+
+                    // 主脚本加载失败或未就绪，尝试动态加载备选 CDN
+                    console.log('📦 主 CDN 未就绪，尝试加载备选 CDN...');
+                    var script = document.createElement('script');
+                    script.src =
+                    'https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js';
+                    script.async = true;
+                    script.onload = function() {
+                        if (window.marked && typeof window.marked.parse === 'function') {
+                            console.log('✅ 备选 CDN 加载成功');
+                            resolve(window.marked);
+                        } else {
+                            reject(new Error('备选 CDN 加载后 marked 仍不可用'));
+                        }
+                    };
+                    script.onerror = function() {
+                        reject(new Error('备选 CDN 加载失败'));
+                    };
+                    // 超时保护
+                    var timeoutId = setTimeout(function() {
+                        reject(new Error('加载 marked 超时'));
+                    }, 8000);
+                    script.onload = function() {
+                        clearTimeout(timeoutId);
+                        if (window.marked && typeof window.marked.parse === 'function') {
+                            console.log('✅ 备选 CDN 加载成功');
+                            resolve(window.marked);
+                        } else {
+                            reject(new Error('备选 CDN 加载后 marked 仍不可用'));
+                        }
+                    };
+                    document.head.appendChild(script);
+                });
+            }
+
+            /**
+             * 安全解析 Markdown：优先使用 marked，失败则使用内置解析器
+             */
+            function safeParseMarkdown(text) {
+                return getMarked()
+                    .then(function(marked) {
+                        try {
+                            var html = marked.parse(text);
+                            // 如果解析结果为空或只有空白，使用降级
+                            if (!html || html.trim() === '') {
+                                throw new Error('marked 返回空内容');
+                            }
+                            return html;
+                        } catch (err) {
+                            console.warn('⚠️ marked 解析失败，使用内置解析器:', err.message);
+                            return simpleMarkdownParse(text);
+                        }
+                    })
+                    .catch(function(err) {
+                        console.warn('⚠️ marked 不可用，使用内置解析器:', err.message);
+                        return simpleMarkdownParse(text);
+                    });
+            }
+
+            /**
+             * 获取下载数据并渲染
+             */
             async function fetchDownloadData() {
-                const staticVersion = document.getElementById('staticVersion');
-                const staticDate = document.getElementById('staticDate');
-                const staticChangelog = document.getElementById('staticChangelog');
-                const staticGitcodeLink = document.getElementById('staticGitcodeLink');
-                const staticGithubLink = document.getElementById('staticGithubLink');
+                // 显示加载占位
+                if (placeholderEl) {
+                    placeholderEl.innerHTML = '<i class="fas fa-spinner"></i> 正在加载更新日志…';
+                    placeholderEl.style.display = 'flex';
+                }
 
                 try {
-                    const response = await fetch(DL_API + '?t=' + Date.now(), {
+                    var response = await fetch(DL_API + '?t=' + Date.now(), {
                         cache: 'no-store',
                         headers: { 'Accept': 'application/json' },
                         signal: AbortSignal.timeout(8000)
                     });
                     if (!response.ok) throw new Error('HTTP ' + response.status);
-                    const data = await response.json();
+                    var data = await response.json();
                     if (!data || typeof data !== 'object') throw new Error('无效数据');
 
+                    // 更新版本号
                     if (staticVersion && data.version) {
                         staticVersion.textContent = data.version;
                         if (dlVersionText) dlVersionText.textContent = data.version;
                     }
+                    // 更新日期
                     if (staticDate && data.updated_at) {
                         try {
-                            const d = new Date(data.updated_at);
+                            var d = new Date(data.updated_at);
                             if (!isNaN(d.getTime())) {
                                 staticDate.textContent = d.toLocaleDateString('zh-CN', { year: 'numeric',
                                     month: 'long', day: 'numeric' });
                             }
                         } catch (_) {}
                     }
-                    if (staticChangelog && data.changelog) {
-                        if (hasMarked) {
-                            staticChangelog.innerHTML = marked.parse(data.changelog);
-                        } else {
-                            staticChangelog.innerHTML =
-                                `<pre style="white-space:pre-wrap;word-break:break-word;margin:0;">${escapeHtml(data.changelog)}</pre>`;
-                        }
-                    }
+                    // 更新下载链接
                     if (data.gitcode_exe && staticGitcodeLink) {
                         staticGitcodeLink.href = data.gitcode_exe;
                     }
                     if (data.github_exe && staticGithubLink) {
                         staticGithubLink.href = data.github_exe;
                     }
+
+                    // ===== ★ 核心修复：安全解析 Markdown =====
+                    if (staticChangelog && data.changelog) {
+                        // 隐藏占位
+                        if (placeholderEl) {
+                            placeholderEl.style.display = 'none';
+                        }
+                        // 使用安全解析器
+                        var htmlContent = await safeParseMarkdown(data.changelog);
+                        staticChangelog.innerHTML = htmlContent;
+                    } else if (staticChangelog) {
+                        // 没有 changelog 数据
+                        if (placeholderEl) {
+                            placeholderEl.style.display = 'none';
+                        }
+                        staticChangelog.innerHTML = '<p><em>暂无更新日志</em></p>';
+                    }
                 } catch (err) {
-                    console.warn('下载 API 加载失败，保留静态备用内容:', err.message);
+                    console.warn('下载 API 加载失败，使用静态备用内容:', err.message);
+                    // 使用静态备用内容
+                    if (staticChangelog) {
+                        if (placeholderEl) {
+                            placeholderEl.style.display = 'none';
+                        }
+                        // 使用内置解析器解析静态备用内容
+                        var fallbackText =
+                            '## v1.0.0 更新内容\n\n- 新增智能播放列表功能，支持按专辑/年份筛选\n- 优化音频引擎内存占用，平均降低至 130MB\n- 歌词搜索支持近似匹配，容错率更高\n\n_完整更新记录请查看 GitHub Release_';
+                        var fallbackHtml = simpleMarkdownParse(fallbackText);
+                        staticChangelog.innerHTML = fallbackHtml;
+                    }
                     if (dlVersionText && staticVersion) {
                         dlVersionText.textContent = staticVersion.textContent;
                     }
                 }
             }
 
-            // ===================== 所有 API 请求移至 window.onload =====================
-            window.addEventListener('load', function() {
+            // =============================================================
+            // ===== 页面加载完成后执行所有 API 请求 =====
+            // =============================================================
+
+            // 使用 DOMContentLoaded 确保 DOM 已就绪，同时等待 marked 加载
+            document.addEventListener('DOMContentLoaded', function() {
+                // 先获取统计数据
                 fetchStats();
+
+                // 获取下载数据（内部会处理 marked 加载）
                 fetchDownloadData();
             });
+
+            // 额外：如果页面已经加载完成（DOMContentLoaded 已触发），直接执行
+            if (document.readyState === 'loading') {
+                // 等待 DOMContentLoaded
+            } else {
+                // DOM 已就绪，但可能 marked 还在加载，稍等片刻再执行
+                setTimeout(function() {
+                    fetchStats();
+                    fetchDownloadData();
+                }, 200);
+            }
 
             // ===================== 刷新按钮事件 =====================
             if (refreshStatsBtn) {
@@ -2115,7 +2381,7 @@
                 });
             }
 
-            console.log('🔒 缓存已禁用 · 静态内容对搜索引擎友好 · 动态数据在页面加载后更新');
+            console.log('🔒 缓存已禁用 · Markdown 解析已修复（主 CDN + 备选 CDN + 内置降级）');
         })();
     </script>
 
