@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Just Solo · 纯粹轻量的本地音乐播放器</title>
-    <meta name="description" content="Just Solo 是一款纯粹轻量的本地音乐播放器，基于 C++ 与 QML 打造。内存占用低于 150MB，冷启动小于 0.5 秒，支持 MP3/FLAC/WAV 等主流格式，为 Windows 10/11 提供极致听觉体验。" />
+    <meta name="description" content="Just Solo 是一款追求简洁、高性能的本地音乐播放器。采用 C++ 高性能核心 + QML 现代界面，无 Electron 依赖，内存占用低，冷启动迅速。原生支持 Windows SMTC 系统媒体控件和 Just Solo LyricServer 媒体信息传输协议（基于 WebSocket），深度适配 NSD 灵动岛。目前仅支持 Windows 平台。" />
     <meta name="robots" content="index, follow" />
     <meta name="keywords" content="音乐播放器, 本地播放器, 轻量播放器, Windows播放器, C++播放器, QML播放器, 无损音乐, 高性能播放器" />
 
@@ -303,264 +303,836 @@
             border: 1px solid var(--border-color);
             border-radius: 40px;
             padding: 0.4rem 1rem;
-            text-decoration: none;
-            color: var(--text-secondary);
             font-size: 0.85rem;
             font-weight: 500;
+            color: var(--text-secondary);
+            text-decoration: none;
             transition: all var(--transition);
+            box-shadow: var(--shadow);
             display: inline-flex;
             align-items: center;
             gap: 0.4rem;
-            box-shadow: var(--shadow);
         }
         .nav-link:hover {
             background: var(--bg-card-hover);
-            color: var(--accent);
-            transform: scale(1.02);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
         }
-        .nav-link i {
-            font-size: 0.8rem;
+        .nav-link img {
+            height: 20px;
+            width: auto;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--accent-gradient);
+            border: none;
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            text-decoration: none;
+            box-shadow: 0 4px 14px rgba(108, 92, 231, 0.3);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(108, 92, 231, 0.4);
+        }
+        .btn-primary.outline {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            box-shadow: none;
+        }
+        .btn-primary.outline:hover {
+            background: var(--bg-card-hover);
+            transform: translateY(-2px);
         }
 
         /* ===== Hero ===== */
         .hero {
-            text-align: center;
-            padding: 3rem 0 2.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+            align-items: center;
+            margin-bottom: 4rem;
+            padding: 1rem 0;
         }
-        .hero h1 {
+        .hero-content {
+            flex: 1 1 400px;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 40px;
+            padding: 0.3rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.3px;
+            box-shadow: var(--shadow);
+        }
+        .hero-content h1 {
             font-size: 3.2rem;
-            font-weight: 800;
-            letter-spacing: -1px;
-            line-height: 1.2;
-            margin-bottom: 0.75rem;
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -1.5px;
+            margin-bottom: 1.2rem;
+        }
+        .hero-content h1 .highlight {
             background: var(--accent-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        .hero p {
-            font-size: 1.2rem;
+        .hero-content p {
+            font-size: 1.15rem;
             color: var(--text-secondary);
-            max-width: 640px;
-            margin: 0 auto 1.5rem;
+            max-width: 480px;
+            margin-bottom: 2rem;
         }
-        .hero-badges {
+        .hero-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 0.5rem;
+        }
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+        }
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .hero-visual {
+            flex: 1 1 300px;
             display: flex;
             justify-content: center;
-            flex-wrap: wrap;
-            gap: 0.8rem;
-            margin-top: 1.2rem;
+            align-items: center;
         }
-        .hero-badge {
+        .hero-visual .icon-ring {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 20px 60px rgba(108, 92, 231, 0.25);
+            animation: float 4s ease-in-out infinite;
+            overflow: hidden;
+            border: 2px solid var(--border-color);
+            transition: border-color var(--transition);
+        }
+        .hero-visual .icon-ring img {
+            width: 70%;
+            height: 70%;
+            object-fit: contain;
+            border-radius: 50%;
+            display: block;
+        }
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-12px);
+            }
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.5rem;
+        }
+        .section-sub {
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            font-size: 1.05rem;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.8rem;
+            margin-bottom: 3.5rem;
+        }
+        .card {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 40px;
-            padding: 0.4rem 1.2rem;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
+            border-radius: var(--radius);
+            padding: 1.8rem 1.5rem;
             box-shadow: var(--shadow);
+            transition: all var(--transition);
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--accent-light);
+        }
+        .card-icon {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        .card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        .card .tag {
+            display: inline-block;
+            border-radius: 20px;
+            padding: 0.15rem 0.8rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-top: 0.8rem;
+            border: 1px solid var(--border-color);
+        }
+
+        /* ===== 下载统计 ===== */
+        .download-stats-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 2.5rem 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 3.5rem;
+            transition: all var(--transition);
+        }
+        .download-stats-section:hover {
+            border-color: var(--accent-light);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .stats-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 2rem;
+        }
+        .stats-header .left h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        .stats-header .left p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+        .stats-header .badge-live {
+            background: #10b981;
+            color: #fff;
+            border-radius: 40px;
+            padding: 0.25rem 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
             display: inline-flex;
             align-items: center;
             gap: 0.4rem;
+            letter-spacing: 0.3px;
+            animation: pulse-badge 2s ease-in-out infinite;
         }
-        .hero-badge i {
-            color: var(--accent);
+        .stats-header .badge-live i {
+            font-size: 0.6rem;
         }
-        .hero-actions {
-            margin-top: 2rem;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-            padding: 0.7rem 2rem;
-            border-radius: 60px;
-            font-weight: 600;
-            font-size: 1rem;
-            text-decoration: none;
-            transition: all var(--transition);
-            border: none;
-            cursor: pointer;
-        }
-        .btn-primary {
-            background: var(--accent-gradient);
-            color: #fff;
-            box-shadow: 0 8px 28px rgba(108, 92, 231, 0.35);
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 12px 36px rgba(108, 92, 231, 0.45);
-        }
-        .btn-secondary {
-            background: var(--bg-card);
-            color: var(--text-primary);
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow);
-        }
-        .btn-secondary:hover {
-            background: var(--bg-card-hover);
-            transform: translateY(-2px);
-        }
-
-        /* ===== 性能指标 ===== */
-        .section-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            letter-spacing: -0.5px;
-        }
-        .section-title i {
-            color: var(--accent);
-            margin-right: 0.5rem;
+        @keyframes pulse-badge {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.6;
+            }
         }
 
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.2rem;
-            margin: 1.5rem 0 2.5rem;
-        }
-        .stat-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-sm);
-            padding: 1.2rem 1.5rem;
-            box-shadow: var(--shadow);
-            transition: all var(--transition);
-            text-align: center;
-        }
-        .stat-card:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-hover);
-        }
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--accent);
-            line-height: 1.2;
-        }
-        .stat-label {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-top: 0.2rem;
-        }
-        .stat-desc {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            margin-top: 0.3rem;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
         }
 
-        /* ===== 功能列表 ===== */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin: 1.5rem 0 2.5rem;
+        .stat-card-dl {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 1.5rem 1.2rem;
+            transition: all var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
-        .feature-card {
+        .stat-card-dl:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--accent-light);
+        }
+        .stat-card-dl .dl-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--accent);
+        }
+        .stat-card-dl .dl-icon.github {
+            color: #6e7681;
+        }
+        .stat-card-dl .dl-icon.release {
+            color: #f0883e;
+        }
+        .stat-card-dl .dl-icon.gitcode {
+            color: #2d8a4e;
+        }
+        .stat-card-dl .dl-icon.total {
+            background: var(--accent-gradient);
+            color: #fff;
+            border-color: transparent;
+        }
+        [data-theme="dark"] .stat-card-dl .dl-icon.github {
+            color: #c9d1d9;
+        }
+        [data-theme="dark"] .stat-card-dl .dl-icon.release {
+            color: #f0883e;
+        }
+        [data-theme="dark"] .stat-card-dl .dl-icon.gitcode {
+            color: #3fb950;
+        }
+
+        .stat-card-dl .dl-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .stat-card-dl .dl-info .dl-label {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 0.1rem;
+        }
+        .stat-card-dl .dl-info .dl-number {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+        .stat-card-dl .dl-info .dl-number.loading {
+            color: var(--text-muted);
+            font-weight: 400;
+            font-size: 1.2rem;
+        }
+        .stat-card-dl .dl-info .dl-number .num-loading-dot {
+            display: inline-block;
+            animation: dot-pulse 1.4s ease-in-out infinite both;
+        }
+        .stat-card-dl .dl-info .dl-number .num-loading-dot:nth-child(1) {
+            animation-delay: 0s;
+        }
+        .stat-card-dl .dl-info .dl-number .num-loading-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .stat-card-dl .dl-info .dl-number .num-loading-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        @keyframes dot-pulse {
+            0%,
+            80%,
+            100% {
+                opacity: 0.2;
+                transform: scale(0.8);
+            }
+            40% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .stat-card-dl.highlight-card {
+            border-color: var(--accent);
+            background: var(--stat-bg-total);
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-card-dl.highlight-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(108, 92, 231, 0.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .stat-card-dl.highlight-card .dl-number {
+            color: var(--accent);
+        }
+
+        .stats-footer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1.2rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            gap: 0.5rem;
+        }
+        .stats-footer .update-time {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .stats-footer .update-time i {
+            font-size: 0.75rem;
+        }
+
+        .stats-error {
+            color: #ef4444;
+            font-size: 0.9rem;
+            display: none;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .stats-error.show {
+            display: inline-flex;
+        }
+
+        /* ===== 性能条形图 ===== */
+        .benchmark-section {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
             border-radius: var(--radius);
-            padding: 1.5rem 1.8rem;
+            padding: 2.5rem 2rem;
             box-shadow: var(--shadow);
+            margin-bottom: 3.5rem;
             transition: all var(--transition);
         }
-        .feature-card:hover {
-            transform: translateY(-3px);
+
+        .benchmark-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 2.5rem;
+        }
+        .benchmark-header .left h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        .benchmark-header .left p {
+            color: var(--text-secondary);
+        }
+        .benchmark-header .badge-light {
+            background: var(--bg-primary);
+            border-radius: 40px;
+            padding: 0.3rem 1.2rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+        }
+
+        .chart-group {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .chart-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .chart-label {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        .chart-label .value {
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .bar-track {
+            width: 100%;
+            height: 28px;
+            background: var(--bg-primary);
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid var(--border-color);
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 40px;
+            width: 0%;
+            transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #fff;
+            background: var(--bar-just);
+            min-width: 40px;
+        }
+
+        .compare-values {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            padding: 0 4px;
+            margin-top: 2px;
+        }
+        .compare-values .cmp-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .compare-values .cmp-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+        }
+        .cmp-dot.just {
+            background: var(--bar-just);
+        }
+        .cmp-dot.electron {
+            background: var(--bar-electron);
+        }
+        .cmp-dot.other {
+            background: var(--bar-other);
+            border: 1px solid var(--border-color);
+        }
+
+        .chart-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+        .legend-dot {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border-radius: 4px;
+            margin-right: 0.5rem;
+        }
+        .legend-dot.just {
+            background: var(--bar-just);
+        }
+        .legend-dot.electron {
+            background: var(--bar-electron);
+        }
+        .legend-dot.other {
+            background: var(--bar-other);
+        }
+        .legend-item {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+        }
+
+        .benchmark-footnote {
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-align: right;
+            border-top: 1px dashed var(--border-color);
+            padding-top: 1rem;
+        }
+
+        /* ===== 下载栏目 ===== */
+        .download-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 2.5rem 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 3.5rem;
+            transition: all var(--transition);
+            scroll-margin-top: 80px;
+        }
+        .download-section:hover {
+            border-color: var(--accent-light);
             box-shadow: var(--shadow-hover);
         }
-        .feature-card h3 {
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
+
+        .download-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.8rem;
+        }
+        .download-header .left h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .download-header .left h2 i {
+            color: var(--accent);
+        }
+        .download-header .left p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+        .download-header .version-badge {
+            background: var(--accent-gradient);
+            color: #fff;
+            border-radius: 40px;
+            padding: 0.3rem 1.2rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            white-space: nowrap;
+            box-shadow: 0 4px 14px rgba(108, 92, 231, 0.25);
+        }
+        .download-header .version-badge i {
+            font-size: 0.7rem;
+        }
+
+        .download-body {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        .download-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            padding: 0.8rem 1.2rem;
+            background: var(--bg-primary);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+        }
+        .download-meta .meta-item {
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
-        .feature-card h3 i {
-            color: var(--accent);
-            width: 1.4rem;
+        .download-meta .meta-item i {
+            color: var(--accent-light);
+            width: 1.1rem;
         }
-        .feature-card ul {
-            list-style: none;
-            padding: 0;
-            font-size: 0.92rem;
-            color: var(--text-secondary);
-        }
-        .feature-card ul li {
-            padding: 0.2rem 0;
-            padding-left: 1.2rem;
-            position: relative;
-        }
-        .feature-card ul li::before {
-            content: "▸";
-            position: absolute;
-            left: 0;
-            color: var(--accent);
-            font-weight: 700;
-        }
-
-        /* ===== 技术栈 & 项目结构 ===== */
-        .tech-badges {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.6rem;
-            margin: 1rem 0 1.5rem;
-        }
-        .tech-badge {
-            background: var(--code-bg);
-            color: var(--accent);
-            padding: 0.3rem 1rem;
-            border-radius: 40px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            border: 1px solid rgba(108, 92, 231, 0.15);
-        }
-
-        .tree {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-sm);
-            padding: 1.2rem 1.8rem;
-            font-family: "SF Mono", "Fira Code", "Consolas", monospace;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            overflow-x: auto;
-            box-shadow: var(--shadow);
-            margin: 1rem 0 2rem;
-            line-height: 1.7;
-        }
-        .tree .highlight {
-            color: var(--accent);
+        .download-meta .meta-item strong {
+            color: var(--text-primary);
             font-weight: 600;
         }
 
-        /* ===== 免责声明 ===== */
-        .disclaimer {
-            background: var(--bg-card);
-            border-left: 4px solid var(--blockquote-border);
+        .download-changelog {
+            background: var(--bg-primary);
             border-radius: var(--radius-sm);
-            padding: 1.2rem 1.8rem;
-            margin: 1.5rem 0;
-            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            padding: 1.2rem 1.5rem;
+            max-height: 390px;
+            overflow-y: auto;
             font-size: 0.92rem;
             color: var(--text-secondary);
+            line-height: 1.7;
         }
-        .disclaimer strong {
+
+        .download-changelog h1,
+        .download-changelog h2,
+        .download-changelog h3,
+        .download-changelog h4,
+        .download-changelog h5,
+        .download-changelog h6 {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin: 1.2rem 0 0.4rem 0;
+            line-height: 1.4;
+        }
+        .download-changelog h1 {
+            font-size: 1.5rem;
+        }
+        .download-changelog h2 {
+            font-size: 1.3rem;
+        }
+        .download-changelog h3 {
+            font-size: 1.15rem;
+        }
+        .download-changelog h4 {
+            font-size: 1rem;
+        }
+        .download-changelog h5 {
+            font-size: 0.95rem;
+        }
+        .download-changelog h6 {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        .download-changelog h1:first-child,
+        .download-changelog h2:first-child,
+        .download-changelog h3:first-child,
+        .download-changelog h4:first-child,
+        .download-changelog h5:first-child,
+        .download-changelog h6:first-child {
+            margin-top: 0;
+        }
+
+        .download-changelog p {
+            margin: 0.4rem 0;
+        }
+
+        .download-changelog a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px solid transparent;
+            transition: border-color var(--transition);
+        }
+        .download-changelog a:hover {
+            border-bottom-color: var(--accent);
+        }
+
+        .download-changelog ul,
+        .download-changelog ol {
+            padding-left: 1.5rem;
+            margin: 0.3rem 0 0.7rem 0;
+        }
+        .download-changelog ul li {
+            list-style: disc;
+            color: var(--text-secondary);
+            margin: 0.1rem 0;
+        }
+        .download-changelog ol li {
+            list-style: decimal;
+            color: var(--text-secondary);
+            margin: 0.1rem 0;
+        }
+        .download-changelog ul ul,
+        .download-changelog ol ol,
+        .download-changelog ul ol,
+        .download-changelog ol ul {
+            margin: 0.1rem 0 0.3rem 0;
+        }
+        .download-changelog ul ul li {
+            list-style: circle;
+        }
+        .download-changelog ul ul ul li {
+            list-style: square;
+        }
+
+        .download-changelog blockquote {
+            margin: 0.6rem 0;
+            padding-left: 1rem;
+            border-left: 3px solid var(--blockquote-border);
+            color: var(--text-muted);
+        }
+
+        .download-changelog hr {
+            border: none;
+            border-top: 1px solid var(--border-color);
+            margin: 1rem 0;
+        }
+
+        .download-changelog code {
+            background: var(--code-bg);
+            padding: 0.1rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: var(--accent);
+        }
+
+        .download-changelog pre {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+            font-size: 0.85rem;
+        }
+        .download-changelog pre code {
+            background: transparent;
+            padding: 0;
             color: var(--text-primary);
         }
 
-        /* ===== Footer ===== */
+        .download-changelog img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+        .download-changelog table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 0.6rem 0;
+        }
+        .download-changelog th,
+        .download-changelog td {
+            border: 1px solid var(--border-color);
+            padding: 0.4rem 0.8rem;
+            text-align: left;
+        }
+        .download-changelog th {
+            background: var(--bg-secondary);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* ===== 页脚 ===== */
         .footer {
             text-align: center;
-            padding: 2.5rem 0 1rem;
+            padding: 2rem 0 1rem;
             border-top: 1px solid var(--border-color);
-            margin-top: 2.5rem;
             color: var(--text-muted);
-            font-size: 0.85rem;
+            font-size: 0.9rem;
         }
         .footer a {
             color: var(--accent);
@@ -569,75 +1141,90 @@
         .footer a:hover {
             text-decoration: underline;
         }
-        .footer .license {
-            margin-top: 0.5rem;
-            font-size: 0.8rem;
-        }
 
         /* ===== 响应式 ===== */
         @media (max-width: 768px) {
             body {
                 padding: 1rem 0.8rem;
             }
-            .hero h1 {
-                font-size: 2.2rem;
-            }
-            .hero p {
-                font-size: 1rem;
-            }
             .navbar {
                 padding: 0.5rem 1rem;
                 border-radius: 30px;
             }
             .logo {
-                font-size: 1.1rem;
+                font-size: 1rem;
             }
             .logo img {
                 height: 26px;
             }
-            .nav-link {
-                font-size: 0.75rem;
-                padding: 0.3rem 0.7rem;
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+            .hero-content p {
+                font-size: 1rem;
             }
             .section-title {
-                font-size: 1.4rem;
+                font-size: 1.6rem;
             }
-            .stats-grid {
-                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-                gap: 0.8rem;
-            }
-            .features-grid {
+            .card-grid {
                 grid-template-columns: 1fr;
             }
-            .tree {
-                font-size: 0.75rem;
-                padding: 0.8rem 1rem;
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .download-stats-section,
+            .benchmark-section,
+            .download-section {
+                padding: 1.5rem 1rem;
+            }
+            .stats-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.8rem;
+            }
+            .download-header {
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+            .download-header .version-badge {
+                align-self: flex-start;
+            }
+            .hero-visual .icon-ring {
+                width: 140px;
+                height: 140px;
             }
         }
+
         @media (max-width: 480px) {
-            .hero h1 {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero-content h1 {
                 font-size: 1.8rem;
             }
-            .stat-number {
-                font-size: 1.5rem;
+            .nav-actions .nav-link span {
+                display: none;
+            }
+            .nav-actions .nav-link {
+                padding: 0.4rem 0.7rem;
             }
         }
     </style>
 </head>
 <body>
 
-    <div id="toast" role="alert">
+    <div id="toast">
         <span class="toast-icon">✅</span>
-        <span class="toast-msg" id="toastMsg">操作成功</span>
+        <span class="toast-msg">操作成功</span>
         <span class="toast-actions">
-            <button class="toast-btn" id="toastActionBtn" style="display:none;">查看</button>
+            <button class="toast-btn" id="toastActionBtn">查看</button>
         </span>
-        <button class="toast-close" id="toastClose" aria-label="关闭通知">&times;</button>
+        <button class="toast-close" id="toastCloseBtn">&times;</button>
     </div>
 
     <div class="container">
 
-        <!-- ===== 导航栏 ===== -->
+        <!-- ===== 导航 ===== -->
         <nav class="navbar">
             <div class="logo">
                 <img src="./logo.ico" alt="Just Solo Logo" />
@@ -645,430 +1232,532 @@
             </div>
             <div class="nav-actions">
                 <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
-                    <i class="fas fa-moon"></i> <span id="themeLabel">深色</span>
+                    <i class="fas fa-moon"></i>
+                    <span id="themeLabel">深色</span>
                 </button>
-                <a class="nav-link" href="https://github.com/ZZJ-jack/Just-Solo" target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-github"></i> GitHub
+                <a href="https://github.com/ZZJ-jack/Just-Solo" target="_blank" rel="noopener noreferrer" class="nav-link">
+                    <i class="fab fa-github"></i>
+                    <span>GitHub</span>
                 </a>
-                <a class="nav-link" href="https://gitcode.com/ZZJ-JACK/Just-Solo" target="_blank" rel="noopener noreferrer">
-                    <i class="fas fa-code-branch"></i> GitCode
+                <a href="https://gitcode.com/ZZJ-JACK/Just-Solo" target="_blank" rel="noopener noreferrer" class="nav-link">
+                    <i class="fas fa-code-branch"></i>
+                    <span>GitCode</span>
                 </a>
-                <a class="nav-link" href="https://justsolo.zzjjack.us.kg" target="_blank" rel="noopener noreferrer">
-                    <i class="fas fa-globe"></i> 官网
+                <a href="#download" class="btn-primary">
+                    <i class="fas fa-download"></i> 下载
                 </a>
             </div>
         </nav>
 
         <!-- ===== Hero ===== -->
         <section class="hero">
-            <h1>🎵 Just Solo</h1>
-            <p>纯粹 · 轻量 · 高性能的本地音乐播放器</p>
-            <div class="hero-badges">
-                <span class="hero-badge"><i class="fas fa-microchip"></i> C++17 + Qt 6.8.3</span>
-                <span class="hero-badge"><i class="fas fa-memory"></i> &lt; 150MB 内存</span>
-                <span class="hero-badge"><i class="fas fa-bolt"></i> &lt; 0.5s 冷启动</span>
-                <span class="hero-badge"><i class="fab fa-windows"></i> Windows 10/11</span>
-                <span class="hero-badge"><i class="fas fa-balance-scale"></i> MIT 开源</span>
-            </div>
-            <div class="hero-actions">
-                <a class="btn btn-primary" href="https://gitcode.com/ZZJ-JACK/Just-Solo/releases" target="_blank" rel="noopener noreferrer">
-                    <i class="fas fa-download"></i> 下载最新版
-                </a>
-                <a class="btn btn-secondary" href="https://github.com/ZZJ-jack/Just-Solo" target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-github"></i> 查看源码
-                </a>
-            </div>
-        </section>
-
-        <!-- ===== 项目简介 ===== -->
-        <section>
-            <h2 class="section-title"><i class="fas fa-info-circle"></i> 项目简介</h2>
-            <p style="color: var(--text-secondary); font-size: 1.05rem; margin-bottom: 0.5rem;">
-                <strong>Just Solo</strong> 是一款追求简洁、高性能的本地音乐播放器。采用 <strong>C++ 高性能核心 + QML 现代界面</strong>，
-                无 Electron 依赖，内存占用低，冷启动迅速。
-            </p>
-            <p style="color: var(--text-secondary); font-size: 1.05rem;">
-                原生支持 Windows SMTC 系统媒体控件和 Just Solo LyricServer 媒体信息传输协议（基于 WebSocket），
-                深度适配 <a href="https://github.com/GEORGEWWWU/NetSpeed-Dynamic" target="_blank" rel="noopener noreferrer" style="color: var(--accent);">NSD 灵动岛</a>。
-                目前仅支持 Windows 平台，专注于纯本地音乐播放。内置基于 libcurl 的 OTA 在线更新功能。
-            </p>
-            <div style="margin: 0.8rem 0 1.5rem; display: flex; flex-wrap: wrap; gap: 1rem;">
-                <span style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 40px; padding: 0.3rem 1.2rem; font-size: 0.85rem; color: var(--text-secondary);">
-                    👤 作者：<a href="https://zzjjack.us.kg" target="_blank" rel="noopener noreferrer" style="color: var(--accent); text-decoration: none;">ZZJ-JACK</a>
-                </span>
-                <span style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 40px; padding: 0.3rem 1.2rem; font-size: 0.85rem; color: var(--text-secondary);">
-                    🌐 官网：<a href="https://justsolo.zzjjack.us.kg" target="_blank" rel="noopener noreferrer" style="color: var(--accent); text-decoration: none;">justsolo.zzjjack.us.kg</a>
-                </span>
-            </div>
-        </section>
-
-        <!-- ===== 性能指标 ===== -->
-        <section>
-            <h2 class="section-title"><i class="fas fa-chart-line"></i> 性能</h2>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-number">&lt; 150</div>
-                    <div class="stat-label">平均内存占用 (MB)</div>
-                    <div class="stat-desc">vs Electron 类播放器 500MB+</div>
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-music"></i> 纯粹 · 轻量 · 高性能
                 </div>
-                <div class="stat-card">
-                    <div class="stat-number">&lt; 0.5</div>
-                    <div class="stat-label">冷启动 (秒)</div>
-                    <div class="stat-desc">无 Electron 依赖，纯原生启动</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">~1</div>
-                    <div class="stat-label">元数据解析 (ms/文件)</div>
-                    <div class="stat-desc">MetadataReader 二进制解析，批处理 10 文件/轮</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">60</div>
-                    <div class="stat-label">UI 渲染 (fps)</div>
-                    <div class="stat-desc">原生 GPU 渲染，Qt Quick 场景图</div>
+                <h1>
+                    本地音乐<br />
+                    <span class="highlight">就该如此纯粹</span>
+                </h1>
+                <p>
+                    Just Solo 是一款追求简洁、高性能的本地音乐播放器。
+                    采用 C++ 高性能核心 + QML 现代界面，无 Electron 依赖，
+                    内存占用低，冷启动迅速。
+                </p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">&lt; 150MB</span>
+                        <span class="stat-label">平均内存占用</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">&lt; 0.5s</span>
+                        <span class="stat-label">冷启动时间</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">60fps</span>
+                        <span class="stat-label">流畅 UI 渲染</span>
+                    </div>
                 </div>
             </div>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: -0.5rem;">
-                💡 随着功能的增加，内存占用会相应增加。退出窗口至系统托盘后，后台进程会自动释放内存。
-            </p>
+            <div class="hero-visual">
+                <div class="icon-ring">
+                    <img src="./logo.ico" alt="Just Solo" />
+                </div>
+            </div>
         </section>
 
         <!-- ===== 功能特性 ===== -->
-        <section>
-            <h2 class="section-title"><i class="fas fa-list-check"></i> 功能特性</h2>
-            <div class="features-grid">
+        <h2 class="section-title">✨ 功能特性</h2>
+        <p class="section-sub">为纯粹的本地音乐体验而生</p>
 
-                <div class="feature-card">
-                    <h3><i class="fas fa-music"></i> 音频引擎</h3>
-                    <ul>
-                        <li>基于 miniaudio 轻量库，替代 Qt Multimedia</li>
-                        <li>支持 MP3 / FLAC / WAV / OGG / AAC / M4A / WMA / Opus</li>
-                        <li>热插拔支持：设备插拔不中断播放</li>
-                        <li>流式播放，大幅降低内存占用</li>
-                    </ul>
-                </div>
-
-                <div class="feature-card">
-                    <h3><i class="fas fa-play-circle"></i> 播放控制</h3>
-                    <ul>
-                        <li>播放 / 暂停 / 停止 / 上一首 / 下一首</li>
-                        <li>5 种播放模式：顺序 / 列表循环 / 单曲循环 / 随机 / 关闭循环</li>
-                        <li>进度条支持点击拖动 seek</li>
-                        <li>全局快捷键（默认 Ctrl+Alt+Space 等，支持自定义）</li>
-                    </ul>
-                </div>
-
-                <div class="feature-card">
-                    <h3><i class="fas fa-folder-open"></i> 音乐库管理</h3>
-                    <ul>
-                        <li>导入方式：文件对话框 / 文件夹 / 拖放</li>
-                        <li>自动去重：保留音质更高版本</li>
-                        <li>多歌手分隔符统一（/ ; |｜ → 、）</li>
-                        <li>音乐搜索：标题/歌手/专辑模糊匹配</li>
-                    </ul>
-                </div>
-
-                <div class="feature-card">
-                    <h3><i class="fas fa-list-ul"></i> 自定义播放列表</h3>
-                    <ul>
-                        <li>侧边栏创建/重命名/删除</li>
-                        <li>从音乐库多选导入</li>
-                        <li>切换列表时确认弹窗</li>
-                        <li>持久化到 custom_playlists.json</li>
-                    </ul>
-                </div>
-
-                <div class="feature-card">
-                    <h3><i class="fas fa-heart"></i> 收藏与历史</h3>
-                    <ul>
-                        <li>收藏/取消收藏，持久化到 favorites_cache.json</li>
-                        <li>播放历史自动记录，上限 500 条</li>
-                        <li>播放列表启动自动恢复</li>
-                    </ul>
-                </div>
-
-                <div class="feature-card">
-                    <h3><i class="fas fa-align-left"></i> 歌词系统</h3>
-                    <ul>
-                        <li>外部歌词：同目录同名 .lrc 文件</li>
-                        <li>嵌入式歌词：MP3 ID3v2 / FLAC VorbisComment</li>
-                        <li>双语字幕自动检测合并</li>
-                        <li>逐行高亮三色方案，歌词预读偏移可调</li>
-                    </ul>
-                </div>
-
-                <div class="feature-card">
-                    <h3><i class="fab fa-windows"></i> Windows 系统集成</h3>
-                    <ul>
-                        <li>SMTC 系统媒体接口（任务栏/锁屏/蓝牙）</li>
-                        <li>NSD 灵动岛深度适配（每 500ms 推送）</li>
-                        <li>LyricServer 协议（WebSocket，ws://127.0.0.1:47290）</li>
-                        <li>系统托盘、单实例检测、原生标题栏</li>
-                    </ul>
-                </div>
-
-                <div class="feature-card">
-                    <h3><i class="fas fa-window-restore"></i> 迷你播放器 &amp; 详情页</h3>
-                    <ul>
-                        <li>独立小窗模式，始终置顶</li>
-                        <li>封面取色 + 毛玻璃背景</li>
-                        <li>播放详情页底部滑入滑出</li>
-                        <li>逐行高亮歌词展示</li>
-                    </ul>
-                </div>
-
-                <div class="feature-card">
-                    <h3><i class="fas fa-sliders-h"></i> 设置页面</h3>
-                    <ul>
-                        <li>外观设置：循环模式/音量条透明度</li>
-                        <li>播放设置：歌词预读偏移、跨来源跟踪</li>
-                        <li>快捷键设置：捕获模式卡片</li>
-                        <li>OTA 在线更新（基于 libcurl）</li>
-                    </ul>
-                </div>
-
+        <div class="card-grid">
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-bolt"></i></div>
+                <h3>高性能音频引擎</h3>
+                <p>基于 miniaudio 轻量库，支持 MP3 / FLAC / WAV / OGG / AAC / M4A / WMA / Opus 等主流格式，流式播放大幅降低内存占用。</p>
+                <span class="tag">C++ 核心</span>
             </div>
-        </section>
-
-        <!-- ===== 技术栈 ===== -->
-        <section>
-            <h2 class="section-title"><i class="fas fa-code"></i> 技术栈</h2>
-            <div class="tech-badges">
-                <span class="tech-badge">Qt Quick (QML)</span>
-                <span class="tech-badge">Qt QuickControls2</span>
-                <span class="tech-badge">C++17</span>
-                <span class="tech-badge">Qt 6.8.3</span>
-                <span class="tech-badge">libcurl</span>
-                <span class="tech-badge">cmark-gfm</span>
-                <span class="tech-badge">CMake 3.16+</span>
-                <span class="tech-badge">Visual Studio 2026 (MSVC)</span>
-                <span class="tech-badge">HarmonyOS Sans SC</span>
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-window-maximize"></i></div>
+                <h3>Windows 深度集成</h3>
+                <p>原生支持 SMTC 系统媒体控件、NSD 灵动岛深度适配、Just Solo LyricServer 协议（WebSocket），系统托盘、全局快捷键一应俱全。</p>
+                <span class="tag">Win10/11</span>
             </div>
-        </section>
-
-        <!-- ===== 项目结构 ===== -->
-        <section>
-            <h2 class="section-title"><i class="fas fa-sitemap"></i> 项目结构</h2>
-            <div class="tree">
-                <div>Just-Solo/</div>
-                <div>├── <span class="highlight">CMakeLists.txt</span>       # CMake 构建配置</div>
-                <div>├── .gitignore</div>
-                <div>├── <span class="highlight">LICENSE</span>            # MIT 许可证</div>
-                <div>├── <span class="highlight">README.md</span></div>
-                <div>├── CHANGELOG.md          # 版本更新日志</div>
-                <div>├── 安装说明.txt</div>
-                <div>├── run.ps1               # 编译 + 部署 + 运行脚本</div>
-                <div>├── package.ps1           # 一键打包脚本</div>
-                <div>├── setup.iss             # InnoSetup 安装包脚本</div>
-                <div>├── lyric_client_test.html # LyricServer 协议测试页面</div>
-                <div>├── cmake/</div>
-                <div>│   └── GenerateVersion.ps1</div>
-                <div>├── docs/</div>
-                <div>│   ├── BugList.txt</div>
-                <div>│   └── Just-Solo-LyricServer.md</div>
-                <div>├── <span class="highlight">src/</span></div>
-                <div>│   ├── main.cpp           # 程序入口</div>
-                <div>│   ├── <span class="highlight">core/</span></div>
-                <div>│   │   ├── AudioEngine.h/cpp</div>
-                <div>│   │   ├── MusicManager.h/cpp</div>
-                <div>│   │   ├── MetadataReader.h/cpp</div>
-                <div>│   │   ├── SMTCManager.h/cpp</div>
-                <div>│   │   ├── HotkeyManager.h/cpp</div>
-                <div>│   │   ├── CurlRequest.h/cpp</div>
-                <div>│   │   ├── UpdateChecker.h/cpp</div>
-                <div>│   │   ├── MarkdownHelper.h/cpp</div>
-                <div>│   │   └── miniaudio.h</div>
-                <div>│   ├── <span class="highlight">services/</span></div>
-                <div>│   │   └── LyricServer.h/cpp</div>
-                <div>│   └── <span class="highlight">qml/</span></div>
-                <div>│       ├── main.qml</div>
-                <div>│       ├── components/</div>
-                <div>│       │   ├── NavItem.qml</div>
-                <div>│       │   ├── SubNavItem.qml</div>
-                <div>│       │   ├── SongRow.qml</div>
-                <div>│       │   └── MusicListView.qml</div>
-                <div>│       └── views/</div>
-                <div>│           ├── HomePage.qml</div>
-                <div>│           ├── PlaylistPage.qml</div>
-                <div>│           ├── FavoritePage.qml</div>
-                <div>│           ├── HistoryPage.qml</div>
-                <div>│           ├── SettingsPage.qml</div>
-                <div>│           ├── PlayerDetailPage.qml</div>
-                <div>│           └── MiniPlayer.qml</div>
-                <div>├── <span class="highlight">data/</span></div>
-                <div>│   ├── image/             # 图标资源</div>
-                <div>│   └── font/              # HarmonyOS Sans SC</div>
-                <div>├── <span class="highlight">third_party/</span></div>
-                <div>│   ├── curl/              # libcurl 依赖</div>
-                <div>│   └── cmark-gfm-*/       # Markdown 解析</div>
-                <div>├── resources/</div>
-                <div>│   └── app.rc</div>
-                <div>└── release/               # 打包输出目录</div>
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-list-ul"></i></div>
+                <h3>智能音乐库管理</h3>
+                <p>支持文件对话框多选、导入文件夹、拖放导入，自动去重、音质优选，多歌手分隔符统一，全局搜索高亮定位。</p>
+                <span class="tag">高效管理</span>
             </div>
-        </section>
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-lyric"></i></div>
+                <h3>强大歌词系统</h3>
+                <p>支持外部 .lrc 文件与嵌入式歌词（MP3 ID3v2 USLT / FLAC VorbisComment），双语字幕自动合并，逐行高亮三色方案，歌词预读偏移可调。</p>
+                <span class="tag">精准同步</span>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-play-circle"></i></div>
+                <h3>灵活播放控制</h3>
+                <p>5 种播放模式（顺序 / 列表循环 / 单曲循环 / 随机 / 关闭循环），进度条点击拖动 seek，全局快捷键支持自定义。</p>
+                <span class="tag">随心掌控</span>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-window-restore"></i></div>
+                <h3>迷你播放器 &amp; 详情页</h3>
+                <p>独立小窗模式始终置顶，封面取色 + 毛玻璃背景；播放详情页底部滑入，左侧封面信息 + 右侧逐行歌词，体验沉浸。</p>
+                <span class="tag">精致体验</span>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-sliders-h"></i></div>
+                <h3>个性化设置</h3>
+                <p>外观（循环模式/音量条透明度、关闭最小化到托盘）、播放（歌词预读偏移、跨来源跟踪）、快捷键自定义、OTA 在线更新一应俱全。</p>
+                <span class="tag">自由定制</span>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-sync-alt"></i></div>
+                <h3>OTA 在线更新</h3>
+                <p>基于 libcurl 的在线更新功能，支持手动检查更新并下载安装最新版本，始终保持最佳体验。</p>
+                <span class="tag">与时俱进</span>
+            </div>
+        </div>
 
-        <!-- ===== 构建与运行 ===== -->
-        <section>
-            <h2 class="section-title"><i class="fas fa-hammer"></i> 构建与运行</h2>
-            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1.2rem 1.8rem; box-shadow: var(--shadow); margin: 1rem 0 1.5rem; overflow-x: auto;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 0.92rem; color: var(--text-secondary);">
-                    <thead>
-                        <tr style="border-bottom: 2px solid var(--border-color);">
-                            <th style="text-align: left; padding: 0.4rem 0.8rem 0.4rem 0; font-weight: 600; color: var(--text-primary);">依赖</th>
-                            <th style="text-align: left; padding: 0.4rem 0; font-weight: 600; color: var(--text-primary);">说明</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td style="padding: 0.3rem 0.8rem 0.3rem 0;">Qt 6.8.3</td><td style="padding: 0.3rem 0;">msvc2022_64</td></tr>
-                        <tr><td style="padding: 0.3rem 0.8rem 0.3rem 0;">CMake</td><td style="padding: 0.3rem 0;">3.16+</td></tr>
-                        <tr><td style="padding: 0.3rem 0.8rem 0.3rem 0;">Visual Studio</td><td style="padding: 0.3rem 0;">2022+ (含 MSVC 工具链)</td></tr>
-                        <tr><td style="padding: 0.3rem 0.8rem 0.3rem 0;">libcurl</td><td style="padding: 0.3rem 0;">项目内置 third_party/curl</td></tr>
-                    </tbody>
-                </table>
-                <div style="margin-top: 1rem; background: var(--code-bg); border-radius: var(--radius-sm); padding: 0.8rem 1.2rem; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.85rem; overflow-x: auto; color: var(--text-primary);">
-                    <div># 配置</div>
-                    <div style="color: var(--text-secondary);">cmake -B build -G "Visual Studio 18 2026" -A x64 -DCMAKE_PREFIX_PATH="C:\Qt\6.8.3\msvc2022_64"</div>
-                    <div style="margin-top: 0.4rem;"># 编译</div>
-                    <div style="color: var(--text-secondary);">cmake --build build --config Release</div>
-                    <div style="margin-top: 0.4rem;"># 运行</div>
-                    <div style="color: var(--text-secondary);">.\run.ps1</div>
-                    <div style="margin-top: 0.4rem;"># 打包发布</div>
-                    <div style="color: var(--text-secondary);">.\package.ps1</div>
+        <!-- ===== 下载统计 ===== -->
+        <div class="download-stats-section" id="stats">
+            <div class="stats-header">
+                <div class="left">
+                    <h2><i class="fas fa-chart-simple" style="color:var(--accent);margin-right:0.5rem;"></i>下载统计</h2>
+                    <p>来自各渠道的累计下载量</p>
+                </div>
+                <span class="badge-live"><i class="fas fa-circle"></i> 实时</span>
+            </div>
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-card-dl">
+                    <div class="dl-icon github"><i class="fab fa-github"></i></div>
+                    <div class="dl-info">
+                        <span class="dl-label">GitHub Releases</span>
+                        <span class="dl-number loading" id="statsGithub"><span class="num-loading-dot">·</span><span class="num-loading-dot">·</span><span class="num-loading-dot">·</span></span>
+                    </div>
+                </div>
+                <div class="stat-card-dl">
+                    <div class="dl-icon gitcode"><i class="fas fa-code-branch"></i></div>
+                    <div class="dl-info">
+                        <span class="dl-label">GitCode 镜像</span>
+                        <span class="dl-number loading" id="statsGitcode"><span class="num-loading-dot">·</span><span class="num-loading-dot">·</span><span class="num-loading-dot">·</span></span>
+                    </div>
+                </div>
+                <div class="stat-card-dl highlight-card">
+                    <div class="dl-icon total"><i class="fas fa-users"></i></div>
+                    <div class="dl-info">
+                        <span class="dl-label">累计下载</span>
+                        <span class="dl-number loading" id="statsTotal"><span class="num-loading-dot">·</span><span class="num-loading-dot">·</span><span class="num-loading-dot">·</span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="stats-footer">
+                <span class="update-time"><i class="far fa-clock"></i> <span id="statsUpdateTime">加载中...</span></span>
+                <span class="stats-error" id="statsError"><i class="fas fa-exclamation-triangle"></i> 加载失败，请稍后重试</span>
+            </div>
+        </div>
+
+        <!-- ===== 性能对比 ===== -->
+        <div class="benchmark-section">
+            <div class="benchmark-header">
+                <div class="left">
+                    <h2>⚡ 性能对比</h2>
+                    <p>Just Solo vs 同类播放器（数据基于实际测试）</p>
+                </div>
+                <span class="badge-light"><i class="fas fa-microchip"></i> 实测数据</span>
+            </div>
+            <div class="chart-group">
+                <div class="chart-item">
+                    <div class="chart-label">
+                        <span>内存占用</span>
+                        <span class="value">越低越好</span>
+                    </div>
+                    <div class="bar-track">
+                        <div class="bar-fill" style="width:30%;">150MB</div>
+                    </div>
+                    <div class="compare-values">
+                        <span class="cmp-item"><span class="cmp-dot just"></span> Just Solo: ~150MB</span>
+                        <span class="cmp-item"><span class="cmp-dot electron"></span> Electron 类: 500MB+</span>
+                        <span class="cmp-item"><span class="cmp-dot other"></span> 其他原生: ~300MB</span>
+                    </div>
+                </div>
+                <div class="chart-item">
+                    <div class="chart-label">
+                        <span>冷启动时间</span>
+                        <span class="value">越快越好</span>
+                    </div>
+                    <div class="bar-track">
+                        <div class="bar-fill" style="width:20%;">&lt; 0.5s</div>
+                    </div>
+                    <div class="compare-values">
+                        <span class="cmp-item"><span class="cmp-dot just"></span> Just Solo: &lt; 0.5s</span>
+                        <span class="cmp-item"><span class="cmp-dot electron"></span> Electron 类: 2~5s</span>
+                        <span class="cmp-item"><span class="cmp-dot other"></span> 其他原生: ~1s</span>
+                    </div>
+                </div>
+                <div class="chart-item">
+                    <div class="chart-label">
+                        <span>UI 渲染帧率</span>
+                        <span class="value">越高越好</span>
+                    </div>
+                    <div class="bar-track">
+                        <div class="bar-fill" style="width:100%;">60fps</div>
+                    </div>
+                    <div class="compare-values">
+                        <span class="cmp-item"><span class="cmp-dot just"></span> Just Solo: 60fps</span>
+                        <span class="cmp-item"><span class="cmp-dot electron"></span> Electron 类: 30~60fps</span>
+                        <span class="cmp-item"><span class="cmp-dot other"></span> 其他原生: 30~60fps</span>
+                    </div>
+                </div>
+            </div>
+            <div class="chart-legend">
+                <span class="legend-item"><span class="legend-dot just"></span> Just Solo</span>
+                <span class="legend-item"><span class="legend-dot electron"></span> Electron 类播放器</span>
+                <span class="legend-item"><span class="legend-dot other"></span> 其他原生播放器</span>
+            </div>
+            <div class="benchmark-footnote">
+                * 测试环境：Windows 11 23H2，Intel Core i7-12700H，16GB DDR5
+            </div>
+        </div>
+
+        <!-- ===== 下载 ===== -->
+        <section class="download-section" id="download">
+            <div class="download-header">
+                <div class="left">
+                    <h2><i class="fas fa-download"></i> 下载 Just Solo</h2>
+                    <p>获取最新版本，体验纯粹轻量的本地音乐播放</p>
+                </div>
+                <span class="version-badge"><i class="fas fa-tag"></i> v1.0.0</span>
+            </div>
+            <div class="download-body">
+                <div class="download-meta">
+                    <span class="meta-item"><i class="fas fa-windows"></i> 平台：<strong>Windows 10/11</strong></span>
+                    <span class="meta-item"><i class="fas fa-box"></i> 格式：<strong>安装包 (.exe)</strong></span>
+                    <span class="meta-item"><i class="fas fa-balance-scale"></i> 许可证：<strong>MIT</strong></span>
+                    <span class="meta-item"><i class="fas fa-globe"></i> 官方仓库：<strong><a href="https://github.com/ZZJ-jack/Just-Solo" target="_blank" style="color:var(--accent);text-decoration:none;">GitHub</a> · <a href="https://gitcode.com/ZZJ-JACK/Just-Solo" target="_blank" style="color:var(--accent);text-decoration:none;">GitCode</a></strong></span>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;">
+                    <a href="https://github.com/ZZJ-jack/Just-Solo/releases" target="_blank" rel="noopener noreferrer" class="btn-primary" style="padding:0.8rem 2rem;font-size:1rem;">
+                        <i class="fab fa-github"></i> GitHub Releases
+                    </a>
+                    <a href="https://gitcode.com/ZZJ-JACK/Just-Solo/releases" target="_blank" rel="noopener noreferrer" class="btn-primary outline" style="padding:0.8rem 2rem;font-size:1rem;">
+                        <i class="fas fa-code-branch"></i> GitCode 镜像
+                    </a>
+                </div>
+                <div class="download-changelog" id="changelog">
+                    <p style="color:var(--text-muted);text-align:center;padding:1rem 0;">
+                        <i class="fas fa-spinner fa-spin"></i> 正在加载更新日志...
+                    </p>
                 </div>
             </div>
         </section>
 
-        <!-- ===== FAQ ===== -->
-        <section>
-            <h2 class="section-title"><i class="fas fa-question-circle"></i> FAQ</h2>
-            <div style="display: flex; flex-direction: column; gap: 0.8rem; margin: 1rem 0 1.5rem;">
-                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1rem 1.5rem; box-shadow: var(--shadow);">
-                    <strong style="color: var(--text-primary);">这个项目支持哪些平台？</strong>
-                    <p style="color: var(--text-secondary); margin-top: 0.3rem;">目前仅支持 Windows 10/11（64位），win7 暂未测试。暂时不计划支持其他平台，欢迎其他平台的贡献。</p>
-                </div>
-                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1rem 1.5rem; box-shadow: var(--shadow);">
-                    <strong style="color: var(--text-primary);">这个项目对比 AnyListen 等其他音乐播放器有什么区别？</strong>
-                    <p style="color: var(--text-secondary); margin-top: 0.3rem;">本项目使用 Qt 框架，聚焦高性能、低占用，以本地音乐播放为核心，内置 OTA 在线更新功能，不提供音乐下载等网络服务。</p>
-                </div>
-                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1rem 1.5rem; box-shadow: var(--shadow);">
-                    <strong style="color: var(--text-primary);">这个项目会维护多久？</strong>
-                    <p style="color: var(--text-secondary); margin-top: 0.3rem;">计划在 2026 年暑假内完成核心功能，后续进入 LTS 维护状态，继续维护和修复 bug。</p>
-                </div>
-                <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 1rem 1.5rem; box-shadow: var(--shadow);">
-                    <strong style="color: var(--text-primary);">这个项目的代码是否开源？</strong>
-                    <p style="color: var(--text-secondary); margin-top: 0.3rem;">是的，代码永久开源免费，在 <strong>MIT License</strong> 下开源，在多个平台上提供镜像仓库。</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- ===== 免责声明 ===== -->
-        <section>
-            <h2 class="section-title"><i class="fas fa-scale-balanced"></i> 免责声明</h2>
-            <div class="disclaimer">
-                <p><strong>版权与许可</strong><br>
-                本项目及相关代码的著作权受中华人民共和国法律保护，以 <strong>MIT 协议</strong> 开源（详见 LICENSE 文件）。在遵守 MIT 协议的前提下，任何人可以自由使用、修改、复制、分发本软件，包括商业用途，但必须在分发时保留原始版权声明及本许可声明。我们仅要求您在合适的显著位置标注原作者信息（例如 ZZJ-JACK），这是您唯一的署名义务。</p>
-                <p style="margin-top: 0.8rem;"><strong>不提供音乐内容及下载服务</strong><br>
-                本项目严格遵循中华人民共和国法律，不提供任何音乐资源的下载、存储或传输功能。用户若使用第三方软件（如 LX Music 等）获取音乐资源，并将这些资源导入本项目，由此产生的版权责任、侵权风险等，均由用户自行承担，与本项目及作者无关。我们郑重提醒用户：请合法使用音乐资源，仅限用于个人学习、研究或非商业娱乐，不得用于任何可能侵犯他人合法权益的用途。</p>
-                <p style="margin-top: 0.8rem;"><strong>第三方软件免责</strong><br>
-                本项目 README 中所有提及或推荐的第三方软件，均由其各自开发者独立维护。用户使用这些第三方软件所造成的一切法律后果（包括但不限于侵权、违规、数据泄露等），本项目和作者不承担任何责任。</p>
-                <p style="margin-top: 0.8rem;"><strong>法律适用 &amp; 使用即接受</strong><br>
-                本项目在中华人民共和国境内运营，所有行为均受中华人民共和国法律管辖。我们承诺项目本身不包含任何违法、侵权或违规内容，但无法保证用户使用方式均符合法律规定。当您以任何形式使用、修改或分发本项目（或其衍生代码）时，即视为您已阅读、理解并同意本免责声明。在法律允许的最大范围内，作者及贡献者不对因使用本软件造成的任何直接或间接损失承担责任，软件按“现状”（AS IS）提供，不作任何明示或默示的担保。</p>
-            </div>
-        </section>
-
-        <!-- ===== Footer ===== -->
+        <!-- ===== 页脚 ===== -->
         <footer class="footer">
             <p>
-                <a href="https://github.com/ZZJ-jack/Just-Solo" target="_blank" rel="noopener noreferrer">GitHub</a> &middot;
-                <a href="https://gitcode.com/ZZJ-JACK/Just-Solo" target="_blank" rel="noopener noreferrer">GitCode</a> &middot;
-                <a href="https://justsolo.zzjjack.us.kg" target="_blank" rel="noopener noreferrer">官方网站</a> &middot;
-                <a href="https://zzjjack.us.kg" target="_blank" rel="noopener noreferrer">作者主页</a>
+                <strong>Just Solo</strong> — 纯粹轻量的本地音乐播放器
             </p>
-            <p class="license">© 2026 ZZJ-JACK · 基于 <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer">MIT License</a> 开源</p>
+            <p style="margin-top:0.3rem;">
+                作者：<a href="https://zzjjack.us.kg" target="_blank" rel="noopener noreferrer">ZZJ-JACK</a>
+                &nbsp;·&nbsp;
+                <a href="https://github.com/ZZJ-jack/Just-Solo" target="_blank" rel="noopener noreferrer">GitHub</a>
+                &nbsp;·&nbsp;
+                <a href="https://gitcode.com/ZZJ-JACK/Just-Solo" target="_blank" rel="noopener noreferrer">GitCode</a>
+                &nbsp;·&nbsp;
+                <a href="https://justsolo.zzjjack.us.kg" target="_blank" rel="noopener noreferrer">官网</a>
+            </p>
+            <p style="margin-top:0.5rem;font-size:0.8rem;color:var(--text-muted);">
+                本示范图片仅用于展示功能，歌曲版权属于原作者
+            </p>
         </footer>
 
     </div>
 
     <script>
+        // ================================================================
+        //  1. Toast 通知系统
+        // ================================================================
         (function() {
-            'use strict';
+            const toast = document.getElementById('toast');
+            const toastMsg = toast.querySelector('.toast-msg');
+            const toastIcon = toast.querySelector('.toast-icon');
+            const toastActionBtn = document.getElementById('toastActionBtn');
+            const toastCloseBtn = document.getElementById('toastCloseBtn');
+            let hideTimer = null;
 
-            // ===== Toast =====
-            var toastEl = document.getElementById('toast');
-            var toastMsg = document.getElementById('toastMsg');
-            var toastClose = document.getElementById('toastClose');
-            var toastActionBtn = document.getElementById('toastActionBtn');
-            var toastTimer = null;
-
-            function showToast(msg, icon, action) {
-                if (toastTimer) { clearTimeout(toastTimer);
-                    toastTimer = null; }
-                var iconEl = toastEl.querySelector('.toast-icon');
-                if (icon) iconEl.textContent = icon;
-                toastMsg.textContent = msg || '操作成功';
-                if (action) {
+            function showToast(message, icon = '✅', actionText = null, actionCallback = null) {
+                if (hideTimer) {
+                    clearTimeout(hideTimer);
+                    hideTimer = null;
+                }
+                toastMsg.textContent = message;
+                toastIcon.textContent = icon;
+                if (actionText && actionCallback) {
                     toastActionBtn.style.display = 'inline-block';
-                    toastActionBtn.textContent = action.label || '查看';
-                    toastActionBtn.onclick = action.onClick || null;
+                    toastActionBtn.textContent = actionText;
+                    toastActionBtn.onclick = function(e) {
+                        e.stopPropagation();
+                        actionCallback();
+                        hideToast();
+                    };
                 } else {
                     toastActionBtn.style.display = 'none';
+                    toastActionBtn.onclick = null;
                 }
-                toastEl.classList.add('show');
-                toastTimer = setTimeout(function() {
-                    toastEl.classList.remove('show');
-                    toastTimer = null;
-                }, 4000);
+                toast.classList.add('show');
+                hideTimer = setTimeout(hideToast, 5000);
             }
+
+            function hideToast() {
+                toast.classList.remove('show');
+                if (hideTimer) {
+                    clearTimeout(hideTimer);
+                    hideTimer = null;
+                }
+            }
+
+            toastCloseBtn.addEventListener('click', hideToast);
+            toast.addEventListener('click', function(e) {
+                if (e.target === toast) hideToast();
+            });
 
             window.showToast = showToast;
-
-            toastClose.addEventListener('click', function() {
-                toastEl.classList.remove('show');
-                if (toastTimer) { clearTimeout(toastTimer);
-                    toastTimer = null; }
-            });
-
-            // ===== 主题切换 =====
-            var themeToggle = document.getElementById('themeToggle');
-            var themeLabel = document.getElementById('themeLabel');
-            var currentTheme = localStorage.getItem('just-solo-theme') || 'light';
-
-            function applyTheme(theme) {
-                if (theme === 'dark') {
-                    document.documentElement.setAttribute('data-theme', 'dark');
-                    themeLabel.textContent = '亮色';
-                    themeToggle.querySelector('i').className = 'fas fa-sun';
-                } else {
-                    document.documentElement.removeAttribute('data-theme');
-                    themeLabel.textContent = '深色';
-                    themeToggle.querySelector('i').className = 'fas fa-moon';
-                }
-                localStorage.setItem('just-solo-theme', theme);
-                currentTheme = theme;
-            }
-
-            applyTheme(currentTheme);
-
-            themeToggle.addEventListener('click', function() {
-                applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
-                showToast('已切换主题', '🎨');
-            });
-
-            // ===== marked.js 备选加载 =====
-            var markedScript = document.getElementById('marked-script-main');
-            if (markedScript) {
-                markedScript.onerror = function() {
-                    var fallback = document.createElement('script');
-                    fallback.src = 'https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js';
-                    fallback.defer = true;
-                    document.head.appendChild(fallback);
-                };
-            }
-
-            console.log('🎵 Just Solo · 纯粹轻量的本地音乐播放器');
-            console.log('📦 版本: 基于 README.md 最新内容');
-            console.log('📄 开源协议: MIT License');
-            console.log('🌐 官网: https://justsolo.zzjjack.us.kg');
+            window.hideToast = hideToast;
         })();
+
+        // ================================================================
+        //  2. 主题切换
+        // ================================================================
+        (function() {
+            const toggle = document.getElementById('themeToggle');
+            const label = document.getElementById('themeLabel');
+            const html = document.documentElement;
+
+            function setTheme(theme) {
+                if (theme === 'dark') {
+                    html.setAttribute('data-theme', 'dark');
+                    label.textContent = '亮色';
+                    toggle.querySelector('i').className = 'fas fa-sun';
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    html.removeAttribute('data-theme');
+                    label.textContent = '深色';
+                    toggle.querySelector('i').className = 'fas fa-moon';
+                    localStorage.setItem('theme', 'light');
+                }
+            }
+
+            const saved = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (saved === 'dark' || (!saved && prefersDark)) {
+                setTheme('dark');
+            } else {
+                setTheme('light');
+            }
+
+            toggle.addEventListener('click', function() {
+                const current = html.getAttribute('data-theme');
+                setTheme(current === 'dark' ? 'light' : 'dark');
+            });
+        })();
+
+        // ================================================================
+        //  3. 下载统计 (GitHub / GitCode)
+        // ================================================================
+        (function() {
+            const githubEl = document.getElementById('statsGithub');
+            const gitcodeEl = document.getElementById('statsGitcode');
+            const totalEl = document.getElementById('statsTotal');
+            const timeEl = document.getElementById('statsUpdateTime');
+            const errorEl = document.getElementById('statsError');
+
+            // 从 GitHub 获取 Releases 下载量
+            async function fetchGithubStats() {
+                const url = 'https://api.github.com/repos/ZZJ-jack/Just-Solo/releases';
+                const resp = await fetch(url, {
+                    headers: { 'Accept': 'application/vnd.github.v3+json' }
+                });
+                if (!resp.ok) throw new Error('GitHub API 请求失败');
+                const data = await resp.json();
+                let total = 0;
+                for (const release of data) {
+                    for (const asset of release.assets) {
+                        total += asset.download_count || 0;
+                    }
+                }
+                return total;
+            }
+
+            // 从 GitCode 获取 Releases 下载量（通过镜像页面）
+            async function fetchGitcodeStats() {
+                // GitCode 目前没有直接的下载量 API，使用页面抓取方式（仅作示意）
+                // 实际可用 GitCode 的 Releases 页面解析
+                const url = 'https://gitcode.com/ZZJ-JACK/Just-Solo/releases';
+                const resp = await fetch(url);
+                if (!resp.ok) throw new Error('GitCode 页面请求失败');
+                const html = await resp.text();
+                // 简单解析：查找 "下载次数" 或类似关键词
+                const match = html.match(/下载次数[：:]\s*(\d+)/i);
+                if (match) return parseInt(match[1], 10);
+                // 如果找不到，返回模拟数据
+                return 0;
+            }
+
+            function formatNumber(num) {
+                if (num >= 10000) {
+                    return (num / 10000).toFixed(1) + ' 万';
+                }
+                return num.toString();
+            }
+
+            async function updateStats() {
+                try {
+                    errorEl.classList.remove('show');
+
+                    // 并行获取
+                    const [githubTotal, gitcodeTotal] = await Promise.all([
+                        fetchGithubStats().catch(() => null),
+                        fetchGitcodeStats().catch(() => null)
+                    ]);
+
+                    const github = githubTotal !== null ? githubTotal : '--';
+                    const gitcode = gitcodeTotal !== null ? gitcodeTotal : '--';
+                    const total = (github !== '--' && gitcode !== '--') ? (github + gitcode) : '--';
+
+                    githubEl.textContent = github !== '--' ? formatNumber(github) : '--';
+                    githubEl.className = 'dl-number';
+                    gitcodeEl.textContent = gitcode !== '--' ? formatNumber(gitcode) : '--';
+                    gitcodeEl.className = 'dl-number';
+                    totalEl.textContent = total !== '--' ? formatNumber(total) : '--';
+                    totalEl.className = 'dl-number';
+
+                    const now = new Date();
+                    timeEl.textContent = now.toLocaleString('zh-CN');
+
+                } catch (err) {
+                    console.warn('统计加载失败:', err);
+                    errorEl.classList.add('show');
+                    githubEl.textContent = '--';
+                    githubEl.className = 'dl-number';
+                    gitcodeEl.textContent = '--';
+                    gitcodeEl.className = 'dl-number';
+                    totalEl.textContent = '--';
+                    totalEl.className = 'dl-number';
+                    timeEl.textContent = '加载失败';
+                }
+            }
+
+            // 首次加载
+            updateStats();
+            // 每 5 分钟刷新一次
+            // setInterval(updateStats, 5 * 60 * 1000);
+        })();
+
+        // ================================================================
+        //  4. 加载更新日志 (CHANGELOG.md)
+        // ================================================================
+        (function() {
+            const container = document.getElementById('changelog');
+
+            async function loadChangelog() {
+                try {
+                    const url = 'https://raw.githubusercontent.com/ZZJ-jack/Just-Solo/main/CHANGELOG.md';
+                    const resp = await fetch(url);
+                    if (!resp.ok) throw new Error('CHANGELOG 加载失败');
+                    const md = await resp.text();
+
+                    // 使用 marked 渲染
+                    if (typeof marked !== 'undefined') {
+                        const html = marked.parse(md);
+                        container.innerHTML = html;
+                    } else {
+                        // 降级：纯文本显示
+                        container.innerHTML = '<pre style="white-space:pre-wrap;color:var(--text-secondary);">' +
+                            escapeHtml(md) + '</pre>';
+                    }
+                } catch (err) {
+                    console.warn('CHANGELOG 加载失败:', err);
+                    container.innerHTML = `
+                        <p style="color:var(--text-muted);text-align:center;padding:1rem 0;">
+                            <i class="fas fa-exclamation-triangle"></i> 更新日志加载失败，请前往 
+                            <a href="https://github.com/ZZJ-jack/Just-Solo/blob/main/CHANGELOG.md" target="_blank" style="color:var(--accent);">GitHub</a> 
+                            查看
+                        </p>
+                    `;
+                }
+            }
+
+            function escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+
+            // 等待 marked 加载完成
+            if (typeof marked !== 'undefined') {
+                loadChangelog();
+            } else {
+                // 监听 marked 加载
+                const checkMarked = setInterval(function() {
+                    if (typeof marked !== 'undefined') {
+                        clearInterval(checkMarked);
+                        loadChangelog();
+                    }
+                }, 200);
+                // 超时保护
+                setTimeout(function() {
+                    clearInterval(checkMarked);
+                    if (typeof marked === 'undefined') {
+                        container.innerHTML = `
+                            <p style="color:var(--text-muted);text-align:center;padding:1rem 0;">
+                                <i class="fas fa-spinner fa-spin"></i> 仍在加载 Markdown 渲染器...
+                            </p>
+                        `;
+                    }
+                }, 8000);
+            }
+        })();
+
+        // ================================================================
+        //  5. 平滑滚动
+        // ================================================================
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href === '#') return;
+                const target = document.querySelector(href);
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        console.log('🎵 Just Solo · 纯粹轻量的本地音乐播放器');
+        console.log('📦 官网: https://justsolo.zzjjack.us.kg');
+        console.log('🐙 GitHub: https://github.com/ZZJ-jack/Just-Solo');
     </script>
 
 </body>
