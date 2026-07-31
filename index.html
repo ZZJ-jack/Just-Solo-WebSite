@@ -1758,15 +1758,15 @@
                     <p>获取最新版本，体验纯粹的音乐之旅</p>
                 </div>
                 <div class="version-badge" id="dlVersionBadge">
-                    <i class="fas fa-tag"></i> <span id="dlVersionText">v1.5.0</span>
+                    <i class="fas fa-tag"></i> <span id="dlVersionText">v1.1.0</span>
                 </div>
             </div>
 
             <div class="download-body" id="downloadBody">
                 <div id="staticDlContent">
                     <div class="download-meta">
-                        <span class="meta-item"><i class="fas fa-tag"></i> 版本 <strong id="staticVersion">v1.5.0</strong></span>
-                        <span class="meta-item"><i class="far fa-calendar-alt"></i> 发布于 <strong id="staticDate">2026年7月20日</strong></span>
+                        <span class="meta-item"><i class="fas fa-tag"></i> 版本 <strong id="staticVersion">v1.1.0</strong></span>
+                        <span class="meta-item"><i class="far fa-calendar-alt"></i> 发布于 <strong id="staticDate">2026年7月30日</strong></span>
                         <span class="meta-item"><i class="fas fa-cube"></i> 软件 <strong>Just Solo</strong></span>
                     </div>
                     <!-- ===== ★ 修复：changelog 容器增加占位提示 ===== -->
@@ -1794,32 +1794,38 @@
             </div>
         </section>
 
-        <!-- ===== 核心特性 ===== -->
+        <!-- ===== 核心能力 ===== -->
         <h2 class="section-title fade-up delay-4">✨ 核心能力</h2>
         <p class="section-sub fade-up delay-4">从音频引擎到系统集成，每一处都精心打磨</p>
         <div class="card-grid fade-up delay-4">
             <div class="card">
                 <div class="card-icon"><i class="fas fa-microchip"></i></div>
                 <h3>高性能音频引擎</h3>
-                <p>基于 miniaudio 单头文件库，支持 MP3 / FLAC / WAV / OGG / AAC / M4A / WMA / Opus。</p>
-                <span class="tag">24-bit 直通</span>
+                <p>基于 <strong>miniaudio</strong> 轻量库，替代 Qt Multimedia，支持 MP3 / FLAC / WAV / OGG / AAC / M4A / WMA / Opus。流式播放，24-bit 直通。</p>
+                <span class="tag">流式加载</span>
             </div>
             <div class="card">
                 <div class="card-icon"><i class="fas fa-list-ul"></i></div>
                 <h3>智能音乐库管理</h3>
-                <p>自动去重、多歌手合并、全局搜索高亮、手动拖拽排序，五列自适应布局。</p>
+                <p>自动去重、多歌手合并、全局搜索高亮、手动拖拽排序，五列自适应布局。支持文件/文件夹拖放导入。</p>
                 <span class="tag">音质标签</span>
             </div>
             <div class="card">
                 <div class="card-icon"><i class="fas fa-align-left"></i></div>
                 <h3>完善的歌词系统</h3>
-                <p>外部 .lrc / 嵌入式歌词，双语字幕，逐行高亮，预读偏移可调。</p>
+                <p>外部 .lrc / 嵌入式歌词，双语字幕合并，逐行三色高亮（已播黄/当前青/未播灰蓝），预读偏移 50~350ms 可调。</p>
                 <span class="tag">逐行高亮</span>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fas fa-window-restore"></i></div>
+                <h3>迷你播放器</h3>
+                <p>全新独立小窗模式，始终置顶，展示封面、歌曲标题与歌手，支持播放/暂停控制，可从详情页或托盘进入。</p>
+                <span class="tag">始终置顶</span>
             </div>
             <div class="card">
                 <div class="card-icon"><i class="fab fa-windows"></i></div>
                 <h3>深度 Windows 集成</h3>
-                <p>SMTC 系统控件、NSD 灵动岛、Just Solo LyricServer 协议、系统托盘。</p>
+                <p>SMTC 系统控件、NSD 灵动岛歌词同步、Just Solo LyricServer 协议（WebSocket）、系统托盘、单实例检测。</p>
                 <span class="tag">Win11 原生</span>
             </div>
         </div>
@@ -1832,7 +1838,7 @@
                     <li><i class="fas fa-check-circle"></i> 5 种播放模式（顺序 / 循环 / 单曲 / 随机 / 关闭）</li>
                     <li><i class="fas fa-check-circle"></i> 全局快捷键（可自定义）</li>
                     <li><i class="fas fa-check-circle"></i> 进度条点击 / 拖动 seek</li>
-                    <li><i class="fas fa-check-circle"></i> 支持热插拔：热插拔不影响音乐播放</li>
+                    <li><i class="fas fa-check-circle"></i> 支持热插拔：设备插拔不中断播放</li>
                 </ul>
             </div>
             <div class="feature-col">
@@ -1847,10 +1853,10 @@
             <div class="feature-col">
                 <h3><i class="fas fa-palette"></i> 界面 &amp; 体验</h3>
                 <ul>
-                    <li><i class="fas fa-check-circle"></i> 毛玻璃播放详情页，圆形封面</li>
-                    <li><i class="fas fa-check-circle"></i> 深色 / 浅色主题原生适配</li>
-                    <li><i class="fas fa-check-circle"></i> 透明度可调，缩放动画</li>
-                    <li><i class="fas fa-check-circle"></i> 系统原生标题栏（Win11 三色定制/Win10强制深色主题）</li>
+                    <li><i class="fas fa-check-circle"></i> 全新ui设计语言，带来更好的视觉体验</li>
+                    <li><i class="fas fa-check-circle"></i> 原生支持深色主题</li>
+                    <li><i class="fas fa-check-circle"></i> 丝滑ui动画，让每一刻都Just Solo</li>
+                    <li><i class="fas fa-check-circle"></i> 系统原生标题栏（Win11 三色定制/Win10强制深色）</li>
                 </ul>
             </div>
             <div class="feature-col">
@@ -1858,8 +1864,17 @@
                 <ul>
                     <li><i class="fas fa-check-circle"></i> C++17 + Qt 6.8.3</li>
                     <li><i class="fas fa-check-circle"></i> QML 现代界面，GPU 渲染</li>
+                    <li><i class="fas fa-check-circle"></i> libcurl (OTA 在线更新) + cmark-gfm (Markdown 渲染)</li>
                     <li><i class="fas fa-check-circle"></i> CMake 构建，MSVC 编译</li>
-                    <li><i class="fas fa-check-circle"></i> HarmonyOS Sans SC 字体</li>
+                </ul>
+            </div>
+            <div class="feature-col" style="grid-column: 1 / -1;">
+                <h3><i class="fas fa-cog"></i> 更多功能</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> <strong>自定义播放列表</strong>：侧边栏创建/重命名/删除，从音乐库多选导入，持久化到 JSON</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>OTA 在线更新</strong>：基于 libcurl，支持检查更新并下载安装最新版本</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Markdown 转富文本</strong>：基于 cmark-gfm，更新日志以富文本 HTML 展示</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>设置页面</strong>：外观设置、播放设置、快捷键自定义、软件更新、关于信息</li>
                 </ul>
             </div>
         </div>
@@ -2330,7 +2345,7 @@
                         }
                         // 使用内置解析器解析静态备用内容
                         var fallbackText =
-                            '## v1.0.0 更新内容\n\n- 新增智能播放列表功能，支持按专辑/年份筛选\n- 优化音频引擎内存占用，平均降低至 130MB\n- 歌词搜索支持近似匹配，容错率更高\n\n_完整更新记录请查看 GitHub Release_';
+                            '## v1.1.0 更新内容 (2026.7.30)\n\n- 新增迷你播放器（迷你小窗）：独立小窗，始终置顶，支持封面/歌名/歌手展示与播放/暂停控制\n- 系统托盘播放控制：托盘菜单新增上一曲、播放/暂停、下一曲控制项\n- Markdown 转富文本工具：基于 cmark-gfm，更新日志以富文本 HTML 展示\n- 音质标签颜色调整为金色，提升可识别性\n- 切换歌单时列表闪屏大幅减轻\n- 修复从系统托盘恢复窗口时迷你小窗未销毁的问题\n\n_完整更新记录请查看 GitHub Release_';
                         var fallbackHtml = simpleMarkdownParse(fallbackText);
                         staticChangelog.innerHTML = fallbackHtml;
                     }
