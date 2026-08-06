@@ -8,12 +8,10 @@
     <meta name="robots" content="index, follow" />
     <meta name="keywords" content="音乐播放器, 本地播放器, 轻量播放器, Windows播放器, C++播放器, QML播放器, 无损音乐, 高性能播放器" />
 
-    <!-- ===== 强制禁用浏览器缓存 ===== -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
 
-    <!-- ===== JSON-LD 结构化数据 ===== -->
     <script type="application/ld+json">
         {
             "@context": "https://schema.org",
@@ -32,21 +30,13 @@
     </script>
 
     <link rel="icon" href="./logo.ico" type="image/x-icon" />
-
-    <!-- ===== 字体：使用系统字体堆栈（移除 Google Fonts） ===== -->
-    <!-- ===== 图标库：使用国内 BootCDN 镜像 ===== -->
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
-    <!-- ============================================================= -->
-    <!-- ===== ★ 修复：marked.js 使用更可靠的加载方式 ===== -->
-    <!-- ============================================================= -->
-    <!-- 主 CDN：BootCDN（国内快），备选 CDN：Cloudflare（全球稳定） -->
     <script id="marked-script-main" src="https://cdn.bootcdn.net/ajax/libs/marked/9.1.6/marked.min.js" defer>
     </script>
-    <!-- 如果主 CDN 加载失败，动态加载备选 CDN（见下方 JS 逻辑） -->
 
     <style>
-        /* ========== 完整样式（与原版保持一致，仅调整字体栈） ========== */
+        /* ========== 完整样式 ========== */
         * {
             margin: 0;
             padding: 0;
@@ -127,7 +117,7 @@
             padding: 0 1rem;
         }
 
-        /* ===== Toast 通知横幅 ===== */
+        /* Toast */
         #toast {
             position: fixed;
             top: 20px;
@@ -230,7 +220,7 @@
             }
         }
 
-        /* ===== 导航 ===== */
+        /* 导航 */
         .navbar {
             display: flex;
             justify-content: space-between;
@@ -355,7 +345,7 @@
             transform: translateY(-2px);
         }
 
-        /* ===== Hero ===== */
+        /* Hero */
         .hero {
             display: flex;
             flex-wrap: wrap;
@@ -515,7 +505,7 @@
             border: 1px solid var(--border-color);
         }
 
-        /* ===== 下载统计 ===== */
+        /* 下载统计 */
         .download-stats-section {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -731,7 +721,7 @@
             display: inline-flex;
         }
 
-        /* ===== 性能条形图 ===== */
+        /* 性能条形图 */
         .benchmark-section {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -890,7 +880,7 @@
             padding-top: 1rem;
         }
 
-        /* ===== 下载栏目 ===== */
+        /* 下载栏目 */
         .download-section {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -1242,7 +1232,9 @@
             margin-right: 0.5rem;
         }
 
-        /* ===== 功能双列 ===== */
+        /* ============================================================= */
+        /* ===== 功能详述区 (feature-grid) ===== */
+        /* ============================================================= */
         .feature-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -1291,9 +1283,132 @@
             width: 1rem;
         }
 
-        /* ===== Footer ===== */
+        /* ===== 全宽「更多功能」列中的分组样式 ===== */
+        .feature-col .group-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 1rem;
+            margin-top: 0.8rem;
+            margin-bottom: 0.2rem;
+            padding-left: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.2rem;
+        }
+        .feature-col .group-title:first-of-type {
+            margin-top: 0;
+        }
+        .feature-col .group-title i {
+            color: var(--accent);
+            font-size: 0.9rem;
+            width: 1.2rem;
+        }
+        .feature-col .group-items {
+            padding-left: 0.2rem;
+        }
+        .feature-col .group-items li {
+            padding: 0.25rem 0;
+            font-size: 0.92rem;
+        }
+        .feature-col .group-items li i {
+            font-size: 0.7rem;
+            margin-top: 0.25rem;
+        }
+        .feature-col .group-items li code {
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            background: var(--code-bg);
+            padding: 0.05rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.8em;
+            color: var(--accent);
+            border: 1px solid var(--border-color);
+        }
+
+        /* ============================================================= */
+        /* ===== 额外：完整功能列表区域（新增） ===== */
+        /* ============================================================= */
+        .full-features-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 2.5rem 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 3.5rem;
+            transition: all var(--transition);
+        }
+        .full-features-section:hover {
+            border-color: var(--accent-light);
+            box-shadow: var(--shadow-hover);
+        }
+        .full-features-section .section-title {
+            margin-bottom: 0.3rem;
+        }
+        .full-features-section .section-sub {
+            margin-bottom: 2rem;
+        }
+
+        .full-features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.8rem;
+        }
+        .full-features-grid .ff-col {
+            background: var(--bg-primary);
+            border-radius: var(--radius-sm);
+            padding: 1.2rem 1.2rem 0.8rem;
+            border: 1px solid var(--border-color);
+            transition: all var(--transition);
+        }
+        .full-features-grid .ff-col:hover {
+            border-color: var(--accent-light);
+            background: var(--bg-card-hover);
+        }
+        .full-features-grid .ff-col h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .full-features-grid .ff-col h4 i {
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+        .full-features-grid .ff-col ul {
+            list-style: none;
+            padding: 0;
+        }
+        .full-features-grid .ff-col ul li {
+            padding: 0.2rem 0;
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.4rem;
+        }
+        .full-features-grid .ff-col ul li i {
+            color: var(--accent-light);
+            font-size: 0.6rem;
+            margin-top: 0.35rem;
+            flex-shrink: 0;
+        }
+        .full-features-grid .ff-col ul li code {
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            background: var(--code-bg);
+            padding: 0.05rem 0.3rem;
+            border-radius: 3px;
+            font-size: 0.8em;
+            color: var(--accent);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Footer */
         .footer {
-            margin-top: 4rem;
+            margin-top: 2rem;
             padding-top: 2rem;
             border-top: 1px solid var(--border-color);
             display: flex;
@@ -1317,7 +1432,6 @@
             color: var(--border-color);
         }
 
-        /* ===== 刷新按钮 ===== */
         .refresh-btn {
             background: transparent;
             border: 1px solid var(--border-color);
@@ -1354,7 +1468,7 @@
             margin-left: 0.2rem;
         }
 
-        /* ===== 响应式 ===== */
+        /* 响应式 */
         @media (max-width: 768px) {
             body {
                 padding: 1rem 0.8rem;
@@ -1406,6 +1520,9 @@
             }
             .feature-grid {
                 grid-template-columns: 1fr;
+            }
+            .full-features-grid {
+                grid-template-columns: 1fr 1fr;
             }
             .compare-values {
                 font-size: 0.7rem;
@@ -1468,6 +1585,9 @@
             .download-changelog {
                 max-height: 280px;
             }
+            .full-features-section {
+                padding: 1.5rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1508,6 +1628,9 @@
                 max-height: 200px;
                 padding: 0.8rem 1rem;
                 font-size: 0.85rem;
+            }
+            .full-features-grid {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -1552,7 +1675,6 @@
             border-radius: 10px;
         }
 
-        /* ===== ★ 新增：Markdown 加载中的占位样式 ===== */
         .changelog-placeholder {
             display: flex;
             align-items: center;
@@ -1576,7 +1698,7 @@
 </head>
 <body>
 
-    <!-- ===== Toast 通知横幅 ===== -->
+    <!-- Toast 通知 -->
     <div id="toast">
         <span class="toast-icon">🔔</span>
         <span class="toast-msg">请刷新网页以获取最新数据</span>
@@ -1647,7 +1769,7 @@
             </div>
         </section>
 
-        <!-- ===== 下载统计区域 ===== -->
+        <!-- ===== 下载统计 ===== -->
         <section class="download-stats-section fade-up delay-2" id="downloadStats">
             <div class="stats-header">
                 <div class="left">
@@ -1769,7 +1891,6 @@
                         <span class="meta-item"><i class="far fa-calendar-alt"></i> 发布于 <strong id="staticDate">2026年7月30日</strong></span>
                         <span class="meta-item"><i class="fas fa-cube"></i> 软件 <strong>Just Solo</strong></span>
                     </div>
-                    <!-- ===== ★ 修复：changelog 容器增加占位提示 ===== -->
                     <div class="download-changelog" id="staticChangelog">
                         <div class="changelog-placeholder" id="changelogPlaceholder">
                             <i class="fas fa-spinner"></i> 正在加载更新日志…
@@ -1794,93 +1915,241 @@
             </div>
         </section>
 
-        <!-- ===== 核心能力 ===== -->
+        <!-- ============================================================= -->
+        <!-- ===== 核心能力（5 个卡片） ===== -->
+        <!-- ============================================================= -->
         <h2 class="section-title fade-up delay-4">✨ 核心能力</h2>
         <p class="section-sub fade-up delay-4">从音频引擎到系统集成，每一处都精心打磨</p>
         <div class="card-grid fade-up delay-4">
             <div class="card">
                 <div class="card-icon"><i class="fas fa-microchip"></i></div>
                 <h3>高性能音频引擎</h3>
-                <p>基于 <strong>miniaudio</strong> 轻量库，替代 Qt Multimedia，支持主流格式并流式播放，设置页可启用WASAPI独占（默认为共享）</p>
-                <span class="tag">WASAPI音频独占</span>
+                <p>基于 <strong>miniaudio</strong> 轻量库，支持 MP3 / FLAC / WAV / OGG / M4A / AAC / Opus 等格式。流式播放降低内存占用，支持 WASAPI 独占/共享输出，设备热插拔不中断播放。</p>
+                <span class="tag">WASAPI 独占模式</span>
             </div>
             <div class="card">
                 <div class="card-icon"><i class="fas fa-list-ul"></i></div>
                 <h3>智能音乐库管理</h3>
-                <p>自动去重、多歌手合并、全局搜索高亮、手动拖拽排序，五列自适应布局。支持文件/文件夹拖放导入。</p>
-                <span class="tag">智能音质标签</span>
+                <p>文件/文件夹拖放导入，自动去重、多歌手合并。全局搜索关键词青色高亮，五列自适应布局，支持手动拖拽排序，音质标签一目了然。</p>
+                <span class="tag">智能去重</span>
             </div>
             <div class="card">
                 <div class="card-icon"><i class="fas fa-align-left"></i></div>
                 <h3>完善的歌词系统</h3>
-                <p>外部 .lrc / 嵌入式歌词，双语字幕合并，逐行三色高亮（已播黄/当前青/未播灰蓝），预读偏移 50~350ms 可调，精准识别时间戳。</p>
-                <span class="tag">精准识别</span>
+                <p>外部 .lrc 与嵌入式歌词（ID3v2 / VorbisComment / MP4 标签）双轨支持。双语字幕自动合并，三色高亮（已播黄/当前青/未播灰蓝），预读偏移 50~350ms 可调，字体自由选择。</p>
+                <span class="tag">三色高亮</span>
             </div>
             <div class="card">
                 <div class="card-icon"><i class="fas fa-window-restore"></i></div>
                 <h3>迷你播放器</h3>
-                <p>全新独立小窗模式，始终置顶，展示封面、歌曲标题与歌手，支持播放/暂停控制，可从详情页或托盘进入（沉浸背景）</p>
-                <span class="tag">小但精致</span>
+                <p>独立小窗模式，始终置顶，沉浸背景随封面取色。展示专辑封面、歌曲标题与歌手，支持播放/暂停控制，从详情页或系统托盘一键进入。</p>
+                <span class="tag">始终置顶</span>
             </div>
             <div class="card">
                 <div class="card-icon"><i class="fab fa-windows"></i></div>
                 <h3>深度 Windows 集成</h3>
-                <p>SMTC 系统控件、NSD 灵动岛歌词同步、Just Solo LyricServer 协议（WebSocket）、系统托盘。</p>
+                <p>SMTC 系统媒体控件、NSD 灵动岛歌词同步、Just Solo LyricServer 协议（WebSocket）、系统托盘、单实例检测、Win11 原生标题栏三色定制。</p>
                 <span class="tag">Win11 原生</span>
             </div>
         </div>
 
-        <!-- ===== 功能详述 ===== -->
+        <!-- ============================================================= -->
+        <!-- ===== 功能详述（feature-grid） ===== -->
+        <!-- ============================================================= -->
         <div class="feature-grid fade-up delay-5">
+            <!-- 列1：播放控制 -->
             <div class="feature-col">
                 <h3><i class="fas fa-sliders-h"></i> 播放控制</h3>
                 <ul>
-                    <li><i class="fas fa-check-circle"></i> 5 种播放模式（顺序 / 循环 / 单曲 / 随机 / 关闭）</li>
-                    <li><i class="fas fa-check-circle"></i> 全局快捷键（可自定义）</li>
-                    <li><i class="fas fa-check-circle"></i> 进度条点击 / 拖动 seek</li>
-                    <li><i class="fas fa-check-circle"></i> 支持热插拔：设备插拔不中断播放</li>
+                    <li><i class="fas fa-check-circle"></i> 5 种播放模式：顺序 / 列表循环 / 单曲循环 / 随机 / 关闭循环</li>
+                    <li><i class="fas fa-check-circle"></i> 全局快捷键（默认 <kbd>Ctrl+Alt+Space</kbd> 播放/暂停，支持自定义）</li>
+                    <li><i class="fas fa-check-circle"></i> 进度条点击 / 拖动 seek，快进快退步长 1~10 秒可调</li>
+                    <li><i class="fas fa-check-circle"></i> WASAPI 独占/共享切换，独占延迟更低、音质更稳定</li>
                 </ul>
             </div>
+            <!-- 列2：收藏 & 历史 -->
             <div class="feature-col">
                 <h3><i class="fas fa-heart"></i> 收藏 &amp; 历史</h3>
                 <ul>
-                    <li><i class="fas fa-check-circle"></i> 收藏 / 取消收藏，持久化存储</li>
-                    <li><i class="fas fa-check-circle"></i> 播放历史自动记录，上限 500 条</li>
-                    <li><i class="fas fa-check-circle"></i> 启动自动恢复上次播放列表</li>
-                    <li><i class="fas fa-check-circle"></i> 跨来源跟踪，智能去重</li>
+                    <li><i class="fas fa-check-circle"></i> 收藏 / 取消收藏，持久化到 <code>favorites_cache.json</code></li>
+                    <li><i class="fas fa-check-circle"></i> 播放历史自动记录，同文件去重，上限 500 条</li>
+                    <li><i class="fas fa-check-circle"></i> 启动自动恢复上次播放列表（跳过已删除文件）</li>
+                    <li><i class="fas fa-check-circle"></i> 跨来源跟踪，删除时同步清理历史/收藏/自定义列表</li>
                 </ul>
             </div>
+            <!-- 列3：界面 & 体验 -->
             <div class="feature-col">
                 <h3><i class="fas fa-palette"></i> 界面 &amp; 体验</h3>
                 <ul>
-                    <li><i class="fas fa-check-circle"></i> 全新ui设计语言，带来更好的视觉体验</li>
-                    <li><i class="fas fa-check-circle"></i> 播放页沉浸背景，让色彩更生动</li>
-                    <li><i class="fas fa-check-circle"></i> 丝滑ui动画，让每一刻都Just Solo</li>
-                    <li><i class="fas fa-check-circle"></i> 系统原生标题栏（Win11 三色定制/Win10强制深色）</li>
+                    <li><i class="fas fa-check-circle"></i> 全新 UI 设计语言，QML 现代界面，60fps 流畅动画</li>
+                    <li><i class="fas fa-check-circle"></i> 播放详情页沉浸背景，封面取色 + 模糊</li>
+                    <li><i class="fas fa-check-circle"></i> 系统原生标题栏（Win11 三色定制 / Win10 强制深色）</li>
+                    <li><i class="fas fa-check-circle"></i> 关闭窗口最小化到系统托盘，后台音乐继续播放</li>
                 </ul>
             </div>
+            <!-- 列4：技术栈 -->
             <div class="feature-col">
                 <h3><i class="fas fa-code"></i> 技术栈</h3>
                 <ul>
-                    <li><i class="fas fa-check-circle"></i> C++17 + Qt 6.8.3</li>
-                    <li><i class="fas fa-check-circle"></i> QML 现代界面，GPU 渲染</li>
-                    <li><i class="fas fa-check-circle"></i> libcurl (OTA 在线更新) + cmark-gfm (Markdown 渲染)</li>
-                    <li><i class="fas fa-check-circle"></i> CMake 构建，MSVC 编译</li>
+                    <li><i class="fas fa-check-circle"></i> C++17 + Qt 6.8.3，CMake 构建，MSVC 编译</li>
+                    <li><i class="fas fa-check-circle"></i> QML 现代界面，原生 GPU 渲染</li>
+                    <li><i class="fas fa-check-circle"></i> miniaudio + libopus/libopusfile + fdk-aac + 苹果 ALAC</li>
+                    <li><i class="fas fa-check-circle"></i> libcurl (OTA 更新) + cmark-gfm (Markdown 渲染)</li>
                 </ul>
             </div>
+
+            <!-- ===== 列5：更多功能（全宽，分组展示） ===== -->
             <div class="feature-col" style="grid-column: 1 / -1;">
                 <h3><i class="fas fa-cog"></i> 更多功能</h3>
-                <ul>
-                    <li><i class="fas fa-check-circle"></i> <strong>自定义播放列表</strong>：侧边栏创建/重命名/删除，从音乐库多选导入，持久化到 JSON</li>
-                    <li><i class="fas fa-check-circle"></i> <strong>OTA 在线更新</strong>：基于 libcurl，支持检查更新并下载安装最新版本</li>
-                    <li><i class="fas fa-check-circle"></i> <strong>Markdown 转富文本</strong>：基于 cmark-gfm，更新日志以富文本 HTML 展示</li>
-                    <li><i class="fas fa-check-circle"></i> <strong>设置页面</strong>：外观设置、播放设置、快捷键自定义、软件更新、关于信息</li>
+
+                <!-- 组1：播放列表与歌手 -->
+                <div class="group-title"><i class="fas fa-list"></i> 播放列表 &amp; 歌手</div>
+                <ul class="group-items">
+                    <li><i class="fas fa-check-circle"></i> <strong>自定义播放列表</strong>：侧边栏创建/重命名/删除，列表名仅允许中英文、数字、<code>-</code>、<code>_</code>，禁止重名。右键添加本地音乐，或从音乐库多选导入。切换时确认弹窗，跨来源跟踪可选。删除歌曲时同步从历史/收藏/播放列表/所有自定义列表移除，持久化到 <code>custom_playlists.json</code></li>
+                    <li><i class="fas fa-check-circle"></i> <strong>歌手列表</strong>：侧边栏与自定义列表各占 50% 空间。通过歌手选择弹窗以歌手为维度创建列表，列表名默认取歌手名并允许修改。音乐只能通过歌手选择加入，右侧提供「刷新歌曲」按钮重新扫描音乐库，持久化到 <code>custom_playlists.json</code></li>
+                </ul>
+
+                <!-- 组2：播放详情 & 迷你模式 -->
+                <div class="group-title"><i class="fas fa-play-circle"></i> 播放详情 &amp; 迷你模式</div>
+                <ul class="group-items">
+                    <li><i class="fas fa-check-circle"></i> <strong>播放详情页</strong>：点击封面打开，底部滑入滑出动画，沉浸背景。左侧圆形封面 + 歌名（超长 marquee 滚动）+ 歌手 + 专辑；右侧逐行三色歌词（已播黄/当前青/未播灰蓝）。底部可拖动进度条 + 播放模式切换按钮 + 迷你小窗进入按钮，全屏切换按钮（等效 F11）</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>迷你播放器</strong>：独立小窗模式，始终置顶，沉浸背景（封面取色 + 模糊）。展示专辑封面、歌曲标题（居中放大）及歌手信息，支持播放/暂停控制，从播放详情页或系统托盘菜单进入，一键还原至主窗口</li>
+                </ul>
+
+                <!-- 组3：Windows 系统集成 -->
+                <div class="group-title"><i class="fab fa-windows"></i> Windows 系统集成</div>
+                <ul class="group-items">
+                    <li><i class="fas fa-check-circle"></i> <strong>SMTC 系统媒体控件</strong>：任务栏音量弹窗 / 锁屏 / 蓝牙设备显示歌名、歌手、封面，支持系统按键控制</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>NSD 灵动岛深度适配</strong>：每 500ms 推送 Timeline 属性，支持歌词同步显示（由 <a href="https://github.com/GEORGEWWWU" target="_blank" style="color:var(--accent);">Ryenryen</a> 开发）</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Just Solo LyricServer 协议</strong>：基于 WebSocket（<code>ws://127.0.0.1:47290</code>），第三方客户端获取实时歌词与播放状态。支持 <code>hello</code> 协议声明客户端名称，设置页提供服务状态监控与客户端列表</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>系统托盘</strong>：关闭窗口最小化到托盘（可选），音乐后台播放。左键/双击恢复窗口，右键菜单提供「显示主窗口 / 退出至托盘 / 迷你模式 / 退出」</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>单实例检测</strong>：基于 <code>QLocalServer</code>，防止重复启动，托盘隐藏后点快捷方式恢复窗口</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>原生标题栏</strong>：DWM 深色自定义，Win11 三色定制（背景/文字/边框），Win10 强制深色主题</li>
+                </ul>
+
+                <!-- 组4：导入与管理 -->
+                <div class="group-title"><i class="fas fa-folder-open"></i> 导入与管理</div>
+                <ul class="group-items">
+                    <li><i class="fas fa-check-circle"></i> <strong>导入信息缺失处理</strong>：导入未识别歌手/歌名的歌曲时弹窗提示，支持自动解析文件名与手动输入信息</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>智能去重</strong>：同一文件路径跳过；不同文件同一首歌保留音质更高版本；多歌手分隔符统一（<code>/ ; |｜</code> → <code>、</code>）</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>全局搜索</strong>：标题/歌手/专辑模糊匹配，关键词青色加粗高亮，结果点击自动定位播放</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>音质标签</strong>：极低 / 标准 / 高品质 / 无损 / 高解析 / 母带 / 空间音频，标题行金色显示</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>手动拖拽排序</strong>：歌曲列表（音乐库/收藏/自定义列表）支持拖拽排序</li>
+                </ul>
+
+                <!-- 组5：音频引擎与播放 -->
+                <div class="group-title"><i class="fas fa-music"></i> 音频引擎 &amp; 播放</div>
+                <ul class="group-items">
+                    <li><i class="fas fa-check-circle"></i> <strong>热插拔支持</strong>：WASAPI 共享模式下设备热插拔不中断音乐播放（插回去自动恢复声音）；独占模式下自动暂停/恢复播放</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>流式播放</strong>：降低内存占用，确保大文件播放无卡顿</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>WASAPI 独占模式</strong>：通道占用检测基于音频会话状态判定，自动排除自身进程与常驻静默会话（如 Rainmeter），被占用时弹窗提示（重新检测 / 关闭独占 / 强制开启）</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>音频格式支持</strong>：MP3 / FLAC / WAV / OGG (Vorbis) / M4A (AAC/ALAC) / AAC (ADTS) / Opus。内置解码器 MP3/FLAC/WAV/OGG；自定义解码后端 Opus（libopus+libopusfile）、AAC（fdk-aac，含 .m4a MP4 容器解封装与 .aac 裸流）、ALAC（苹果参考解码器，.m4a 无损），全部静态链接</li>
+                </ul>
+
+                <!-- 组6：设置与更新 -->
+                <div class="group-title"><i class="fas fa-sliders-h"></i> 设置 &amp; 更新</div>
+                <ul class="group-items">
+                    <li><i class="fas fa-check-circle"></i> <strong>外观设置</strong>：循环模式菜单透明度（30%~100%）、音量控制条透明度（30%~100%）、歌词字体选择（内置手写字体 + 系统字体，实时生效）、关闭最小化到托盘开关</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>播放设置</strong>：歌词预读偏移滑块（50~350ms，5ms 步长，30ms debounce 防抖）、快进/快退步长滑块（1~10 秒）、WASAPI 独占模式开关（开启前弹确认提示，自动检测通道占用）</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>快捷键设置</strong>：捕获模式卡片，按下组合键实时生效，独立重置按钮。支持播放/暂停、上下首、快进/快退</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>LyricServer 服务监控</strong>：设置页展示服务状态与客户端列表</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>OTA 在线更新</strong>：基于 libcurl，支持手动检查更新与下载安装最新版本</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>关于 Just Solo</strong>：作者信息、项目地址、运行环境、软件版本与构建版本、LyricServer 协议状态</li>
                 </ul>
             </div>
         </div>
 
+        <!-- ============================================================= -->
+        <!-- ===== 新增：完整功能列表（分类一览） ===== -->
+        <!-- ============================================================= -->
+        <section class="full-features-section fade-up delay-6">
+            <h2 class="section-title">📋 完整功能一览</h2>
+            <p class="section-sub">所有功能按领域分类，方便快速查阅</p>
+            <div class="full-features-grid">
+                <!-- 列A：播放与控制 -->
+                <div class="ff-col">
+                    <h4><i class="fas fa-play"></i> 播放与控制</h4>
+                    <ul>
+                        <li><i class="fas fa-check"></i> 播放 / 暂停 / 停止 / 上一首 / 下一首</li>
+                        <li><i class="fas fa-check"></i> 5 种播放模式（顺序/循环/单曲/随机/关闭）</li>
+                        <li><i class="fas fa-check"></i> 进度条点击 / 拖动 seek</li>
+                        <li><i class="fas fa-check"></i> 快进 / 快退（步长 1~10 秒可调）</li>
+                        <li><i class="fas fa-check"></i> 全局快捷键（可自定义）</li>
+                        <li><i class="fas fa-check"></i> WASAPI 独占 / 共享输出切换</li>
+                    </ul>
+                </div>
+                <!-- 列B：音乐库与列表 -->
+                <div class="ff-col">
+                    <h4><i class="fas fa-list-ul"></i> 音乐库 &amp; 列表</h4>
+                    <ul>
+                        <li><i class="fas fa-check"></i> 文件对话框 / 文件夹 / 拖放导入</li>
+                        <li><i class="fas fa-check"></i> 自动去重 &amp; 多歌手合并</li>
+                        <li><i class="fas fa-check"></i> 导入信息缺失弹窗处理</li>
+                        <li><i class="fas fa-check"></i> 全局搜索（标题/歌手/专辑）</li>
+                        <li><i class="fas fa-check"></i> 五列自适应布局 + 音质标签</li>
+                        <li><i class="fas fa-check"></i> 手动拖拽排序</li>
+                        <li><i class="fas fa-check"></i> 自定义播放列表（创建/重命名/删除/多选导入）</li>
+                        <li><i class="fas fa-check"></i> 歌手列表（以歌手为维度）</li>
+                    </ul>
+                </div>
+                <!-- 列C：歌词与详情 -->
+                <div class="ff-col">
+                    <h4><i class="fas fa-align-left"></i> 歌词 &amp; 详情</h4>
+                    <ul>
+                        <li><i class="fas fa-check"></i> 外部 .lrc 歌词（四种时间精度）</li>
+                        <li><i class="fas fa-check"></i> 嵌入式歌词（ID3v2 / VorbisComment / MP4）</li>
+                        <li><i class="fas fa-check"></i> 双语字幕自动合并</li>
+                        <li><i class="fas fa-check"></i> 三色高亮（已播/当前/未播）</li>
+                        <li><i class="fas fa-check"></i> 预读偏移 50~350ms 可调</li>
+                        <li><i class="fas fa-check"></i> 歌词字体自定义（内置 + 系统）</li>
+                        <li><i class="fas fa-check"></i> 播放详情页（沉浸背景 + 歌词同步）</li>
+                        <li><i class="fas fa-check"></i> 迷你播放器（独立小窗 / 始终置顶）</li>
+                    </ul>
+                </div>
+                <!-- 列D：系统集成 -->
+                <div class="ff-col">
+                    <h4><i class="fab fa-windows"></i> 系统集成</h4>
+                    <ul>
+                        <li><i class="fas fa-check"></i> SMTC 系统媒体控件</li>
+                        <li><i class="fas fa-check"></i> NSD 灵动岛歌词同步</li>
+                        <li><i class="fas fa-check"></i> LyricServer 协议（WebSocket）</li>
+                        <li><i class="fas fa-check"></i> 系统托盘（左键恢复 / 右键菜单）</li>
+                        <li><i class="fas fa-check"></i> 单实例检测（QLocalServer）</li>
+                        <li><i class="fas fa-check"></i> 原生标题栏（Win11 三色 / Win10 深色）</li>
+                        <li><i class="fas fa-check"></i> 热插拔支持（WASAPI 共享/独占）</li>
+                    </ul>
+                </div>
+                <!-- 列E：设置与更新 -->
+                <div class="ff-col">
+                    <h4><i class="fas fa-cog"></i> 设置 &amp; 更新</h4>
+                    <ul>
+                        <li><i class="fas fa-check"></i> 外观设置（透明度 / 字体 / 托盘）</li>
+                        <li><i class="fas fa-check"></i> 播放设置（预读偏移 / 快进步长 / WASAPI）</li>
+                        <li><i class="fas fa-check"></i> 快捷键设置（捕获模式 / 组合键）</li>
+                        <li><i class="fas fa-check"></i> LyricServer 服务监控</li>
+                        <li><i class="fas fa-check"></i> OTA 在线更新（libcurl）</li>
+                        <li><i class="fas fa-check"></i> 关于信息（作者 / 版本 / 协议）</li>
+                    </ul>
+                </div>
+                <!-- 列F：技术特性 -->
+                <div class="ff-col">
+                    <h4><i class="fas fa-microchip"></i> 技术特性</h4>
+                    <ul>
+                        <li><i class="fas fa-check"></i> C++17 + Qt 6.8.3</li>
+                        <li><i class="fas fa-check"></i> QML 现代界面 + GPU 渲染</li>
+                        <li><i class="fas fa-check"></i> miniaudio 轻量音频引擎</li>
+                        <li><i class="fas fa-check"></i> 支持 MP3/FLAC/WAV/OGG/M4A/AAC/Opus</li>
+                        <li><i class="fas fa-check"></i> 自定义解码后端（Opus / AAC / ALAC）</li>
+                        <li><i class="fas fa-check"></i> 流式播放 + 低内存占用</li>
+                        <li><i class="fas fa-check"></i> CMake 构建 + MSVC 编译</li>
+                        <li><i class="fas fa-check"></i> libcurl + cmark-gfm</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
         <!-- ===== 页脚 ===== -->
-        <footer class="footer fade-up delay-5">
+        <footer class="footer fade-up delay-6">
             <span>
                 <strong>Just Solo</strong> · 纯粹轻量的本地音乐播放器
                 <span class="sep">·</span>
@@ -1895,7 +2164,7 @@
     </div>
 
     <!-- ============================================================= -->
-    <!-- ===== ★ 修复：核心 JavaScript 逻辑（marked 加载与解析） ===== -->
+    <!-- ===== JavaScript 逻辑 ===== -->
     <!-- ============================================================= -->
     <script>
         (function() {
@@ -2000,7 +2269,7 @@
                 }
             }
 
-            // ===================== 下载统计（静默更新） =====================
+            // ===================== 下载统计 =====================
             var STATS_API = 'https://justsologithubdownloadcounter.zzjjack.us.kg/';
             var githubClonesEl = document.getElementById('githubClones');
             var githubReleasesEl = document.getElementById('githubReleases');
@@ -2068,14 +2337,13 @@
             }
 
             // =============================================================
-            // ===== ★ 修复：marked 加载与解析（带备选 CDN + 降级方案） =====
+            // ===== Markdown 解析（备选 CDN + 内置降级） =====
             // =============================================================
 
             var DL_API = 'https://getjustsolosetup.zzjjack.us.kg/';
             var dlVersionText = document.getElementById('dlVersionText');
             var refreshDlBtn = document.getElementById('refreshDlBtn');
 
-            // DOM 元素引用
             var staticVersion = document.getElementById('staticVersion');
             var staticDate = document.getElementById('staticDate');
             var staticChangelog = document.getElementById('staticChangelog');
@@ -2083,13 +2351,8 @@
             var staticGithubLink = document.getElementById('staticGithubLink');
             var placeholderEl = document.getElementById('changelogPlaceholder');
 
-            /**
-             * 内置简易 Markdown 解析器（作为 marked 加载失败的降级方案）
-             * 支持：标题、列表、链接、粗体、斜体、代码、换行
-             */
             function simpleMarkdownParse(text) {
                 if (!text) return '<p>（无更新日志）</p>';
-                // 转义 HTML 特殊字符
                 var esc = function(s) {
                     return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
                         .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
@@ -2097,40 +2360,29 @@
                 var lines = text.split('\n');
                 var result = [];
                 var inList = false;
-                var listType = null; // 'ul' or 'ol'
+                var listType = null;
 
                 for (var i = 0; i < lines.length; i++) {
                     var line = lines[i];
                     var trimmed = line.trim();
-
-                    // 空行
                     if (!trimmed) {
-                        if (inList) {
-                            result.push('</' + listType + '>');
+                        if (inList) { result.push('</' + listType + '>');
                             inList = false;
-                            listType = null;
-                        }
+                            listType = null; }
                         result.push('<br />');
                         continue;
                     }
-
-                    // 标题 (h1 - h6)
                     var headingMatch = trimmed.match(/^(#{1,6})\s+(.+)$/);
                     if (headingMatch) {
-                        if (inList) {
-                            result.push('</' + listType + '>');
+                        if (inList) { result.push('</' + listType + '>');
                             inList = false;
-                            listType = null;
-                        }
+                            listType = null; }
                         var level = headingMatch[1].length;
                         var content = esc(headingMatch[2]);
-                        // 行内格式处理
                         content = inlineFormat(content);
                         result.push('<h' + level + '>' + content + '</h' + level + '>');
                         continue;
                     }
-
-                    // 无序列表
                     var ulMatch = trimmed.match(/^[-*+]\s+(.+)$/);
                     if (ulMatch) {
                         var ulContent = esc(ulMatch[1]);
@@ -2144,8 +2396,6 @@
                         result.push('<li>' + ulContent + '</li>');
                         continue;
                     }
-
-                    // 有序列表
                     var olMatch = trimmed.match(/^\d+\.\s+(.+)$/);
                     if (olMatch) {
                         var olContent = esc(olMatch[1]);
@@ -2159,58 +2409,33 @@
                         result.push('<li>' + olContent + '</li>');
                         continue;
                     }
-
-                    // 如果不是列表项，但当前在列表中，关闭列表
-                    if (inList) {
-                        result.push('</' + listType + '>');
+                    if (inList) { result.push('</' + listType + '>');
                         inList = false;
-                        listType = null;
-                    }
-
-                    // 普通段落
+                        listType = null; }
                     var para = esc(trimmed);
                     para = inlineFormat(para);
                     result.push('<p>' + para + '</p>');
                 }
-
-                // 关闭未结束的列表
-                if (inList) {
-                    result.push('</' + listType + '>');
-                }
-
+                if (inList) { result.push('</' + listType + '>'); }
                 return result.join('\n');
             }
 
-            /**
-             * 行内格式：粗体、斜体、链接、代码
-             */
             function inlineFormat(text) {
-                // 粗体 **text** 或 __text__
                 text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
                 text = text.replace(/__(.+?)__/g, '<strong>$1</strong>');
-                // 斜体 *text* 或 _text_
                 text = text.replace(/\*(.+?)\*/g, '<em>$1</em>');
                 text = text.replace(/_(.+?)_/g, '<em>$1</em>');
-                // 行内代码 `code`
                 text = text.replace(/`(.+?)`/g, '<code>$1</code>');
-                // 链接 [text](url)
                 text = text.replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank">$1</a>');
                 return text;
             }
 
-            /**
-             * 尝试获取 marked 对象（支持主 CDN 和备选 CDN）
-             * 返回 Promise
-             */
             function getMarked() {
                 return new Promise(function(resolve, reject) {
-                    // 如果已经存在且可用，直接 resolve
                     if (window.marked && typeof window.marked.parse === 'function') {
                         resolve(window.marked);
                         return;
                     }
-
-                    // 检查主脚本是否加载完成
                     var mainScript = document.getElementById('marked-script-main');
                     if (mainScript && mainScript.readyState === 'complete') {
                         if (window.marked && typeof window.marked.parse === 'function') {
@@ -2218,25 +2443,10 @@
                             return;
                         }
                     }
-
-                    // 主脚本加载失败或未就绪，尝试动态加载备选 CDN
                     console.log('📦 主 CDN 未就绪，尝试加载备选 CDN...');
                     var script = document.createElement('script');
-                    script.src =
-                    'https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js';
+                    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js';
                     script.async = true;
-                    script.onload = function() {
-                        if (window.marked && typeof window.marked.parse === 'function') {
-                            console.log('✅ 备选 CDN 加载成功');
-                            resolve(window.marked);
-                        } else {
-                            reject(new Error('备选 CDN 加载后 marked 仍不可用'));
-                        }
-                    };
-                    script.onerror = function() {
-                        reject(new Error('备选 CDN 加载失败'));
-                    };
-                    // 超时保护
                     var timeoutId = setTimeout(function() {
                         reject(new Error('加载 marked 超时'));
                     }, 8000);
@@ -2249,22 +2459,20 @@
                             reject(new Error('备选 CDN 加载后 marked 仍不可用'));
                         }
                     };
+                    script.onerror = function() {
+                        clearTimeout(timeoutId);
+                        reject(new Error('备选 CDN 加载失败'));
+                    };
                     document.head.appendChild(script);
                 });
             }
 
-            /**
-             * 安全解析 Markdown：优先使用 marked，失败则使用内置解析器
-             */
             function safeParseMarkdown(text) {
                 return getMarked()
                     .then(function(marked) {
                         try {
                             var html = marked.parse(text);
-                            // 如果解析结果为空或只有空白，使用降级
-                            if (!html || html.trim() === '') {
-                                throw new Error('marked 返回空内容');
-                            }
+                            if (!html || html.trim() === '') throw new Error('marked 返回空内容');
                             return html;
                         } catch (err) {
                             console.warn('⚠️ marked 解析失败，使用内置解析器:', err.message);
@@ -2277,16 +2485,11 @@
                     });
             }
 
-            /**
-             * 获取下载数据并渲染
-             */
             async function fetchDownloadData() {
-                // 显示加载占位
                 if (placeholderEl) {
                     placeholderEl.innerHTML = '<i class="fas fa-spinner"></i> 正在加载更新日志…';
                     placeholderEl.style.display = 'flex';
                 }
-
                 try {
                     var response = await fetch(DL_API + '?t=' + Date.now(), {
                         cache: 'no-store',
@@ -2297,12 +2500,10 @@
                     var data = await response.json();
                     if (!data || typeof data !== 'object') throw new Error('无效数据');
 
-                    // 更新版本号
                     if (staticVersion && data.version) {
                         staticVersion.textContent = data.version;
                         if (dlVersionText) dlVersionText.textContent = data.version;
                     }
-                    // 更新日期
                     if (staticDate && data.updated_at) {
                         try {
                             var d = new Date(data.updated_at);
@@ -2312,7 +2513,6 @@
                             }
                         } catch (_) {}
                     }
-                    // 更新下载链接
                     if (data.gitcode_exe && staticGitcodeLink) {
                         staticGitcodeLink.href = data.gitcode_exe;
                     }
@@ -2320,30 +2520,18 @@
                         staticGithubLink.href = data.github_exe;
                     }
 
-                    // ===== ★ 核心修复：安全解析 Markdown =====
                     if (staticChangelog && data.changelog) {
-                        // 隐藏占位
-                        if (placeholderEl) {
-                            placeholderEl.style.display = 'none';
-                        }
-                        // 使用安全解析器
+                        if (placeholderEl) placeholderEl.style.display = 'none';
                         var htmlContent = await safeParseMarkdown(data.changelog);
                         staticChangelog.innerHTML = htmlContent;
                     } else if (staticChangelog) {
-                        // 没有 changelog 数据
-                        if (placeholderEl) {
-                            placeholderEl.style.display = 'none';
-                        }
+                        if (placeholderEl) placeholderEl.style.display = 'none';
                         staticChangelog.innerHTML = '<p><em>暂无更新日志</em></p>';
                     }
                 } catch (err) {
                     console.warn('下载 API 加载失败，使用静态备用内容:', err.message);
-                    // 使用静态备用内容
                     if (staticChangelog) {
-                        if (placeholderEl) {
-                            placeholderEl.style.display = 'none';
-                        }
-                        // 使用内置解析器解析静态备用内容
+                        if (placeholderEl) placeholderEl.style.display = 'none';
                         var fallbackText =
                             '## v1.1.0 更新内容 (2026.7.30)\n\n- 新增迷你播放器（迷你小窗）：独立小窗，始终置顶，支持封面/歌名/歌手展示与播放/暂停控制\n- 系统托盘播放控制：托盘菜单新增上一曲、播放/暂停、下一曲控制项\n- Markdown 转富文本工具：基于 cmark-gfm，更新日志以富文本 HTML 展示\n- 音质标签颜色调整为金色，提升可识别性\n- 切换歌单时列表闪屏大幅减轻\n- 修复从系统托盘恢复窗口时迷你小窗未销毁的问题\n\n_完整更新记录请查看 GitHub Release_';
                         var fallbackHtml = simpleMarkdownParse(fallbackText);
@@ -2355,31 +2543,19 @@
                 }
             }
 
-            // =============================================================
-            // ===== 页面加载完成后执行所有 API 请求 =====
-            // =============================================================
-
-            // 使用 DOMContentLoaded 确保 DOM 已就绪，同时等待 marked 加载
+            // ===== 页面加载执行 =====
             document.addEventListener('DOMContentLoaded', function() {
-                // 先获取统计数据
                 fetchStats();
-
-                // 获取下载数据（内部会处理 marked 加载）
                 fetchDownloadData();
             });
-
-            // 额外：如果页面已经加载完成（DOMContentLoaded 已触发），直接执行
-            if (document.readyState === 'loading') {
-                // 等待 DOMContentLoaded
-            } else {
-                // DOM 已就绪，但可能 marked 还在加载，稍等片刻再执行
+            if (document.readyState !== 'loading') {
                 setTimeout(function() {
                     fetchStats();
                     fetchDownloadData();
                 }, 200);
             }
 
-            // ===================== 刷新按钮事件 =====================
+            // ===== 刷新按钮 =====
             if (refreshStatsBtn) {
                 refreshStatsBtn.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -2387,7 +2563,6 @@
                     fetchStats();
                 });
             }
-
             if (refreshDlBtn) {
                 refreshDlBtn.addEventListener('click', function(e) {
                     e.preventDefault();
